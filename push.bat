@@ -1,1 +1,1 @@
-couchapp push fiveOClock
+couchapp push fiveoclock
