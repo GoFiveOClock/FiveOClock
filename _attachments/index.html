@@ -2,9 +2,69 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>FiveOCLock</title>
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.css" />
+    <style>
+        .top {
+            margin-top: 15px;
+        }
+          .topAll {
+            margin-top: 50px;
+           margin-bottom: 40px;
+                
+            
+        }
+    </style>
     <script src="require.js" data-main="main"></script>
 </head>
-<body ng-controller="AppController">
-    <div ng-bind="message"></div>
+<body ng-controller="AppController" class="ng-cloak container">
+    <div class="row">
+
+        <form ng-submit=" AddItem()">
+            <div class=" col-lg-6 col-lg-offset-3">
+                <div class="input-group topAll">
+                    <input type="text" ng-model="NewNameNg" class="form-control" placeholder="New task here...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" ng-click="AddItem()">ADD</button>
+                    </span>
+                </div>
+                <hr />
+                <hr />
+                <hr />
+            </div>
+        </form>
+
+
+        <div ng-repeat="ElementContact in AllContacts">
+            <form ng-submit=" RedactEl(ElementContact)">
+                <div class=" col-lg-6 col-lg-offset-3">
+                    <div class="input-group top">
+                        <label ng-if="!ElementContact.typeLabel" ng-click="ElementContact.typeLabel = !ElementContact.typeLabel" class="form-control "><input type="hidden">{{ElementContact.name}}</label>
+                        <input ng-if="ElementContact.typeLabel" type="text" ng-blur=" ElementContact.typeLabel = !ElementContact.typeLabel;RedactEl(ElementContact)" ng-model="ElementContact.name" class="form-control ">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" ng-click="removeTask(ElementContact)">
+                                <div class="glyphicon glyphicon-remove">
+                                    <!--без этой дивки значек неправильно помещается-->
+                                </div>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+
+            <div class="col-lg-5 col-lg-offset-4">
+                <div class="input-group top">
+                    <input type="text" class="form-control" ng-model="ElementContact.phone" ng-blur="SaveDate(ElementContact)" placeholder="Recipient's telephone..." aria-describedby="basic-addon2">
+                    <span class="input-group-addon" id="basic-addon2">Telephone</span>
+                </div>
+                <div class="input-group top">
+                    <input type="text" class="form-control" ng-model="ElementContact.email" ng-blur="SaveDate(ElementContact)" placeholder="Recipient's mail..." aria-describedby="basic-addon2">
+                    <span class="input-group-addon" id="basic-addon2">mail</span>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
 </body>
 </html>
