@@ -2,9 +2,126 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>FiveOCLock</title>
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.css" />
+    <style>
+        .top {
+            margin-top: 15px;
+        }
+
+        .topAll {
+            margin-top: 50px;
+            margin-bottom: 40px;
+        }
+
+        #signinButton {
+            float: right;
+        }
+        .pd{
+            padding: 0 0 0 0;
+        }
+    </style>
     <script src="require.js" data-main="main"></script>
 </head>
-<body ng-controller="AppController">
-    <div ng-bind="message"></div>
+<body ng-controller="AppController" class="ng-cloak container">
+    <div class="row">
+        <form ng-submit=" AddItem()">
+            <div class=" col-lg-6 col-lg-offset-3">
+                <button class="btn btn-default" type="button" ng-click="login()">Get contacts(Gmail)</button>
+                <div class="input-group topAll">
+                    <input type="text" ng-model="NewNameNg" class="form-control" placeholder="New contact...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" ng-click="AddItem()">ADD</button>
+                    </span>
+                </div>
+            </div>
+        </form>
+
+        <div ng-repeat="ElementContact in AllContacts">
+            <form ng-submit=" RedactEl(ElementContact)">
+                <div class=" col-lg-6 col-lg-offset-3">
+                    <div class="input-group top">
+                        <label ng-if="!ElementContact.typeLabel" ng-click="ClickLabel(ElementContact)" class="form-control "><input type="hidden">{{ElementContact.name}}</label>
+                        <input ng-if="ElementContact.typeLabel" type="text" ng-blur="BlurInput(ElementContact)" ng-model="ElementContact.name" class="form-control ">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" ng-click="removeTask(ElementContact)">
+                                <div class="glyphicon glyphicon-remove">
+                                    <!--for glyphicon glyphicon-remove-->
+                                </div>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+            <div class=" col-lg-6 col-lg-offset-3">
+                <h5 style="float:left"> Phones: </h5>
+                <div style="margin-left:133px" class=" col-lg-8 col-lg-offset-3 pd">
+                    <div ng-repeat="phone in ElementContact.phones">
+                        <div class="input-group top">
+                            <span class="input-group-addon">
+                                <input type="checkbox" ng-model="phone.checked" ng-change="toglleCheck(ElementContact)" />
+                            </span>
+                            <label class="form-control "><input type="hidden">{{phone.phone}}</label>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="removePhone({phone:phone,contact:ElementContact})">
+                                    <div class="glyphicon glyphicon-remove">
+                                        <!--for glyphicon glyphicon-remove-->
+                                    </div>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <!--add phone-->
+                    <div class="input-group top">
+                        <input type="text" ng-model="ElementContact.phone" placeholder="Phone..." class="form-control ">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" ng-click="addPhone(ElementContact)">
+                                <div class="glyphicon glyphicon-plus-sign">
+                                    <!--for glyphicon glyphicon-plus-sign-->
+                                </div>
+                            </button>
+                        </span>
+                    </div>                   
+                </div>
+                <h5 style="float:left">Em@ils:</h5>
+                <div style="margin-left:133px" class=" col-lg-8 col-lg-offset-3 pd">
+                    <div ng-repeat="email in ElementContact.emails">
+                        <div class="input-group top">
+                            <span class="input-group-addon">
+                                <input type="checkbox" ng-model="email.checked" ng-change="toglleCheck(ElementContact)" />
+                            </span>
+                            <label class="form-control "><input type="hidden">{{email.email}}</label>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="removeEmail({email:email,contact:ElementContact})">
+                                    <div class="glyphicon glyphicon-remove">
+                                        <!--for glyphicon glyphicon-remove-->
+                                    </div>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <!--add email-->
+                    <div class="input-group top">
+                        <input type="text" ng-model="ElementContact.email" placeholder="Email..." class="form-control ">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" ng-click="addEmail(ElementContact)">
+                                <div class="glyphicon glyphicon-plus-sign">
+                                    <!--for glyphicon glyphicon-plus-sign-->
+                                </div>
+                            </button>
+                        </span>
+                    </div>                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        (function () {
+            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+            po.src = 'https://apis.google.com/js/client:plusone.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+    </script>
 </body>
 </html>
