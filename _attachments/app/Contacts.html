@@ -23,8 +23,8 @@
                                     <a class="boxclose" id="boxclose" ng-click="removeContact(contact)"></a>
                                     <div class="input-group">
 
-                                        <label ng-if="!contact.typeLabel" ng-click="toggleEditMode(contact)" class="form-control "><input type="hidden">{{contact.name}}</label>
-                                        <input ng-if="contact.typeLabel" type="text" ng-model="contact.name" class="form-control ">
+                                        <label ng-if="!contact.typeLabel" ng-click="toggleEditMode(contact)" class="form-control break-word"><input type="hidden">{{contact.name}}</label>
+                                        <input ng-if="contact.typeLabel" type="text" ng-model="contact.name" class="form-control">
 
                                         <span class="input-group-btn">
                                             <button class="btn btn-default " type="submit">
