@@ -2,7 +2,7 @@
     angular.module('fiveOClock').factory('Contact', function (CouchEntity) {
         var entity = {
             type: 'contact',
-            props: ['name', 'emails', 'phones'],
+            props: ['name', 'emails', 'phones', 'email', 'phone'],
             url: '_view/contact'
         };
 
