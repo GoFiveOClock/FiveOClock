@@ -1,0 +1,113 @@
+﻿
+<div class="ng-cloak container">
+    <div class="row">
+        <form ng-submit=" AddItem()">
+            <div class=" col-lg-6 col-lg-offset-3">
+                <button class="btn btn-default" type="button" ng-click="login()">Get contacts(Gmail)</button>
+                <div class="input-group topAll">
+                    <input type="text" ng-model="NewNameNg" class="form-control" placeholder="New contact...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" ng-click="AddItem()">ADD</button>
+                    </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </form>
+        <div ng-repeat="contact in AllContacts">
+            <div class=" col-lg-6 col-lg-offset-3">
+                <div class="well">
+                    <form ng-submit=" RedactEl(contact)">
+                        <a class="boxclose" id="boxclose" ng-click="removeTask(contact)"></a>
+                        <div class="input-group top">
+                            
+                            <label ng-if="!contact.typeLabel" ng-click="ClickLabel(contact)" class="form-control "><input type="hidden">{{contact.name}}</label>
+                            <input ng-if="contact.typeLabel" type="text" ng-model="contact.name" class="form-control ">
+                            
+                            <span class="input-group-btn">
+                                <button class="btn btn-default " type="button" ng-click="SaveContact(contact)">
+                                    <i class="glyphicon glyphicon-ok"></i>
+                                </button>                                            
+                            </span>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+
+                    <div>
+                        <h5 style="float:left"> Phones: </h5>
+                        <div style="margin-left:133px" class="pd">
+                            <div ng-repeat="phone in contact.phones">
+                                <div class="input-group top">
+                                    <span class="input-group-addon">
+                                        <input type="radio" name={{contact.phone}} ng-checked="IsMainPhone({phone:phone,MainPhone:contact.phone})" ng-click="toglleCheckPhone({phone:phone,contact:contact})" />
+                                    </span>
+                                    <label class="form-control "><input type="hidden">{{phone}}</label>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" ng-click="removePhone({phone:phone,contact:contact})">
+                                            <div class="glyphicon glyphicon-remove">
+                                                <!--for glyphicon glyphicon-remove-->
+                                            </div>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <!--add phone-->
+                            <form ng-submit="addPhone(contact)">
+                                <div class="input-group top">
+                                    <input type="text" ng-model="contact.phoneValue" placeholder="Add new phone" class="form-control ">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" ng-click="addPhone(contact)">
+                                            <div class="glyphicon glyphicon-plus-sign">
+                                                <!--for glyphicon glyphicon-plus-sign-->
+                                            </div>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+
+                        </div>
+                        <h5 style="float:left">Em@ils:</h5>
+                        <div style="margin-left:133px" class="pd">
+                            <div ng-repeat="email in contact.emails">
+                                <div class="input-group top">
+                                    <span class="input-group-addon">
+                                        <input type="radio" name={{contact.mail}} ng-checked="IsMainEmail({email:email,MainEmail:contact.email})" ng-click="toglleCheckEmail({email:email,contact:contact})" />
+                                    </span>
+                                    <label class="form-control "><input type="hidden">{{email}}</label>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" ng-click="removeEmail({email:email,contact:contact})">
+                                            <div class="glyphicon glyphicon-remove">
+                                                <!--for glyphicon glyphicon-remove-->
+                                            </div>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <!--add email-->
+                            <form ng-submit="addEmail(contact)">
+                                <div class="input-group top">
+                                    <input type="text" ng-model="contact.emailValue" placeholder="Add new email" class="form-control ">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" ng-click="addEmail(contact)">
+                                            <div class="glyphicon glyphicon-plus-sign">
+                                                <!--for glyphicon glyphicon-plus-sign-->
+                                            </div>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        (function () {
+            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+            po.src = 'https://apis.google.com/js/client:plusone.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+    </script>
+</div>
