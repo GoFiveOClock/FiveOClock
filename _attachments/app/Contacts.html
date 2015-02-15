@@ -21,11 +21,11 @@
         <div ng-repeat="contact in AllContacts">
             <div class=" col-lg-6 col-lg-offset-3">
                 <div class="well">
+                    <i class="glyphicon glyphicon-remove-sign remove-button" ng-click="removeContact(contact)"></i>
                     <div class="form-horizontal">
                         <div class="form-group">
                             <div class="col-xs-12">
                                 <form ng-submit="SaveContact(contact)">
-                                    <a class="boxclose" id="boxclose" ng-click="removeContact(contact)"></a>
                                     <div class="input-group">
 
                                         <label ng-if="!contact.typeLabel" ng-click="toggleEditMode(contact)" class="form-control break-word"><input type="hidden">{{contact.name}}</label>

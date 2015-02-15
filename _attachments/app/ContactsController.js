@@ -1,7 +1,5 @@
-﻿define(['angular.route'], function (angular) {
-
-
-    angular.module('fiveOClock').controller('ContactsController', function ($scope, $q, $rootScope, $http, $timeout, contacts) {
+﻿define(['angular.route', ''], function (angular) {
+    return angular.module('fiveOClock').controller('ContactsController', function ($scope, $q, $rootScope, $http, $timeout, Contact, contacts) {
         $scope.AllContacts = contacts;
         $scope.rendered = function() {
             $timeout(function() {
