@@ -47,11 +47,6 @@
         $scope.isLabel = function (contact) {
             return !contact.typeLabel;
         }
-        $scope.RedactElement = function (contact) {
-            var that = this;
-            that.indexEl = that.AllContacts.indexOf(contact);
-            Contact.put(contact);
-        }
         $scope.AddItem = function () {
             var that = this;
             Contact.post({ name: this.NewNameNg }).then(function (data) {
@@ -59,7 +54,7 @@
                 that.NewNameNg = "";
             });
         };
-        $scope.removeTask = function (contact) {
+        $scope.removeContact = function (contact) {
             var that = this;
             Contact.delete(contact._id, contact._rev).then(function () {
                 var index = that.AllContacts.indexOf(contact);
@@ -102,12 +97,12 @@
             object.contact.email = object.email;
             Contact.put(object.contact);
         };
-        $scope.ClickLabel = function (contact) {
+        $scope.toggleEditMode = function (contact) {
             contact.typeLabel = !contact.typeLabel;
         };
         $scope.SaveContact = function (contact) {
             contact.typeLabel = !contact.typeLabel;
-            $scope.RedactElement(contact);
+            Contact.put(contact);
         };
         $scope.IsMainPhone = function (object) {
             var response;
