@@ -1,9 +1,13 @@
-﻿define(['angular.route', 'entities/contact'], function (angular, contact) {
+﻿define(['angular.route'], function (angular) {
 
 
-    angular.module('fiveOClock').controller('ContactsController', function ($scope, Contact, $q, $rootScope, $http) {
-
-        $scope.AllContacts = [];
+    angular.module('fiveOClock').controller('ContactsController', function ($scope, $q, $rootScope, $http, $timeout, contacts) {
+        $scope.AllContacts = contacts;
+        $scope.rendered = function() {
+            $timeout(function() {
+                $scope.loaded = true;
+            });
+        };
         var clientId = "1078441704585-ks4vjjmin4dn8ik081lb8206rjbt16er.apps.googleusercontent.com",
                 scopes = 'https://www.googleapis.com/auth/contacts.readonly',
                 domain = '{MY COMPANY DOMAIN}';
@@ -41,9 +45,6 @@
             };
         };
 
-        Contact.get().then(function (contacts) {
-            $scope.AllContacts = contacts;
-        });
         $scope.isLabel = function (contact) {
             return !contact.typeLabel;
         }

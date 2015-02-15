@@ -1,5 +1,10 @@
-﻿<link rel="stylesheet" href="app/contacts.css" />
-<div class="ng-cloak container">
+﻿<link rel="stylesheet" href="app/contacts.css"/>
+<div class="loading-container container green-100 animation-07" ng-hide="loaded">
+    <div class="arc">
+        <div class="arc-cube"></div>
+    </div>
+</div>
+<div class="ng-cloak container" ng-show="loaded">
     <div class="row">
         <form ng-submit="AddItem()">
             <div class=" col-lg-6 col-lg-offset-3">
@@ -105,10 +110,15 @@
     </div>
 
     <script type="text/javascript">
-        (function () {
-            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        (function() {
+            var po = document.createElement('script');
+            po.type = 'text/javascript';
+            po.async = true;
             po.src = 'https://apis.google.com/js/client:plusone.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(po, s);
         })();
     </script>
+
+    <div ng-init="rendered();"></div>
 </div>
