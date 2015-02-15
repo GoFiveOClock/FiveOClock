@@ -5,7 +5,7 @@
          
         $scope.AllContacts = [];
         var clientId = "157050109041-jmp4neh08ruhbb5oqlbcvvb6q4fua2sk.apps.googleusercontent.com",                
-                scopes = 'https://www.googleapis.com/auth/contacts.readonly',
+                scopes = 'https://www.googleapis.com/auth/userinfo.email https://www.google.com/m8/feeds',
                 domain = '{MY COMPANY DOMAIN}';            
 
         $scope.login = function () {
