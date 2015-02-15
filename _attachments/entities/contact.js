@@ -6,10 +6,10 @@
             url: '_view/contact',
             indexes: {
                 byName: function (params) {
-                    return '_view/contact-by-name?startkey="' + params.name + '"&endkey="' + params.name + '"';
+                    return '_view/contact-by-name?startkey="' + encodeURIComponent(params.name) + '"&endkey="' + encodeURIComponent(params.name) + '"';
                 },
                 byGoogleTag: function(params) {
-                    return '_view/contact-by-google-tag?startkey="' + params.googleTag + '"&endkey="' + params.googleTag + '"';
+                    return '_view/contact-by-google-tag?startkey="' + encodeURIComponent(params.googleTag) + '"&endkey="' + encodeURIComponent(params.googleTag) + '"';
                 }
             }
         };

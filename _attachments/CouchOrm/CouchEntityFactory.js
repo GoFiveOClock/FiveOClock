@@ -48,9 +48,8 @@
                 return db.delete(url);
             }
 
-            for (var indexName in entityConfig.indexes) {
-                var index = entityConfig.indexes[indexName];
-                this[indexName] = function (param) {
+            _.each(entityConfig.indexes, function(index, name) {
+                that[name] = function (param) {
                     if (_.isFunction(index)) {
                         var url = index.apply(null, arguments);
                     } else if (_.isString(index)) {
@@ -58,7 +57,7 @@
                     }
                     return db.get(url + '&' + formatParams(param)).then(formatViewRelationsResponse);
                 }
-            }
+            });
 
             function createModel(doc) {
                 var model = {};
