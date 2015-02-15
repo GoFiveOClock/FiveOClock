@@ -18,13 +18,12 @@
         },       
         'bootstrap': {
             deps: ['jquery']
-        },
-       
-
-    }
+        }
+    },
+    deps: ['angular', 'angular.route', 'bootstrap', 'CouchEntity']
 });
 
-require(['jquery', 'bootstrap', 'angular.route', 'CouchEntity'], function ($, bootstrap, angular) {
+require(['jquery', 'angular.route'], function ($, angular) {
     angular.module('fiveOClock', ['angularCouch', 'ngRoute']);
     $(function () {
         require(['app/app'], function () {

@@ -1,4 +1,4 @@
-﻿
+﻿<link rel="stylesheet" href="app/contacts.css" />
 <div class="ng-cloak container">
     <div class="row">
         <form ng-submit="AddItem()">
@@ -43,7 +43,7 @@
                                         <span class="input-group-addon">
                                             <input type="radio" name={{contact.phone}} ng-checked="IsMainPhone({phone:phone,MainPhone:contact.phone})" ng-click="toglleCheckPhone({phone:phone,contact:contact})" />
                                         </span>
-                                        <label class="form-control "><input type="hidden">{{phone}}</label>
+                                        <label class="form-control break-word" title="{{phone}}"><input type="hidden">{{phone}}</label>
                                         <span class="input-group-btn">
                                             <button class="btn btn-default" type="button" ng-click="removePhone({phone:phone,contact:contact})">
                                                 <i class="glyphicon glyphicon-remove">
@@ -75,7 +75,7 @@
                                         <span class="input-group-addon">
                                             <input type="radio" name={{contact.mail}} ng-checked="IsMainEmail({email:email,MainEmail:contact.email})" ng-click="toglleCheckEmail({email:email,contact:contact})" />
                                         </span>
-                                        <label class="form-control "><input type="hidden">{{email}}</label>
+                                        <label class="form-control break-word" title="{{email}}"><input type="hidden">{{email}}</label>
                                         <span class="input-group-btn">
                                             <button class="btn btn-default" type="button" ng-click="removeEmail({email:email,contact:contact})">
                                                 <i class="glyphicon glyphicon-remove">

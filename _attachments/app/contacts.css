@@ -1,10 +1,17 @@
-﻿.bottom-margin {
+﻿.bottom-margin:not(:last-child) {
     margin-bottom: 15px;
 }
 
 .topAll {
     margin-top: 50px;
     margin-bottom: 40px;
+}
+
+.break-word {
+    overflow: auto;
+    -moz-word-break: break-word;
+    -o-word-break: break-word;
+    word-break: break-word;
 }
 
 a.boxclose {
