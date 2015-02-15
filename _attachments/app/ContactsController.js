@@ -4,7 +4,7 @@
     angular.module('fiveOClock').controller('ContactsController', function ($scope, Contact, $q, $rootScope, $http) {
 
         $scope.AllContacts = [];
-        var clientId = "157050109041-jmp4neh08ruhbb5oqlbcvvb6q4fua2sk.apps.googleusercontent.com",
+        var clientId = "1078441704585-ks4vjjmin4dn8ik081lb8206rjbt16er.apps.googleusercontent.com",
                 scopes = 'https://www.googleapis.com/auth/contacts.readonly',
                 domain = '{MY COMPANY DOMAIN}';
 
