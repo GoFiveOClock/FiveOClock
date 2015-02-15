@@ -1,6 +1,16 @@
 ﻿define(['angular.route', ''], function (angular) {
     return angular.module('fiveOClock').controller('ContactsController', function ($scope, $q, $rootScope, $http, $timeout, Contact, contacts) {
         $scope.AllContacts = contacts;
+        //Contact.byGoogleTag({ googleTag: 'test' })
+        $scope.search = function () {
+            if ($scope.searchValue) {
+                Contact.byName({ name: $scope.searchValue.toLowerCase() }).then(function(response) {
+                    $scope.AllContacts = response;
+                });
+            } else {
+                $scope.AllContacts = contacts;
+            }
+        }
         $scope.rendered = function() {
             $timeout(function() {
                 $scope.loaded = true;

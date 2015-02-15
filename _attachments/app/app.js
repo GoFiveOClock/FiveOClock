@@ -1,5 +1,4 @@
 ﻿define(['angular.route', 'app/ContactsController', 'entities/contact'], function (angular, contactsController, contact) {
-   
     angular.module('fiveOClock')
 	.config(function ($routeProvider) {
 	    $routeProvider.when('/Contacts',

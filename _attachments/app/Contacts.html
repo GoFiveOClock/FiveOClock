@@ -7,7 +7,7 @@
 <div class="ng-cloak container" ng-show="loaded">
     <div class="row">
         <form ng-submit="AddItem()">
-            <div class=" col-lg-6 col-lg-offset-3">
+            <div class="col-lg-6 col-lg-offset-3">
                 <button class="btn btn-default" type="button" ng-click="login()">Get contacts(Gmail)</button>
                 <div class="input-group topAll">
                     <input type="text" ng-model="NewNameNg" class="form-control" placeholder="New contact...">
@@ -18,6 +18,9 @@
             </div>
             <div class="clearfix"></div>
         </form>
+        <div class="col-lg-6 col-lg-offset-3">
+            <input type="text" class="form-control" ng-change="search()" ng-model="searchValue" />
+        </div>
         <div ng-repeat="contact in AllContacts">
             <div class=" col-lg-6 col-lg-offset-3">
                 <div class="well">
