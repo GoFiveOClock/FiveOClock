@@ -58,20 +58,9 @@
 <div class="ng-cloak container">
     <div class="row">
         <div class="col-lg-6 col-lg-offset-3">
-            <div ng-repeat="day in ArreyWeek">
-                <h2>{{day}}</h2>
-                <div ng-repeat="row in ArreyHour">
-                    <div class="col-lg-2">
-                        <label>
-                            {{row}}
-                        </label>
-                    </div>
-                    <div class="col-lg-8 col-lg-offset-1">
-                        <div class="input-group ">
-                            <input type="text" class="form-control" placeholder="Click here to add meeting">
-                        </div>
-                    </div>
-                </div>
+           <h3>{{contact.name}} meetings</h3> 
+            <div ng-repeat="day in week">               
+                <meetings-day day="day.day" dayhoursmeetings="day.dayHoursMeetings"></meetings-day>                
             </div>
         </div>
     </div>
