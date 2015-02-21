@@ -14,10 +14,11 @@
         'bootstrap': {
             deps: ['jquery']
         }
-    }
+    },
+    deps: ['angular', 'angular.route', 'bootstrap', 'CouchEntity']
 });
 
-require(['jquery', 'bootstrap', 'angular', 'CouchEntity'], function ($, bootstrap, angular) {
+require(['jquery', 'angular.route'], function ($, angular) {
     angular.module('fiveOClock', ['angularCouch']);
     $(function () {
         require(['app/app'], function () {

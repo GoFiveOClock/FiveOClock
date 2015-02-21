@@ -4,16 +4,24 @@
     return function(factoryConfig) {
         var db = factoryConfig.db;
 
-        return function(entityConfig) {
+        return function (entityConfig) {
+            var that = this;
+
             entityConfig.dbUrl = entityConfig.dbUrl || '../..';
             entityConfig.relationMappings = entityConfig.relationMappings || {};
             entityConfig.indexes = entityConfig.indexes || {};
 
-            this.get = function(id) {
-                if (id) {
-                    return db.get(urlFormat('{0}/{1}', entityConfig.dbUrl, id));
+            var formatParams = function (param) {
+                param = param || {};
+                param = _.defaults(param, { limit: 10, skip: 0 });
+                return 'limit=' + param.limit + '&skip=' + param.skip;
+            }
+
+            this.get = function(param) {
+                if (_.isObject(param) || !param) {
+                    return db.get(encodeURI(entityConfig.url + '?' + formatParams(param))).then(formatViewRelationsResponse);
                 } else {
-                    return db.get(encodeURI(entityConfig.url)).then(formatViewRelationsResponse);
+                    return db.get(urlFormat('{0}/{1}', entityConfig.dbUrl, param));
                 }
             }
 
@@ -40,13 +48,16 @@
                 return db.delete(url);
             }
 
-            for (var indexName in entityConfig.indexes) {
-                var indexFunc = entityConfig.indexes[indexName];
-                this[indexName] = function() {
-                    var url = indexFunc.apply(null, arguments);
-                    return db.get(encodeURI(url)).then(formatViewRelationsResponse);
+            _.each(entityConfig.indexes, function(index, name) {
+                that[name] = function (param) {
+                    if (_.isFunction(index)) {
+                        var url = index.apply(null, arguments);
+                    } else if (_.isString(index)) {
+                        url = index;
+                    }
+                    return db.get(url + '&' + formatParams(param)).then(formatViewRelationsResponse);
                 }
-            }
+            });
 
             function createModel(doc) {
                 var model = {};
