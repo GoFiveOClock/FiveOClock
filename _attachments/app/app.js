@@ -1,4 +1,4 @@
-﻿define(['angular.route', 'app/ContactsController', 'entities/contact'], function (angular, contactsController, contact) {
+﻿define(['angular.route', 'app/ContactsController', 'entities/contact', 'app/MeetingsController', 'entities/meeting', 'app/SettingsController'], function (angular, contactsController, contact, meetingsController, meeting) {
     angular.module('fiveOClock')
 	.config(function ($routeProvider) {
 	    $routeProvider.when('/Contacts',
@@ -8,17 +8,28 @@
 		    resolve: {
 		        contacts: function (Contact, $q, $timeout) {
 		            var deferred = $q.defer();
-		            Contact.get().then(function(contacts) {
-		                $timeout(function() {
+		            Contact.get().then(function (contacts) {
+		                $timeout(function () {
 		                    deferred.resolve(contacts);
 		                });
 		            }, deferred.reject);
 		            return deferred.promise;
 		        }
 		    }
-		}).otherwise({
-		    redirectTo: '/Contacts'		  
-		});
+		})
+        .when('/Meetings/:idContact',
+		    {
+		        templateUrl: 'app/Meetings.html',
+		        controller: 'MeetingsController'
+		    })
+             .when('/Settings',
+		    {
+		        templateUrl: 'app/Settings.html',
+		        controller: 'SettingsController'
+		    })
+        .otherwise({
+            redirectTo: '/Contacts'
+        });
 
-    });
+	});
 });

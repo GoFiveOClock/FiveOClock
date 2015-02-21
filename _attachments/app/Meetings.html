@@ -1,0 +1,17 @@
+﻿
+<div class="ng-cloak container">
+    <div class="row">
+        <div class="col-lg-6 col-lg-offset-3">
+
+            <a href="#/Settings"> Settings </a>
+
+            <h3>{{contact.name}} meetings</h3>
+            <button class="glyphicon glyphicon-chevron-left" ng-click="PreviousWeek()"></button>
+            week
+            <button class="glyphicon glyphicon-chevron-right" ng-click="NextWeek()"></button>
+            <div ng-repeat="day in week">
+                <meetings-day day="day.day" dayhoursmeetings="day.dayHoursMeetings"></meetings-day>
+            </div>
+        </div>
+    </div>
+</div>

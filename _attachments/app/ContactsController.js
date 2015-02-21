@@ -1,10 +1,10 @@
-﻿define(['angular.route', ''], function (angular) {
+﻿define(['angular.route', 'underscore'], function (angular, _) {
     return angular.module('fiveOClock').controller('ContactsController', function ($scope, $q, $rootScope, $http, $timeout, Contact, contacts) {
         $scope.AllContacts = contacts;
         //Contact.byGoogleTag({ googleTag: 'test' })
         $scope.search = function () {
-            if ($scope.searchValue) {
-                Contact.byName({ name: $scope.searchValue.toLowerCase() }).then(function(response) {
+            if ($scope.NewNameNg) {
+                Contact.byName({ name: $scope.NewNameNg.toLowerCase() }).then(function (response) {
                     $scope.AllContacts = response;
                 });
             } else {
@@ -28,27 +28,33 @@
             if (authResult && !authResult.error) {
                 $http.get("https://www.google.com/m8/feeds/contacts/default/full?alt=json&access_token=" + authResult.access_token + "&max-results=700&v=3.0").then(function (response) {
                     var ArrayWithContacts = response.data.feed.entry;
-                    for (i = 0; ArrayWithContacts.length > i; i++) {
-                        var contact = ArrayWithContacts[i];
+                    _.each(ArrayWithContacts, function (contact) {
                         if (contact.gd$name !== undefined) {
-                           var name = contact.gd$name.gd$fullName.$t; var phones = []; var emails = []; var firstPhone = ""; var firstEmail = "";                          
-                           if (contact.gd$phoneNumber) {
-                               for (j = 0; contact.gd$phoneNumber.length > j; j++) {
-                                   phones.push(contact.gd$phoneNumber[j].$t);
-                                   (j == 0) ? firstPhone = phones[j] : firstPhone;
+                            var etag = contact.gd$etag.slice(1, -1);
+                            Contact.byGoogleTag({ googleTag: etag }).then(function (response) {
+                                if (response.length == 0) {
+                                    var name = contact.gd$name.gd$fullName.$t; var phones = []; var emails = []; var firstPhone = ""; var firstEmail = "";
+                                    if (contact.gd$phoneNumber) {
+                                        for (j = 0; contact.gd$phoneNumber.length > j; j++) {
+                                            phones.push(contact.gd$phoneNumber[j].$t);
+                                            (j == 0) ? firstPhone = phones[j] : firstPhone;
+                                        }
+                                    };
+                                    if (contact.gd$email) {
+                                        for (g = 0; contact.gd$email.length > g; g++) {
+                                            emails.push(contact.gd$email[g].address);
+                                            (g == 0) ? firstEmail = emails[g] : firstEmail;
+                                        }
+                                    };
+                                    Contact.post({ name: name, emails: emails, phones: phones, phone: firstPhone, email: firstEmail, googleTag: etag }).then(function (data) {
+                                        $scope.AllContacts.splice($scope.indexEl, 0, data);
+                                    });
                                 }
-                            };
-                            if (contact.gd$email) {
-                                for (g = 0; contact.gd$email.length > g; g++) {
-                                    emails.push(contact.gd$email[g].address);
-                                    (g == 0) ? firstEmail = emails[g] : firstEmail;
-                                }
-                            };
-                            Contact.post({ name: name, emails: emails, phones: phones, phone: firstPhone, email: firstEmail }).then(function (data) {
-                                $scope.AllContacts.splice($scope.indexEl, 0, data);
                             });
+
                         };
-                    };
+                    });                   
+                    
                 });
             };
         };
@@ -61,6 +67,7 @@
             Contact.post({ name: this.NewNameNg }).then(function (data) {
                 that.AllContacts.splice(that.indexEl, 0, data);
                 that.NewNameNg = "";
+                $scope.AllContacts = contacts;
             });
         };
         $scope.removeContact = function (contact) {
