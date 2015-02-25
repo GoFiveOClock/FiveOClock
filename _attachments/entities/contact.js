@@ -2,7 +2,7 @@
     angular.module('fiveOClock').factory('Contact', function (CouchEntity) {
         var entity = {
             type: 'contact',
-            props: ['name', 'emails', 'phones', 'email', 'phone', 'googleTag'],
+            props: ['name', 'emails', 'phones', 'email', 'phone', 'googleTag', 'meetings'],
             url: '_view/contact',
             indexes: {
                 byName: function (params) {
@@ -11,6 +11,7 @@
                 byGoogleTag: function(params) {
                     return '_view/contact-by-google-tag?startkey="' + encodeURIComponent(params.googleTag) + '"&endkey="' + encodeURIComponent(params.googleTag) + '"';
                 }
+              
             }
         };
 

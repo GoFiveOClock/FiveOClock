@@ -6,7 +6,8 @@
         'jquery': 'lib/jquery-2.1.1',
         'bootstrap': 'lib/bootstrap/js/bootstrap',
         'CouchEntity': 'CouchOrm/CouchEntity',
-        'CouchEntityFactory': 'CouchOrm/CouchEntityFactory'        
+        'CouchEntityFactory': 'CouchOrm/CouchEntityFactory',
+        'moment': 'lib/moment',
     },
     shim: {
         'angular': {
@@ -18,6 +19,9 @@
         },       
         'bootstrap': {
             deps: ['jquery']
+        },
+        'moment': {
+            exports: 'moment'
         }
     },
     deps: ['angular', 'angular.route', 'bootstrap', 'CouchEntity']
