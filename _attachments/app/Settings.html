@@ -1,116 +1,50 @@
-﻿<div class="ng-cloak container">
+﻿<style>
+    .day{
+        margin-left:25px
+    }
+</style>
+<div class="ng-cloak container">
     <div class="row">
         <div class="col-lg-6 col-lg-offset-3">
-            
-                <div class="well">
-                    Day:
-                    <div>
-                        <input type="checkbox" id="Monday" />
-                        <label for="Monday"> Monday</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="Tuesday" />
-                        <label for="Tuesday"> Tuesday</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="Wednesday" />
-                        <label for="Wednesday"> Wednesday</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="Thursday" />
-                        <label for="Thursday"> Thursday</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="Friday" />
-                        <label for="Friday"> Friday</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="Saturday" />
-                        <label for="Saturday"> Saturday</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="Sunday" />
-                        <label for="Sunday"> Sunday</label>
-                    </div>
-                
+            <div class="well">
+                Day:               
+                <div ng-repeat="day in days">
+                    <input type="checkbox" id={{day.value}} ng-model="day.checked" />
+                    <label for={{day.value}} ng-bind="day.value"></label>
+                </div>             
             </div>
             <div class="clearfix"></div>
-
             <div class="well">
-                <div class="col-lg-4">
-
-                    Hours:
-                    <div>
-                        <input type="checkbox" id="7" />
-                        <label for="7"> 07:00</label>
+                Hours:
+                <div>
+                    <div class="col-lg-4">
+                        <div ng-repeat="hour in firstGroupHours">
+                            <div>
+                                <input type="checkbox" id={{hour.value}} ng-model="hour.checked" />
+                                <label for={{hour.value}} ng-bind="(hour.value)+':00'"></label>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <input type="checkbox" id="Tuesday" />
-                        <label for="Tuesday"> 08:00</label>
+                    <div class="col-lg-4">                      
+                        <div ng-repeat="hour in SecondGroupHours">
+                            <div>
+                                <input type="checkbox" id={{hour.value}} ng-model="hour.checked" />
+                                <label for={{hour.value}} ng-bind="(hour.value)+':00'"></label>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <input type="checkbox" id="Wednesday" />
-                        <label for="Wednesday"> 09:00</label>
+                    <div class="col-lg-4">
+                        <div ng-repeat="hour in ThirdGroupHours">
+                            <div>
+                                <input type="checkbox" id={{hour.value}} ng-model="hour.checked" />
+                                <label for={{hour.value}} ng-bind="(hour.value)+':00'"></label>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <input type="checkbox" id="Thursday" />
-                        <label for="Thursday"> 10:00</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="Friday" />
-                        <label for="Friday"> 11:00</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="Saturday" />
-                        <label for="Saturday"> 12:00</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="Sunday" />
-                        <label for="Sunday"> 13:00</label>
-                    </div>
-
-                </div>
-
-                
-
-                <div class="col-lg-4">
-                    
-                    <div>
-                        <input type="checkbox" id="Monday" />
-                        <label for="Monday"> 14:00</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="Tuesday" />
-                        <label for="Tuesday"> 15:00</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="Wednesday" />
-                        <label for="Wednesday"> 16:00</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="Thursday" />
-                        <label for="Thursday"> 17:00</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="Friday" />
-                        <label for="Friday"> 18:00</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="Saturday" />
-                        <label for="Saturday"> 19:00</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="Sunday" />
-                        <label for="Sunday"> 20:00</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="Sunday" />
-                        <label for="Sunday"> 21:00</label>
-                    </div>
-
                 </div>
                 <div class="clearfix"></div>
-            </div>
+            </div>           
+            <a href="#/Meetings/{{contact}}"><input type="button" class="pull-right btn btn-default" ng-click="AcceptSettings()" value="Accept"></a>          
         </div>
     </div>
 </div>

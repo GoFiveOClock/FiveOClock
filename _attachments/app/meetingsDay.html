@@ -1,20 +1,76 @@
-﻿<div class="ng-cloak container">
+﻿<link rel="stylesheet" href="app/meetingsday.css" />
+
+
+
+<div class="ng-cloak ">
     <div class="row">
-        <div class="col-lg-6 ">
-            <h2>{{day}}</h2>           
-            <div ng-repeat="hour in dayhoursmeetings">
-                <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon1">{{hour.view}}</span>
-                    <label ng-if="hour.meeting.title" class="form-control" ><input type="hidden">{{hour.meeting.title}}</label>
-                    <span ng-if="hour.meeting.title&&(hour.meeting.contact == hour.contact._id)" class="input-group-btn">
-                        <button class="btn btn-default" type="button" ng-click="DeleteMeeting(hour)">
-                            <i class="glyphicon glyphicon-remove">
-                            </i>
+        <div class=" styleclass ">
+            <h2 class="styleclass">{{day}}</h2>
+            <div ng-repeat="hour in slotsmeetings">
+                <div class="input-group styleclass2">
+                    <span class="input-group-addon" id="view">{{hour.view}}</span>
+                    <div id="divAbs">
+                        <div id="divRel">
+
+                            <div ng-repeat="meeting in hour.meetings" ng-style="StyleFunc(meeting)" id="meetings">
+                                <span id="titleMeeting">{{meeting.title}}</span>
+                                <i class="pull-right">
+                                    <i class=" glyphicon glyphicon-pencil"  id="icons" ng-click="EditingMeeting({meeting:meeting,row:hour})"></i>
+                                    <i class="glyphicon glyphicon-remove" id="icons" ng-click="DeleteMeeting({meeting:meeting,meetings:hour.meetings})"></i>
+                                </i>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="form-control"><input type="hidden"></label>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" ng-click="ReserveMeeting(hour)">
+                            <i class="glyphicon glyphicon-lock"></i>
+                        </button>
+                        <button class="btn btn-default" type="button" ng-click="ToggleEditMode(hour)">
+                            <i class="glyphicon glyphicon-plus"></i>
                         </button>
                     </span>
-                    <label ng-if="!hour.meeting.title" class="form-control" style="color:darkgray" ng-click="SaveMeeting(hour)"><input type="hidden">Click here to add meeting</label>                    
                 </div>
+
+                <!--editmode-->
+                <div ng-if="hour.editmode" id="edit" class="form-control" ng-style="{'margin-top' :plaseEditForm * 0.65-38 +'px'}">
+                    <input type="hidden">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group clockpicker" id="clockWidth">
+                                <span class="input-group-addon" id="nameClock">Start</span>
+                                <input type="text" class="form-control" ng-model="startMeeting">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="pull-right">
+                            <button class="btn btn-default" type="button" ng-click="SaveMeeting(hour)" id="burronEdit">Confirm </button>
+                        </div>
+                    </form>
+                    <form class="form-inline" id="marginTop">
+                        <div class="form-group">
+                            <div class="input-group clockpicker" id="clockWidth">
+                                <span class="input-group-addon" id="nameClock">End</span>
+                                <input type="text" class="form-control" ng-model="endMeeting">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="pull-right">
+                            <button class="btn btn-default" type="button" ng-click="CancelEdit(hour)" id="burronEdit">Cancel</button>
+                        </div>
+                    </form>
+                    <div class="input-group" id="marginTop">
+                        <span class="input-group-addon">@</span>
+                        <input type="text" class="form-control" placeholder="Username" ng-model="editingText">
+                    </div>
+                </div>
+                <!--!-->
             </div>
         </div>
     </div>
 </div>
+

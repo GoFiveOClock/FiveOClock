@@ -21,7 +21,10 @@
                 if (_.isObject(param) || !param) {
                     return db.get(encodeURI(entityConfig.url + '?' + formatParams(param))).then(formatViewRelationsResponse);
                 } else {
-                    return db.get(urlFormat('{0}/{1}', entityConfig.dbUrl, param));
+                    return db.get(urlFormat('{0}?startkey="{1}"&endkey="{1}"', entityConfig.url, param))
+                        .then(formatViewRelationsResponse).then(function (result) {
+                            return result[0];
+                        });
                 }
             }
 

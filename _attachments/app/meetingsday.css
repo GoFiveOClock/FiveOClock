@@ -1,0 +1,58 @@
+﻿    .styleclass {
+        padding-left: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+    }
+
+    .styleclass2 {
+        margin-left: 10px;
+       
+        margin-right: 10px;
+        margin-bottom: 5px;
+    }
+    .row{
+        padding:15px;
+    }
+    #view{
+        margin-left:0;
+    }
+    #divAbs{
+        position:absolute;
+        z-index: 10;
+        width:75%
+    }
+    #divRel{
+        position:relative;
+    }
+    #meetings{
+        background-color: rgba(128, 128, 128, .5);
+        position:absolute;
+        width:100%;
+    }
+    #titleMeeting{
+        vertical-align:central;
+    }
+    #icons{
+        color:#000000;
+        cursor:pointer;
+    }
+    #edit{
+        background-color: darkgray;
+        border:1px solid ;
+         height:140px;
+         padding:5px 5px 5px 5px ; 
+         position:absolute;
+          z-index: 11
+    }
+    #clockWidth{
+        width:156px;
+    }
+    #nameClock{
+        width:55px;
+    }
+    #burronEdit{
+        width:150px;
+    }
+    #marginTop{
+        margin-top:5px;
+    }

@@ -8,10 +8,13 @@
         'CouchEntity': 'CouchOrm/CouchEntity',
         'CouchEntityFactory': 'CouchOrm/CouchEntityFactory',
         'moment': 'lib/moment',
+        'ui-bootstrap': 'lib/ui-bootstrap-tpls-0.12.1',
+        'clockpicker': 'lib/clockpicker'
     },
     shim: {
         'angular': {
-            exports: 'angular'
+            exports: 'angular',
+            deps: ['jquery']
         },
         'angular.route': {
             deps: ['angular'],
@@ -22,13 +25,21 @@
         },
         'moment': {
             exports: 'moment'
+        },
+        'ui-bootstrap': {
+            deps: ['bootstrap', 'angular'],
+            exports: 'angular'
+        },
+        'clockpicker': {
+            deps: ['jquery'],
+            exports: 'jquery'
         }
     },
-    deps: ['angular', 'angular.route', 'bootstrap', 'CouchEntity']
+    deps: ['angular', 'angular.route', 'ui-bootstrap', 'bootstrap', 'CouchEntity']
 });
 
-require(['jquery', 'angular.route'], function ($, angular) {
-    angular.module('fiveOClock', ['angularCouch', 'ngRoute']);
+require(['jquery', 'angular'], function ($, angular) {
+    angular.module('fiveOClock', ['angularCouch', 'ngRoute', 'ui.bootstrap']);
     $(function () {
         require(['app/app'], function () {
             angular.bootstrap('body', ['fiveOClock']);
