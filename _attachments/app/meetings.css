@@ -1,9 +1,9 @@
-﻿.styleclass{   
+﻿.meetings .no-right-padding{   
     padding-right:0;
 }
-.styleclass2{   
+.meetings .week-navigation{   
     margin-bottom:30px;
 }
-label{
+.meetings label{
     cursor:pointer;
 }

@@ -2,17 +2,17 @@
 
 
 
-<div class="ng-cloak ">
+<div class="ng-cloak meetings-day">
     <div class="row">
-        <div class=" styleclass ">
-            <h2 class="styleclass">{{day}}</h2>
+        <div class="day-schedule">
+            <h2>{{day}}</h2>
             <div ng-repeat="hour in slotsmeetings">
-                <div class="input-group styleclass2">
+                <div class="input-group">
                     <span class="input-group-addon" id="view">{{hour.view}}</span>
                     <div id="divAbs">
                         <div id="divRel">
 
-                            <div ng-repeat="meeting in hour.meetings" ng-style="StyleFunc(meeting)" id="meetings">
+                            <div ng-repeat="meeting in hour.meetings" ng-style="StyleFunc(meeting)" id="meetings" class="meeting">
                                 <span id="titleMeeting">{{meeting.title}}</span>
                                 <i class="pull-right">
                                     <i class=" glyphicon glyphicon-pencil"  id="icons" ng-click="EditingMeeting({meeting:meeting,row:hour})"></i>

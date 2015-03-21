@@ -321,7 +321,7 @@
                     var minutesEnd = moment(meeting.end).format('mm');
                     var difference = moment(meeting.start).startOf('day').add(hourEnd, "h").add(minutesEnd, "m").diff(moment(meeting.start).startOf('day').add(hourStart, "h").add(minutesStart, "m"), 'minutes');
                     var differenceWithSlot = moment(meeting.start).startOf('day').add(hourStart, "h").add(minutesStart, "m").diff(moment(meeting.start).startOf('day').add(hourStart, "h"), 'minutes');
-                    return { 'height': difference * 0.65 + 'px', 'margin-top': differenceWithSlot * 0.65 + 'px', 'padding-top': (difference / 2 - 17) * 0.65 + 'px' }
+                    return { 'height': difference * 0.6 + 'px', 'margin-top': differenceWithSlot * 0.65 + 'px', 'padding-top': (difference / 2 - 17) * 0.65 + 'px' }
                 };
             }
 

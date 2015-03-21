@@ -1,7 +1,6 @@
 ﻿define(['angular', 'underscore', 'moment', 'app/meetingsDay'], function (angular, _, moment, meetingsDay) {
     return angular.module('fiveOClock').controller('MeetingsController', function ($scope, $q, $rootScope, $http, $timeout, $routeParams, Meeting, Contact, Settings) {
-        $scope.nameToggleButtonDay = "Click to show all days";
-        $scope.nameToggleButtonHours = "Click to show all hours";
+        $scope.showAllDays = false;       
         var StartWeekJSON = JSON.stringify(moment().startOf('week')).slice(1, -1);
         var EndWeekJSON = JSON.stringify(moment().startOf('week').add(8, "d")).slice(1, -1);
         Contact.get($routeParams.idContact).then(function (response) {
@@ -12,6 +11,7 @@
                 $scope.week = [];
                 $scope.meetingsWeek = response;
                 Settings.get().then(function (response) {
+                    $scope.loaded = true;
                     for (var i = 1; i < 8; i++) {
                         var Day_Hours_Meetings = [];
                         var day = $scope.monday.startOf('day').add(1, "d");
@@ -83,8 +83,7 @@
         });
 
         $scope.PreviousWeek = function () {
-            $scope.nameToggleButtonDay = "Click to show all days";
-            $scope.nameToggleButtonHours = "Click to show all hours";
+            $scope.showAllDays = false;           
             var StartWeekJSON = JSON.stringify($scope.monday.add(-7, "d")).slice(1, -1);
             var EndWeekJSON = JSON.stringify($scope.monday.add(8, "d")).slice(1, -1);
             Meeting.byDate({ startWeek: StartWeekJSON, EndWeek: EndWeekJSON }).then(function (response) {
@@ -164,8 +163,7 @@
             });
         };
         $scope.NextWeek = function () {
-            $scope.nameToggleButtonDay = "Click to show all days";
-            $scope.nameToggleButtonHours = "Click to show all hours";
+            $scope.showAllDays = false;           
             var StartWeekJSON = JSON.stringify($scope.monday.add(7, "d")).slice(1, -1);
             var EndWeekJSON = JSON.stringify($scope.monday.add(8, "d")).slice(1, -1);
             Meeting.byDate({ startWeek: StartWeekJSON, EndWeek: EndWeekJSON }).then(function (response) {
@@ -243,18 +241,20 @@
                 });
             });
         };
-        $scope.hide_showAlldays = function () {
-            if ($scope.nameToggleButtonDay == "Click to show all days") {
-                $scope.nameToggleButtonDay = "Click to show selected days";
-                $scope.nameToggleButtonHours = "Click to show all hours";
+        $scope.toggleShowAlldays = function () {
+            $scope.showAllDays = !$scope.showAllDays;
+            if ( $scope.showAllDays) {                               
                 var StartWeek = $scope.monday.format()
                 var StartWeekJSON = JSON.stringify($scope.monday).slice(1, -1);
                 var EndWeekJSON = JSON.stringify($scope.monday.add(8, "d")).slice(1, -1);
+                $scope.loaded = false;
                 Meeting.byDate({ startWeek: StartWeekJSON, EndWeek: EndWeekJSON }).then(function (response) {
                     $scope.monday = moment(StartWeek);
                     $scope.week = [];
                     $scope.meetingsWeek = response;
                     Settings.get().then(function (response) {
+                        $scope.loaded = true;
+                        debugger;
                         for (var i = 1; i < 8; i++) {
                             var Day_Hours_Meetings = [];
                             var day = $scope.monday.startOf('day').add(1, "d");
@@ -298,9 +298,7 @@
                     });
                 });
             }
-            else {
-                $scope.nameToggleButtonDay = "Click to show all days";
-                $scope.nameToggleButtonHours = "Click to show all hours";
+            else {                             
                 var StartWeek = $scope.monday.format();
                 var StartWeekJSON = JSON.stringify($scope.monday).slice(1, -1);
                 var EndWeekJSON = JSON.stringify($scope.monday.add(8, "d")).slice(1, -1);
@@ -377,12 +375,12 @@
                         $scope.monday = moment(StartWeek);
                     });
                 });
-            };
+            };           
         };
 
-        $scope.hide_showAllhours = function (day) {
-
-            if (day.nameToggleButtonHours !== "Click to show selected hours") {
+        $scope.toggleShowAllhours = function (day) {
+            day.showAllHours = !day.showAllHours;
+            if (day.showAllHours) {
                 day.nameToggleButtonHours = "Click to show selected hours";
                 var dayDate = moment(day.day);
                 var dayDateFomat = dayDate.format();
@@ -466,7 +464,7 @@
                         };
                     });
                 });
-            };
+            };            
         };
     });
 });

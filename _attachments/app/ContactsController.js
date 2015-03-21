@@ -21,9 +21,9 @@
                     domain = '{MY COMPANY DOMAIN}';
 
             $scope.login = function () {
-                gapi.auth.authorize({ client_id: clientId, scope: scopes, immediate: false, hd: domain }, $scope.handleAuthResult);
+                gapi.auth.authorize({ client_id: clientId, scope: scopes, immediate: false, hd: domain }, handleAuthResult);
             };
-            $scope.handleAuthResult = function (authResult) {
+            function handleAuthResult(authResult) {
                 var that = this;
                 if (authResult && !authResult.error) {
                     $http.get("https://www.google.com/m8/feeds/contacts/default/full?alt=json&access_token=" + authResult.access_token + "&max-results=700&v=3.0").then(function (response) {
