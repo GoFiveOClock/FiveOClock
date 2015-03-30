@@ -1,7 +1,7 @@
-﻿<link rel="stylesheet" href="app/meetings.css" />
+﻿<!--<link rel="stylesheet" href="app/meetings.css" />-->
 <div class="ng-cloak container meetings" ng-if="loaded">
     <div class="row">
-        <div class="col-lg-6 col-lg-offset-3 no-right-padding">
+        <div class="col-lg-6 col-lg-offset-3 no-right-left-padding">
             <a href="#/Settings/{{contact._id}}"> Settings </a>           
             <label class="pull-right" for="check1" ng-bind="showAllDays?'click to show working days':'click to show all days'"></label>
             <input type="checkbox" class="pull-right" id="check1" ng-click="toggleShowAlldays()" />
@@ -15,7 +15,7 @@
                 <div class="well no-right-padding">
                     <label class="pull-right" for={{day.day}} ng-bind="day.showAllhours ? 'click to show working hours' : 'click to show all hours'"></label>
                     <input type="checkbox" class="pull-right" id={{day.day}} ng-click="toggleShowAllhours(day)" />
-                    <meetings-day day="day.dayView" slotsmeetings="day.slotsMeetings"></meetings-day>
+                    <meetings-day day="day.dayView" slots="day.slots" meetingsweek="day.meetingsWeek"></meetings-day>
                 </div>
             </div>
         </div>

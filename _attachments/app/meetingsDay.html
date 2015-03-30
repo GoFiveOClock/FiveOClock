@@ -1,39 +1,26 @@
 ﻿<link rel="stylesheet" href="app/meetingsday.css" />
-
-
-
 <div class="ng-cloak meetings-day">
-    <div class="row">
+    <div class="row container-fluid">
         <div class="day-schedule">
             <h2>{{day}}</h2>
-            <div ng-repeat="hour in slotsmeetings">
+            <div ng-repeat="slot in slots" class="slots">
                 <div class="input-group">
-                    <span class="input-group-addon" id="view">{{hour.view}}</span>
+                    <span class="input-group-addon" id="view">{{slot.view}}</span>
                     <div id="divAbs">
                         <div id="divRel">
-
-                            <div ng-repeat="meeting in hour.meetings" ng-style="StyleFunc(meeting)" id="meetings" class="meeting">
+                            <div ng-repeat="meeting in getSlotMeetings(slot)" ng-style="StyleFunc(meeting)" id="meetings" class="meeting">
                                 <span id="titleMeeting">{{meeting.title}}</span>
                                 <i class="pull-right">
-                                    <i class=" glyphicon glyphicon-pencil"  id="icons" ng-click="EditingMeeting({meeting:meeting,row:hour})"></i>
-                                    <i class="glyphicon glyphicon-remove" id="icons" ng-click="DeleteMeeting({meeting:meeting,meetings:hour.meetings})"></i>
+                                    <i class=" glyphicon glyphicon-pencil" id="icons" ng-click="EditingMeeting({meeting:meeting,row:slot})"></i>
+                                    <i class="glyphicon glyphicon-remove" id="icons" ng-click="DeleteMeeting({meeting:meeting,meetings:meetingsweek})"></i>
                                 </i>
                             </div>
                         </div>
                     </div>
-                    <label class="form-control"><input type="hidden"></label>
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" ng-click="ReserveMeeting(hour)">
-                            <i class="glyphicon glyphicon-lock"></i>
-                        </button>
-                        <button class="btn btn-default" type="button" ng-click="ToggleEditMode(hour)">
-                            <i class="glyphicon glyphicon-plus"></i>
-                        </button>
-                    </span>
+                    <label class="form-control" ng-click="ToggleEditMode(slot)"><input type="hidden"></label>                    
                 </div>
-
                 <!--editmode-->
-                <div ng-if="hour.editmode" id="edit" class="form-control" ng-style="{'margin-top' :plaseEditForm * 0.65-38 +'px'}">
+                <div ng-if="slot.editmode" id="edit"  ng-style="{'margin-top' :plaseEditForm * 0.65-38 +'px'}">
                     <input type="hidden">
                     <form class="form-inline">
                         <div class="form-group">
@@ -46,7 +33,7 @@
                             </div>
                         </div>
                         <div class="pull-right">
-                            <button class="btn btn-default" type="button" ng-click="SaveMeeting(hour)" id="burronEdit">Confirm </button>
+                            <button class="btn btn-default" type="button" ng-click="SaveMeeting(slot)" id="burronEdit">Confirm </button>
                         </div>
                     </form>
                     <form class="form-inline" id="marginTop">
@@ -60,16 +47,18 @@
                             </div>
                         </div>
                         <div class="pull-right">
-                            <button class="btn btn-default" type="button" ng-click="CancelEdit(hour)" id="burronEdit">Cancel</button>
+                            <button class="btn btn-default" type="button" ng-click="CancelEdit(slot)" id="burronEdit">Cancel</button>
                         </div>
                     </form>
                     <div class="input-group" id="marginTop">
-                        <span class="input-group-addon">@</span>
+                        <span class="input-group-addon">
+                            <input type="checkbox" ng-checked="editingText==='Reserved'" ng-click="resrvedCheck(slot)">
+                        </span>
                         <input type="text" class="form-control" placeholder="Username" ng-model="editingText">
                     </div>
                 </div>
                 <!--!-->
-            </div>
+            </div>          
         </div>
     </div>
 </div>
