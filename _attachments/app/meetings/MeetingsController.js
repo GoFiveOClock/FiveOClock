@@ -1,4 +1,4 @@
-﻿define(['angular', 'underscore', 'moment', 'app/meetingsDay', 'app/settingsService'],
+﻿define(['angular', 'underscore', 'moment', 'app/meetings/meetingsDay', 'app/settingsService'],
     function (angular, _, moment, meetingsDayFile, seetingsServiceFile) {
         return angular.module('fiveOClock').controller('MeetingsController',
             function ($scope, $q, $rootScope, $http, $timeout, $routeParams,
@@ -133,8 +133,7 @@
                         Meeting.byDate({ startWeek: StartWeekJSON, EndWeek: EndWeekJSON }).then(function (response) {
                             dayDate = moment(dayDateFomat);
                             $scope.meetingsWeek = response;
-                            day.slots = [];
-                            day.meetingsWeek = [];
+                            day.slots = [];                            
                             for (var j = 0; 24 > j; j++) {
                                 dayDate.startOf('day').add(j, "h");
                                 day.slots.push({ view: dayDate.format('HH:mm'), timeFullFormatUTC: JSON.stringify(dayDate).slice(1, -1), contact: $scope.contact });                               

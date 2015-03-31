@@ -1,8 +1,8 @@
-﻿define(['angular', 'underscore', "moment", 'app/confirmationService', 'app/notificationService', 'clockpicker', 'app/directiveMeeting'], function (angular, _, moment, confirmationService, notificationService, clockpicker, directiveMeeting) {
+﻿define(['angular', 'underscore', "moment", 'app/confirmationService', 'app/notificationService', 'clockpicker', 'app/meetings/directiveMeeting'], function (angular, _, moment, confirmationService, notificationService, clockpicker, directiveMeeting) {
     return angular.module('fiveOClock').directive('meetingsDay', function (Meeting, ConfirmationService, NotificationService, $http) {
         return {
             restrict: 'E',
-            templateUrl: 'app/meetingsDay.html',
+            templateUrl: 'app/meetings/meetingsDay.html',
             scope: {
                 day: '=',
                 slots: '=',
@@ -180,7 +180,13 @@
                 };
                 $scope.StyleFunc = function (meeting) {
                     var differenceObj = findDifference(meeting);
-                    return { 'height': differenceObj.difference * 0.65 + 'px', 'margin-top': differenceObj.differenceWithSlot * 0.65 + 'px', 'padding-top': (differenceObj.difference / 2 - 17) * 0.65 + 'px' }
+                    if (differenceObj.difference <= 60) {
+                        return { 'height': differenceObj.difference * 0.57 + 'px', 'margin-top': differenceObj.differenceWithSlot * 0.57 + 'px', 'padding-top': (differenceObj.difference / 2 - 17) * 0.57 + 'px' }
+                    }
+                    else {
+                        return { 'height': differenceObj.difference * 0.65 + 'px', 'margin-top': differenceObj.differenceWithSlot * 0.65 + 'px', 'padding-top': (differenceObj.difference / 2 - 17) * 0.65 + 'px' }
+                    };
+                    
                 };
                 $scope.resrvedCheck = function (slot) {
                     if ($scope.editingText !== 'Reserved') {
