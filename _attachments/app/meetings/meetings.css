@@ -1,0 +1,10 @@
+﻿.meetings label{
+    cursor:pointer;
+}
+.meetings .ulWidth{
+   width:100%
+}
+.meetings .liCollapse{
+    width:33%;
+    text-align:center
+}

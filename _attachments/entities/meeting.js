@@ -2,8 +2,19 @@
     angular.module('fiveOClock').factory('Meeting', function (CouchEntity) {
         var entity = {
             type: 'meeting',
-            props: ['contact','start','end','title'],
-            url: '_view/meeting',           
+            props: ['contact', 'start', 'end', 'title'],
+            url: 'meeting',
+            indexes: {
+                byDate: function (params) {
+                    return {
+                        url: 'meeting-by-date',
+                        params: {
+                            startkey: JSON.stringify(params.startWeek).slice(1,-1),
+                            endkey: JSON.stringify(params.EndWeek).slice(1, -1)
+                        }
+                    }
+                }
+            }
         };
 
         return new CouchEntity(entity);

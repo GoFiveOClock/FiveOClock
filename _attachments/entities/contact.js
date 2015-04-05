@@ -2,14 +2,30 @@
     angular.module('fiveOClock').factory('Contact', function (CouchEntity) {
         var entity = {
             type: 'contact',
-            props: ['name', 'emails', 'phones', 'email', 'phone', 'googleTag', 'meetings'],
-            url: '_view/contact',
+            props: ['name', 'emails', 'phones', 'email', 'phone', 'googleTag'],
+            url: 'contact',
             indexes: {
                 byName: function (params) {
-                    return '_view/contact-by-name?startkey="' + encodeURIComponent(params.name) + '"&endkey="' + encodeURIComponent(params.name) + '"';
+                    var dbParams = {
+                        startkey: params.name,
+                        endkey: params.name,
+                    };
+                    if(params.skip){
+                        dbParams.skip = params.skip;
+                    }
+                    return {
+                        url: 'contact-by-name',
+                        params: dbParams
+                    }
                 },
                 byGoogleTag: function(params) {
-                    return '_view/contact-by-google-tag?startkey="' + encodeURIComponent(params.googleTag) + '"&endkey="' + encodeURIComponent(params.googleTag) + '"';
+                    return {
+                        url: 'contact-by-google-tag',
+                        params: {
+                            startkey: params.googleTag,
+                            endkey: params.googleTag
+                        }
+                    }
                 }
               
             }

@@ -1,0 +1,74 @@
+﻿<link rel="stylesheet" href="app/meetings/meetingsday.css" />
+<div class="ng-cloak meetings-day">
+    <div class="row container-fluid">
+        <div class="day-schedule">
+            <h2>{{day}}</h2>
+            <div ng-repeat="slot in slots" class="slots">
+                <div class="input-group">
+                    <span class="input-group-addon" id="view">{{slot.view}}</span>
+                    <div id="divAbs">
+                        <div id="divRel">
+                            <div ng-repeat="meeting in getSlotMeetings(slot)" ng-style="StyleFunc({contact:slot.contact,meeting:meeting})" id="meetings" class="meeting hidden-xs ">
+                                <span id="titleMeeting">{{meeting.title}}</span>
+                                <i class="pull-right">
+                                    <i class=" glyphicon glyphicon-pencil" id="icons" ng-click="EditingMeeting({meeting:meeting,row:slot})"></i>
+                                    <i class="glyphicon glyphicon-remove" id="icons" ng-click="DeleteMeeting({meeting:meeting,meetings:meetingsweek})"></i>
+                                </i>
+                            </div>
+
+                            <div ng-repeat="meeting in getSlotMeetings(slot)" ng-style="StyleFunc({contact:slot.contact,meeting:meeting})" id="meetingsSmall" class="meeting visible-xs ">
+                                <span id="titleMeeting">{{meeting.title}}</span>
+                                <i class="pull-right">
+                                    <i class=" glyphicon glyphicon-pencil" id="icons" ng-click="EditingMeeting({meeting:meeting,row:slot})"></i>
+                                    <i class="glyphicon glyphicon-remove" id="icons" ng-click="DeleteMeeting({meeting:meeting,meetings:meetingsweek})"></i>
+                                </i>
+                            </div>
+
+                        </div>
+                    </div>
+                    <label class="form-control" ng-click="ToggleEditMode(slot)"><input type="hidden"></label>                    
+                </div>
+                <!--editmode-->
+                <div ng-if="slot.editmode" id="edit"  ng-style="{'margin-top' :plaseEditForm * 0.65-38 +'px'}">
+                    <input type="hidden">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group clockpicker" id="clockWidth">
+                                <span class="input-group-addon" id="nameClock">Start</span>
+                                <input type="text" class="form-control" ng-model="startMeeting">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="pull-right">
+                            <button class="btn btn-default" type="button" ng-click="SaveMeeting(slot)" id="burronEdit">Confirm </button>
+                        </div>
+                    </form>
+                    <form class="form-inline" id="marginTop">
+                        <div class="form-group">
+                            <div class="input-group clockpicker" id="clockWidth">
+                                <span class="input-group-addon" id="nameClock">End</span>
+                                <input type="text" class="form-control" ng-model="endMeeting">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="pull-right">
+                            <button class="btn btn-default" type="button" ng-click="CancelEdit(slot)" id="burronEdit">Cancel</button>
+                        </div>
+                    </form>
+                    <div class="input-group" id="marginTop">
+                        <span class="input-group-addon">
+                            <input type="checkbox" ng-checked="editingText==='Reserved'" ng-click="resrvedCheck(slot)">
+                        </span>
+                        <input type="text" class="form-control" placeholder="Username" ng-model="editingText">
+                    </div>
+                </div>
+                <!--!-->
+            </div>          
+        </div>
+    </div>
+</div>
+
