@@ -3,7 +3,7 @@
         var entity = {
             type: 'settings',
             props: ['days','hours'],
-            url: '_view/settings',
+            url: 'settings',
         };
 
         return new CouchEntity(entity);

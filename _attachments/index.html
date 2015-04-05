@@ -1,21 +1,43 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html manifest="manifest.appcache">
 <head>
     <title>FiveOCLock</title>
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.css"/>    
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.css" />
     <link rel="stylesheet" href="lib/jquery-clockpicker.css" />
-    
+
     <link href="app/styles.css" rel="stylesheet" />
     <link href="app/loading.css" rel="stylesheet" />
     <script src="require.js" data-main="main"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta charset="UTF-8" />
 </head>
-<body ng-view>
-    <div class="loading-container green-100 animation-07">
-        <div class="arc">
-            <div class="arc-cube"></div>
+<body>
+    <nav class="navbar navbar-inverse" style="position: fixed;width: 100%;z-index: 5">
+        <div class="container-fluid" ng-controller="navBarController">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#target">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="target">
+                <ul class="nav navbar-nav">
+                    <li ng-class="{active:isActiveNavbar('Contacts')}"><a href="#/Contacts">Contacts</a></li>
+                    <li ng-class="{active:isActiveNavbar('Schedule')}"><a href="#/Meetings">Schedule</a></li>
+                    <li ng-class="{active:isActiveNavbar('Settings')}"><a href="#/Settings">Settings</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div ng-view>
+        <div class="loading-container green-100 animation-07">
+            <div class="arc">
+                <div class="arc-cube"></div>
+            </div>
         </div>
     </div>
 </body>

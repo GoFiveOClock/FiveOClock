@@ -1,4 +1,5 @@
 ﻿requirejs.config({
+    waitSeconds: 120,
     paths: {
         'angular': 'lib/angular',
         'angular.route': 'lib/angular-route',
@@ -9,7 +10,9 @@
         'CouchEntityFactory': 'CouchOrm/CouchEntityFactory',
         'moment': 'lib/moment',
         'ui-bootstrap': 'lib/ui-bootstrap-tpls-0.12.1',
-        'clockpicker': 'lib/clockpicker'
+        'clockpicker': 'lib/clockpicker',
+        'indexController': 'app/indexController',
+        'pouchDb': 'lib/pouchdb-3.3.1'
     },
     shim: {
         'angular': {
@@ -33,16 +36,36 @@
         'clockpicker': {
             deps: ['jquery'],
             exports: 'jquery'
+        },
+        'indexController': {
+            deps: ['angular']
         }
     },
     deps: ['angular', 'angular.route', 'ui-bootstrap', 'bootstrap', 'CouchEntity']
 });
 
-require(['jquery', 'angular'], function ($, angular) {
+require(['jquery', 'angular', 'pouchDb'], function ($, angular, pouchDB) {
     angular.module('fiveOClock', ['angularCouch', 'ngRoute', 'ui.bootstrap']);
     $(function () {
-        require(['app/app'], function () {
-            angular.bootstrap('body', ['fiveOClock']);
+        function startApplication() {
+            require(['app/app', 'indexController'], function () {
+                angular.bootstrap('body', ['fiveOClock']);
+            });
+        };
+        //pouchDB.debug.enable('*');
+        var dbPath = window.location.origin + '/' + window.location.pathname.split('/')[1];
+        var dbName = 'fiveOClock';
+        $.get(dbPath).then(function () {
+            pouchDB.replicate(dbPath, dbName).then(function (result) {
+                pouchDB.replicate(dbName, dbPath).then(function (result) {
+                    if (result.ok) {
+                        pouchDB.replicate(dbName, dbPath, {live: true});
+                        startApplication();
+                    }
+                });
+            });
+        }, function () {
+            startApplication();
         });
     });
 });

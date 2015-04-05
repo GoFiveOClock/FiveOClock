@@ -1,16 +1,31 @@
 ﻿define(['angular', 'underscore', 'app/confirmationService'], function (angular, _, confirmationService) {
     return angular.module('fiveOClock').controller('ContactsController',
-        function ($scope, $q, $rootScope, $http, $timeout, Contact, contacts, ConfirmationService) {
+        function ($scope, $q, $rootScope, $http, $timeout, Contact, contacts, ConfirmationService, $location) {            
+            var skipContacts = 0;
             $scope.AllContacts = contacts;            
             $scope.search = function () {
+                skipContacts = 0;
                 if ($scope.NewNameNg) {
-                    Contact.byName({ name: $scope.NewNameNg.toLowerCase() }).then(function (response) {
+                    Contact.byName({ name: $scope.NewNameNg.toLowerCase()}).then(function (response) {
                         $scope.AllContacts = response;
                     });
                 } else {
-                    $scope.AllContacts = contacts;
-                }
-            }
+                    $scope.AllContacts = contacts;                   
+                };
+            };
+            $scope.nextContacts = function () {
+                skipContacts += 10;
+                if ($scope.NewNameNg) {
+                    Contact.byName({ name: $scope.NewNameNg.toLowerCase(), skip: skipContacts }).then(function (response) {
+                        $scope.AllContacts = _.union($scope.AllContacts, response);                      
+                    });
+                } else {
+                    //$scope.AllContacts = contacts;
+                    Contact.get({ skip: skipContacts }).then(function (response) {
+                        $scope.AllContacts = _.union($scope.AllContacts, response);
+                    });
+                };
+            };          
             $scope.rendered = function () {
                 $timeout(function () {
                     $scope.loaded = true;
@@ -131,6 +146,6 @@
                 var response;
                 (object.MainEmail == object.email) ? response = true : response = false;
                 return response;
-            }
+            };
         });
 });

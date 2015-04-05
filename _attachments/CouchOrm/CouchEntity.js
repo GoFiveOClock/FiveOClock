@@ -1,39 +1,41 @@
-﻿define(['angular', 'CouchEntityFactory'], function (angular, CouchEntityFactory) {
+﻿define(['angular', 'CouchEntityFactory', 'underscore', 'pouchDb'], function (angular, CouchEntityFactory, _, pouchDb) {
     'use strict';
 
     var angularCouch = angular.module('angularCouch', []);
     angularCouch.factory('CouchEntity', CouchEntity);
 
-    CouchEntity.$inject = ['$http'];
-
-    function CouchEntity($http) {
-        var angularAjax = {
+    function CouchEntity($timeout, $rootScope) {
+        var db = {
             get: get,
             put: put,
             post: post,
-            'delete': remove
+            'delete': remove,
+            viewPrefix: 'FiveOClock'
         }
 
-        return CouchEntityFactory({ db: angularAjax });
+        var clientDb = new pouchDb('fiveOClock');
+        return CouchEntityFactory({ db: db });
 
-        function get(url) {
-            return $http.get(url, { cache: false }).then(getResponseData);
+        function get(url, params) {
+            return clientDb.query(url, params).then(applyResult);
         }
 
-        function put(url, data) {
-            return $http.put(url, data).then(getResponseData);
+        function put(url, id, rev, data) {
+            return clientDb.put(data, id, rev).then(applyResult);
         }
 
         function post(url, data) {
-            return $http.post(url, data).then(getResponseData);
+            return clientDb.post(data).then(applyResult);
         }
 
-        function remove(url) {
-            return $http.delete(url).then(getResponseData);
+        function remove(url, id, rev) {
+            return clientDb.remove(id, rev).then(applyResult);
         }
-
-        function getResponseData(response) {
-            return response.data;
+        function applyResult(result) {
+            $timeout(function () {
+                $rootScope.$apply();
+            });
+            return result;
         }
     }
 })

@@ -1,10 +1,10 @@
-﻿.meetings .no-right-padding{   
-    padding-right:0;
-    padding-left:0;
-}
-.meetings .week-navigation{   
-    margin-bottom:30px;
-}
-.meetings label{
+﻿.meetings label{
     cursor:pointer;
+}
+.meetings .ulWidth{
+   width:100%
+}
+.meetings .liCollapse{
+    width:33%;
+    text-align:center
 }

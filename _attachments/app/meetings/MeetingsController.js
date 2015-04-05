@@ -1,17 +1,15 @@
-﻿define(['angular', 'underscore', 'moment', 'app/meetings/meetingsDay', 'app/settingsService'],
+﻿define(['angular', 'underscore', 'moment', 'app/meetings/meetingsDay', 'app/settings/settingsService'],
     function (angular, _, moment, meetingsDayFile, seetingsServiceFile) {
         return angular.module('fiveOClock').controller('MeetingsController',
             function ($scope, $q, $rootScope, $http, $timeout, $routeParams,
-                Meeting, Contact, Settings, settingsService) {
+                Meeting, Contact, Settings, settingsService) {               
                 $scope.showAllDays = false;
-                var StartWeekJSON = JSON.stringify(moment().startOf('isoweek')).slice(1, -1);
-                var EndWeekJSON = JSON.stringify(moment().startOf('isoweek').add(8, "d")).slice(1, -1);
 
                 var initialSettingsPromise = Settings.get();
 
                 var promises = {
                     contact: Contact.get($routeParams.idContact),
-                    meetings: Meeting.byDate({ startWeek: StartWeekJSON, EndWeek: EndWeekJSON }),
+                    meetings: Meeting.byDate({ startWeek: moment().startOf('isoweek'), EndWeek: moment().startOf('isoweek').add(8, "d") }),
                     settings: initialSettingsPromise
                 };
 
@@ -92,18 +90,14 @@
 
                 $scope.PreviousWeek = function () {
                     monday.add(-7, 'd');
-                    var StartWeekJSON = JSON.stringify(monday).slice(1, -1);
-                    var EndWeekJSON = JSON.stringify(moment(monday).add(7, 'd')).slice(1, -1);
 
-                    promises.meetings = Meeting.byDate({ startWeek: StartWeekJSON, EndWeek: EndWeekJSON });
+                    promises.meetings = Meeting.byDate({ startWeek: monday, EndWeek: moment(monday).add(7, 'd') });
                     setupWeek();
                 };
                 $scope.NextWeek = function () {
                     monday.add(7, 'd')
-                    var StartWeekJSON = JSON.stringify(monday).slice(1, -1);
-                    var EndWeekJSON = JSON.stringify(moment(monday).add(7, "d")).slice(1, -1);
 
-                    promises.meetings = Meeting.byDate({ startWeek: StartWeekJSON, EndWeek: EndWeekJSON });
+                    promises.meetings = Meeting.byDate({ startWeek: monday, EndWeek: moment(monday).add(7, "d") });
 
                     setupWeek();
                 };
@@ -128,9 +122,7 @@
                     if (day.showAllHours) {
                         var dayDate = moment(day.day);
                         var dayDateFomat = dayDate.format();
-                        var StartWeekJSON = JSON.stringify(dayDate.startOf('day')).slice(1, -1);
-                        var EndWeekJSON = JSON.stringify(dayDate.add(1, "d")).slice(1, -1);
-                        Meeting.byDate({ startWeek: StartWeekJSON, EndWeek: EndWeekJSON }).then(function (response) {
+                        Meeting.byDate({ startWeek: dayDate.startOf('day'), EndWeek: dayDate.add(1, "d") }).then(function (response) {
                             dayDate = moment(dayDateFomat);
                             $scope.meetingsWeek = response;
                             day.slots = [];                            
@@ -144,6 +136,6 @@
                         promises.settings = initialSettingsPromise;
                         setupWeek();                       
                     };
-                };
+                };               
             });
     });

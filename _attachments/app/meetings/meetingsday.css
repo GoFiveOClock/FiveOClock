@@ -20,7 +20,7 @@
 
 .meetings-day #divAbs {
     position: absolute;
-    z-index: 10;
+    z-index: 4;
     width: 75%;
 }
 
@@ -31,7 +31,12 @@
 .meetings-day #meetings {
     background-color: rgba(128, 128, 128, .5);
     position: absolute;
-    width: 117%;
+    width: 119%;
+}
+.meetings-day #meetingsSmall {
+    background-color: rgba(128, 128, 128, .5);
+    position: absolute;
+    width: 111%;
 }
 
 .meetings-day #titleMeeting {

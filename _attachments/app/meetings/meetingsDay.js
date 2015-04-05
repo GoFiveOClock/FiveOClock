@@ -9,6 +9,7 @@
                 meetingsweek: '='
             },
             controller: function ($scope) {
+                $scope.editingText = '';
                 $scope.oldStartMeeting = '';
                 $scope.oldEndMeeting = '';
                 $scope.startMeeting = '';
@@ -101,7 +102,7 @@
                     slot.editmode = true;
                     $scope.startMeeting = slot.view;
                     $scope.endMeeting = moment(slot.timeFullFormatUTC).add(1, 'h').format('HH:mm');
-                    $scope.editingText = slot.contact.name;
+                    $scope.editingText = (slot.contact.name == undefined) ? '' : slot.contact.name;
                 };
                 $scope.DeleteMeeting = function (objectForRemove) {
                     ConfirmationService.confirm({ message: 'Are you sure?' }).then(function () {
@@ -126,14 +127,14 @@
                             returnValid = false;
                             return;
                         };                        
-                        Meeting.post({ title: $scope.editingText, start: hourStartDate, end: hourEndDate, contact: row.contact._id }).then(function (data) {
+                        Meeting.post({ title: $scope.editingText, start: hourStartDate, end: hourEndDate, contact: ($scope.editingText == 'Reserved') ? '' : (row.contact == undefined) ? '' : row.contact._id }).then(function (data) {
                             if (row.meetings == undefined) {
                                 row.meetings = [];
                             };
                             $scope.meetingsweek.push(data);
                             var start = moment(data.start).format('HH');
                             var end = moment(data.end).format('HH');
-                            addSecondarySlots(start, end, data.start, row.contact);
+                            addSecondarySlots(start, end, data.start, (row.contact == undefined) ? '' : row.contact._id);
                         });
                         row.editmode = false;
                     }
@@ -149,11 +150,11 @@
                         objMeeting.title = $scope.editingText;
                         objMeeting.start = hourStartDate;
                         objMeeting.end = hourEndDate;
-                        objMeeting.contact = row.contact._id;
+                        objMeeting.contact = (row.contact == undefined) ? '' : row.contact._id;
                         Meeting.put(objMeeting);
                         var start = moment(objMeeting.start).format('HH');
                         var end = moment(objMeeting.end).format('HH');
-                        addSecondarySlots(start, end, objMeeting.start, objMeeting.contact);
+                        addSecondarySlots(start, end, objMeeting.start, (objMeeting.contact == undefined) ? '' : objMeeting.contact._id);
                         row.editmode = false;
                     }
                     $scope.oldStartMeeting = '';
@@ -178,22 +179,32 @@
                     $scope.oldEndMeeting = objectToEdit.meeting.end;
                     $scope.editingText = objectToEdit.meeting.title;
                 };
-                $scope.StyleFunc = function (meeting) {
-                    var differenceObj = findDifference(meeting);
-                    if (differenceObj.difference <= 60) {
-                        return { 'height': differenceObj.difference * 0.57 + 'px', 'margin-top': differenceObj.differenceWithSlot * 0.57 + 'px', 'padding-top': (differenceObj.difference / 2 - 17) * 0.57 + 'px' }
+                $scope.StyleFunc = function (obj) {
+                    if (obj.meeting.contact ==  obj.contact._id  || obj.contact._id == undefined) {
+                        var differenceObj = findDifference(obj.meeting);
+                        if (differenceObj.difference <= 60) {
+                            return { 'height': differenceObj.difference * 0.57 + 'px', 'margin-top': differenceObj.differenceWithSlot * 0.57 + 'px', 'padding-top': (differenceObj.difference / 2 - 17) * 0.57 + 'px' }
+                        }
+                        else {
+                            return { 'height': differenceObj.difference * 0.65 + 'px', 'margin-top': differenceObj.differenceWithSlot * 0.65 + 'px', 'padding-top': (differenceObj.difference / 2 - 17) * 0.65 + 'px' }
+                        };
                     }
                     else {
-                        return { 'height': differenceObj.difference * 0.65 + 'px', 'margin-top': differenceObj.differenceWithSlot * 0.65 + 'px', 'padding-top': (differenceObj.difference / 2 - 17) * 0.65 + 'px' }
-                    };
-                    
+                        var differenceObj = findDifference(obj.meeting);
+                        if (differenceObj.difference <= 60) {
+                            return { 'height': differenceObj.difference * 0.57 + 'px', 'margin-top': differenceObj.differenceWithSlot * 0.57 + 'px', 'padding-top': (differenceObj.difference / 2 - 17) * 0.57 + 'px','opacity':0.5 }
+                        }
+                        else {
+                            return { 'height': differenceObj.difference * 0.65 + 'px', 'margin-top': differenceObj.differenceWithSlot * 0.65 + 'px', 'padding-top': (differenceObj.difference / 2 - 17) * 0.65 + 'px', 'opacity': 0.5 }
+                        };
+                    };                    
                 };
                 $scope.resrvedCheck = function (slot) {
                     if ($scope.editingText !== 'Reserved') {
                         $scope.editingText = 'Reserved';
                     }
                     else {
-                        $scope.editingText = slot.contact.name;
+                        $scope.editingText = (slot.contact == undefined) ? '' : slot.contact.name;
                     };
                 };
             }

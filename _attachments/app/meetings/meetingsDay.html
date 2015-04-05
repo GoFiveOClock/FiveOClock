@@ -8,13 +8,22 @@
                     <span class="input-group-addon" id="view">{{slot.view}}</span>
                     <div id="divAbs">
                         <div id="divRel">
-                            <div ng-repeat="meeting in getSlotMeetings(slot)" ng-style="StyleFunc(meeting)" id="meetings" class="meeting">
+                            <div ng-repeat="meeting in getSlotMeetings(slot)" ng-style="StyleFunc({contact:slot.contact,meeting:meeting})" id="meetings" class="meeting hidden-xs ">
                                 <span id="titleMeeting">{{meeting.title}}</span>
                                 <i class="pull-right">
                                     <i class=" glyphicon glyphicon-pencil" id="icons" ng-click="EditingMeeting({meeting:meeting,row:slot})"></i>
                                     <i class="glyphicon glyphicon-remove" id="icons" ng-click="DeleteMeeting({meeting:meeting,meetings:meetingsweek})"></i>
                                 </i>
                             </div>
+
+                            <div ng-repeat="meeting in getSlotMeetings(slot)" ng-style="StyleFunc({contact:slot.contact,meeting:meeting})" id="meetingsSmall" class="meeting visible-xs ">
+                                <span id="titleMeeting">{{meeting.title}}</span>
+                                <i class="pull-right">
+                                    <i class=" glyphicon glyphicon-pencil" id="icons" ng-click="EditingMeeting({meeting:meeting,row:slot})"></i>
+                                    <i class="glyphicon glyphicon-remove" id="icons" ng-click="DeleteMeeting({meeting:meeting,meetings:meetingsweek})"></i>
+                                </i>
+                            </div>
+
                         </div>
                     </div>
                     <label class="form-control" ng-click="ToggleEditMode(slot)"><input type="hidden"></label>                    

@@ -1,5 +1,5 @@
 ﻿define(['angular', 'underscore', 'moment'], function (angular, _, moment) {
-    return angular.module('fiveOClock').controller('SettingsController', function ($scope, $q, $rootScope, $http, $timeout, $routeParams, Settings) {
+    return angular.module('fiveOClock').controller('SettingsController', function ($scope, $q, $rootScope, $http, $timeout, $routeParams, Settings) {       
         $scope.contact = $routeParams.idContact;
         $scope.days = [{ value: 'Monday', checked: false,forMeetings: 1},
             { value: 'Tuesday', checked: false, forMeetings: 2 },
@@ -66,17 +66,15 @@
             var DaysChecked = _.where($scope.days, { checked: true });
             var ArrayCheckedDays = _.pluck(DaysChecked, 'forMeetings');
             Settings.get().then(function (response) {
-                if (response.length !== 0)
-                {
+                if (response.length !== 0) {
                     response[0].days = ArrayCheckedDays;
                     response[0].hours = ArrayWithValuesHours;
                     Settings.put(response[0]);
                 }
                 else {
                     Settings.post({ days: ArrayCheckedDays, hours: ArrayWithValuesHours });
-                }                
-            });
-           
-        };
+                };
+            });           
+        };       
     });
 });

@@ -1,17 +1,13 @@
-﻿<style>
-    .day{
-        margin-left:25px
-    }
-</style>
-<div class="ng-cloak container">
-    <div class="row">
-        <div class="col-lg-6 col-lg-offset-3">
+﻿<link rel="stylesheet" href="app/settings/settings.css" />
+<div class="ng-cloak">
+    <div class="row" style="margin:0 0 0 0">
+        <div class="col-lg-6 col-lg-offset-3" style="margin-top:60px">
             <div class="well">
-                Day:               
+                Day:
                 <div ng-repeat="day in days">
                     <input type="checkbox" id={{day.value}} ng-model="day.checked" />
                     <label for={{day.value}} ng-bind="day.value"></label>
-                </div>             
+                </div>
             </div>
             <div class="clearfix"></div>
             <div class="well">
@@ -25,7 +21,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">                      
+                    <div class="col-lg-4">
                         <div ng-repeat="hour in SecondGroupHours">
                             <div>
                                 <input type="checkbox" id={{hour.value}} ng-model="hour.checked" />
@@ -43,8 +39,8 @@
                     </div>
                 </div>
                 <div class="clearfix"></div>
-            </div>           
-            <a href="#/Meetings/{{contact}}"><input type="button" class="pull-right btn btn-default" ng-click="AcceptSettings()" value="Accept"></a>          
+            </div>
+            <input type="button" class="pull-right btn btn-default" ng-click="AcceptSettings()" value="Accept" />
         </div>
     </div>
 </div>
