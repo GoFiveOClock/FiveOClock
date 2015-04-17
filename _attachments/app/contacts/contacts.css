@@ -25,3 +25,8 @@
     width:33%;
     text-align:center
 }
+.colNextContacts{
+    text-align: center;
+    font-size: 30px;
+    cursor:pointer;
+}

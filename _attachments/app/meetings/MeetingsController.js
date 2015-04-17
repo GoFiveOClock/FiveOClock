@@ -3,17 +3,19 @@
         return angular.module('fiveOClock').controller('MeetingsController',
             function ($scope, $q, $rootScope, $http, $timeout, $routeParams,
                 Meeting, Contact, Settings, settingsService) {               
-                $scope.showAllDays = false;
+                $scope.showAllDays = false;               
 
                 var initialSettingsPromise = Settings.get();
 
                 var promises = {
                     contact: Contact.get($routeParams.idContact),
-                    meetings: Meeting.byDate({ startWeek: moment().startOf('isoweek'), EndWeek: moment().startOf('isoweek').add(8, "d") }),
+                    meetings: Meeting.byDate({ startWeek: moment().startOf('isoweek'), endWeek: moment().startOf('isoweek').add(8, "d") }),
                     settings: initialSettingsPromise
                 };
 
                 var monday = moment().startOf('isoweek');
+                $scope.startWeek = monday.format('MMMM Do') + " ";
+                $scope.endWeek = " " + moment(monday).endOf('isoweek').format('MMMM Do');
                 setupWeek();
 
                 function setupWeek() {
@@ -89,15 +91,19 @@
                 }
 
                 $scope.PreviousWeek = function () {
-                    monday.add(-7, 'd');
+                    monday.add(-7, 'd');                   
+                    $scope.startWeek = monday.format('MMMM Do') + " ";
+                    $scope.endWeek = " " + moment(monday).endOf('isoweek').format('MMMM Do');
 
-                    promises.meetings = Meeting.byDate({ startWeek: monday, EndWeek: moment(monday).add(7, 'd') });
+                    promises.meetings = Meeting.byDate({ startWeek: monday, endWeek: moment(monday).add(7, 'd') });
                     setupWeek();
                 };
                 $scope.NextWeek = function () {
-                    monday.add(7, 'd')
+                    monday.add(7, 'd');
+                    $scope.startWeek = monday.format('MMMM Do') + " ";
+                    $scope.endWeek = " " + moment(monday).endOf('isoweek').format('MMMM Do');
 
-                    promises.meetings = Meeting.byDate({ startWeek: monday, EndWeek: moment(monday).add(7, "d") });
+                    promises.meetings = Meeting.byDate({ startWeek: monday, endWeek: moment(monday).add(7, "d") });
 
                     setupWeek();
                 };
@@ -122,7 +128,7 @@
                     if (day.showAllHours) {
                         var dayDate = moment(day.day);
                         var dayDateFomat = dayDate.format();
-                        Meeting.byDate({ startWeek: dayDate.startOf('day'), EndWeek: dayDate.add(1, "d") }).then(function (response) {
+                        Meeting.byDate({ startWeek: dayDate.startOf('day'), endWeek: dayDate.add(1, "d") }).then(function (response) {
                             dayDate = moment(dayDateFomat);
                             $scope.meetingsWeek = response;
                             day.slots = [];                            

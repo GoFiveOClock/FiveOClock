@@ -1,10 +1,10 @@
-﻿define(['angular', 'CouchEntityFactory', 'underscore', 'pouchDb'], function (angular, CouchEntityFactory, _, pouchDb) {
+﻿define(['angular', 'CouchEntityFactory', 'underscore', 'pouchDb', 'cookies'], function (angular, CouchEntityFactory, _, pouchDb, cookies) {
     'use strict';
 
     var angularCouch = angular.module('angularCouch', []);
     angularCouch.factory('CouchEntity', CouchEntity);
 
-    function CouchEntity($timeout, $rootScope) {
+    function CouchEntity($timeout, $rootScope, $q) {
         var db = {
             get: get,
             put: put,
@@ -13,8 +13,8 @@
             viewPrefix: 'FiveOClock'
         }
 
-        var clientDb = new pouchDb('fiveOClock');
-        return CouchEntityFactory({ db: db });
+        var clientDb = new pouchDb(cookies.get('user')|| cookies.get('anonymous') ||  'fiveOClock');
+        return CouchEntityFactory({ db: db, $q: $q });
 
         function get(url, params) {
             return clientDb.query(url, params).then(applyResult);

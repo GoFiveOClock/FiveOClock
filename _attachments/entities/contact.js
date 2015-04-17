@@ -8,7 +8,7 @@
                 byName: function (params) {
                     var dbParams = {
                         startkey: params.name,
-                        endkey: params.name,
+                        endkey: params.name
                     };
                     if(params.skip){
                         dbParams.skip = params.skip;

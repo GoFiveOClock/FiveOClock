@@ -7,10 +7,9 @@
         </div>
 
         <div class="col-lg-6 col-lg-offset-3 no-right-left-padding">
-
             <div class="row visible-xs" style="position:fixed;width:100%;background:rgb(128, 128, 128);z-index:50;bottom:0">
                 <button class="glyphicon glyphicon-chevron-left" style="height: 40px;margin-bottom: 2px" ng-click="PreviousWeek()"></button>
-                <span style="margin-left: 37%;">week</span>
+                <span style="margin-left: 20%" ng-bind="startWeek"></span>-<span ng-bind="endWeek"></span>                
                 <button class="glyphicon glyphicon-chevron-right pull-right" style="height: 40px;margin-bottom: 2px" ng-click="NextWeek()"></button>
             </div>
             <label class="pull-right" for="check1" ng-bind="showAllDays?'click to show working days':'click to show all days'"></label>

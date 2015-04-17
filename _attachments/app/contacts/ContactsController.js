@@ -1,4 +1,4 @@
-﻿define(['angular', 'underscore', 'app/confirmationService'], function (angular, _, confirmationService) {
+﻿define(['angular', 'underscore', 'app/confirmationService'], function (angular, _ , confirmationService) {
     return angular.module('fiveOClock').controller('ContactsController',
         function ($scope, $q, $rootScope, $http, $timeout, Contact, contacts, ConfirmationService, $location) {            
             var skipContacts = 0;
@@ -80,9 +80,9 @@
             $scope.AddItem = function () {
                 var that = this;
                 Contact.post({ name: this.NewNameNg }).then(function (data) {
-                    that.AllContacts.splice(that.indexEl, 0, data);
+                    contacts.splice(0, 0, data);
                     that.NewNameNg = "";
-                    $scope.AllContacts = contacts;
+                    that.AllContacts = contacts;
                 });
             };
             $scope.removeContact = function (contact) {

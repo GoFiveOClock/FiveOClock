@@ -56,6 +56,30 @@
                     ArrayDays[0].checked = true;
                 }
             }
+            else {
+                _.findWhere($scope.days, { value: 'Monday' }).checked = true;
+                _.findWhere($scope.days, { value: 'Tuesday' }).checked = true;
+                _.findWhere($scope.days, { value: 'Wednesday' }).checked = true;
+                _.findWhere($scope.days, { value: 'Thursday' }).checked = true;
+                _.findWhere($scope.days, { value: 'Friday' }).checked = true;
+
+                _.findWhere($scope.SecondGroupHours, { value: '08' }).checked = true;
+                _.findWhere($scope.SecondGroupHours, { value: '09' }).checked = true;
+                _.findWhere($scope.SecondGroupHours, { value: '10' }).checked = true;
+                _.findWhere($scope.SecondGroupHours, { value: '11' }).checked = true;
+                _.findWhere($scope.SecondGroupHours, { value: '12' }).checked = true;
+                _.findWhere($scope.SecondGroupHours, { value: '13' }).checked = true;
+                _.findWhere($scope.SecondGroupHours, { value: '14' }).checked = true;
+                _.findWhere($scope.SecondGroupHours, { value: '15' }).checked = true;
+
+                _.findWhere($scope.ThirdGroupHours, { value: '16' }).checked = true;
+                _.findWhere($scope.ThirdGroupHours, { value: '17' }).checked = true;
+                _.findWhere($scope.ThirdGroupHours, { value: '18' }).checked = true;
+                _.findWhere($scope.ThirdGroupHours, { value: '19' }).checked = true;
+
+
+               
+            };
         })
         $scope.AcceptSettings = function () {
             var firstGroupChecked = _.where($scope.firstGroupHours, { checked: true });
