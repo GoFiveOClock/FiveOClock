@@ -6,13 +6,17 @@
             url: 'meeting',
             indexes: {
                 byDate: function (params) {
+                    var paramsToReturn = {};
+                    if(params.startWeek){
+                        paramsToReturn =  {
+                            startkey: JSON.stringify(params.startWeek).slice(1,-1),
+                            endkey: JSON.stringify(params.endWeek).slice(1, -1)
+                        };
+                    }
                     return {
                         url: 'meeting-by-date',
-                        params: {
-                            startkey: JSON.stringify(params.startWeek).slice(1,-1),
-                            endkey: JSON.stringify(params.EndWeek).slice(1, -1)
-                        }
-                    }
+                        params: paramsToReturn
+                    };
                 }
             }
         };

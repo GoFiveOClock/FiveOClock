@@ -29,6 +29,11 @@
                     <li ng-class="{active:isActiveNavbar('Schedule')}"><a href="#/Meetings">Schedule</a></li>
                     <li ng-class="{active:isActiveNavbar('Settings')}"><a href="#/Settings">Settings</a></li>
                 </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-if="!anonymous" ng-click="logout()"><a>logout</a></li>
+                    <li ng-if="anonymous" ng-click="register()"><a>register</a></li>
+                </ul>
             </div>
         </div>
     </nav>

@@ -12,7 +12,8 @@
         'ui-bootstrap': 'lib/ui-bootstrap-tpls-0.12.1',
         'clockpicker': 'lib/clockpicker',
         'indexController': 'app/indexController',
-        'pouchDb': 'lib/pouchdb-3.3.1'
+        'pouchDb': 'lib/pouchdb-3.3.1',
+		'cookies': 'lib/cookies.min'
     },
     shim: {
         'angular': {
@@ -44,7 +45,7 @@
     deps: ['angular', 'angular.route', 'ui-bootstrap', 'bootstrap', 'CouchEntity']
 });
 
-require(['jquery', 'angular', 'pouchDb'], function ($, angular, pouchDB) {
+require(['jquery', 'angular', 'pouchDb', 'cookies'], function ($, angular, pouchDB, cookies) {
     angular.module('fiveOClock', ['angularCouch', 'ngRoute', 'ui.bootstrap']);
     $(function () {
         function startApplication() {
@@ -54,7 +55,7 @@ require(['jquery', 'angular', 'pouchDb'], function ($, angular, pouchDB) {
         };
         //pouchDB.debug.enable('*');
         var dbPath = window.location.origin + '/' + window.location.pathname.split('/')[1];
-        var dbName = 'fiveOClock';
+        var dbName = cookies.get('user') || cookies.get('anonymous') || 'fiveOClock';
         $.get(dbPath).then(function () {
             pouchDB.replicate(dbPath, dbName).then(function (result) {
                 pouchDB.replicate(dbName, dbPath).then(function (result) {
@@ -64,8 +65,12 @@ require(['jquery', 'angular', 'pouchDb'], function ($, angular, pouchDB) {
                     }
                 });
             });
-        }, function () {
-            startApplication();
+        }, function (err) {
+			if(err.status == 401){
+				window.location = cookies.get('hubUrl');
+			} else {
+				startApplication();
+			}
         });
     });
 });

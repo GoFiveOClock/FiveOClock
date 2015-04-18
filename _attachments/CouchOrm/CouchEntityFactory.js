@@ -13,7 +13,7 @@
 
             var setDefaults = function (param) {
                 param = param || {};
-                return _.defaults(param, { limit: 10, skip: 0 });
+                return _.defaults(param, {limit: 10, skip: 0});
             }
 
             this.get = function (param) {
@@ -51,6 +51,15 @@
             this['delete'] = function (id, rev) {
                 return db.delete(encodeURI(entityConfig.dbUrl), id, rev);
             }
+
+            this.init = function () {
+                var promises = _.map(entityConfig.indexes, function (index, name) {
+                    return that[name]({limit: 1});
+                });
+                promises.push(that.get({limit:1}));
+                return factoryConfig.$q.all(promises);
+            }
+
 
             _.each(entityConfig.indexes, function (index, name) {
                 that[name] = function (param) {
