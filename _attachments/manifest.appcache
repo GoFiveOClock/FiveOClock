@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# v 1.0.13
+# v 1.0.14
 
 main.js
 require.js
@@ -37,7 +37,7 @@ lib/angular.js
 lib/clockpicker.js
 lib/jquery-2.1.1.js
 lib/jquery-clockpicker.css
-lib/moment.js
+lib/momentwithlocales.js
 lib/pouchdb-3.3.1.js
 lib/ui-bootstrap-tpls-0.12.1.js
 lib/underscore.js

@@ -25,14 +25,16 @@
             </div>
             <div class="collapse navbar-collapse" id="target">
                 <ul class="nav navbar-nav">
-                    <li ng-class="{active:isActiveNavbar('Contacts')}"><a href="#/Contacts">Contacts</a></li>
-                    <li ng-class="{active:isActiveNavbar('Schedule')}"><a href="#/Meetings">Schedule</a></li>
-                    <li ng-class="{active:isActiveNavbar('Settings')}"><a href="#/Settings">Settings</a></li>
+                    <li ng-class="{active:isActiveNavbar('Contacts')}"><a href="#/Contacts" ng-bind="localization.navContacts"></a></li>
+                    <li ng-class="{active:isActiveNavbar('Schedule')}"><a href="#/Meetings" ng-bind="localization.navSchedule"></a></li>
+                    <li ng-class="{active:isActiveNavbar('Settings')}"><a href="#/Settings" ng-bind="localization.navSettings"></a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li ng-if="!anonymous" ng-click="logout()"><a>logout</a></li>
-                    <li ng-if="anonymous" ng-click="register()"><a>register</a></li>
+                    <li ng-click="lang('ru')"><a style="padding-right: 0">ru</a></li>
+                    <li ng-click="lang('en')"><a>en</a></li>
+                    <li ng-if="!anonymous" ng-click="logout()"><a ng-bind="localization.logout"></a></li>
+                    <li ng-if="anonymous" ng-click="register()"><a  ng-bind="localization.register"></a></li>
                 </ul>
             </div>
         </div>

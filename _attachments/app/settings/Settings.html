@@ -3,7 +3,7 @@
     <div class="row" style="margin:0 0 0 0">
         <div class="col-lg-6 col-lg-offset-3" style="margin-top:60px">
             <div class="well">
-                Day:
+                <span ng-bind="settingsDays" g></span>
                 <div ng-repeat="day in days">
                     <input type="checkbox" id={{day.value}} ng-model="day.checked" />
                     <label for={{day.value}} ng-bind="day.value"></label>
@@ -11,7 +11,7 @@
             </div>
             <div class="clearfix"></div>
             <div class="well">
-                Hours:
+                <span ng-bind="settingsHours" g></span>
                 <div>
                     <div class="col-lg-4">
                         <div ng-repeat="hour in firstGroupHours">
@@ -40,7 +40,7 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
-            <input type="button" class="pull-right btn btn-default" ng-click="AcceptSettings()" value="Accept" />
+            <button class="pull-right btn btn-default" ng-click="AcceptSettings()" ng-bind="settingsAccept"></button>
         </div>
     </div>
 </div>

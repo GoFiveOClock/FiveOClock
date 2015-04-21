@@ -1,1 +1,32 @@
-{"message": "hello world!"}
+{
+  "navContacts": "Контакты",
+  "navSchedule": "Расписание",
+  "navSettings": "Настройки",
+  "logout": "выйти",
+  "register": "зарегистрироваться",
+  "settingsDays": "Дни",
+  "settingsHours": "Часы",
+  "settingsAccept": "принять",
+  "getContacts":"взять котакты(Gmail)",
+  "pNewContact": "новый контакт...",
+  "labelPhones": "Телефоны:",
+  "labelEmails": "Эл.почта:",
+  "pNewPhone": "новый телефон...",
+  "pNewEmail": "новый эл.адрес...",
+  "btnMeetings": "посещения",
+  "btnShowWorkingDays": "показать рабочие дни",
+  "btnShowAllDays": "показать все дни",
+  "btnShowWorkingHours": "показать рабочие часы",
+  "btnShowAllHours": "показать все часы",
+  "labMeetings": "посещения",
+
+
+
+  "monday": "понедельник",
+  "tuesday": "вторник",
+  "wednesday": "среда",
+  "thursday": "четверг",
+  "friday": "пятница",
+  "saturday": "суббота",
+  "sunday": "воскресение"
+}

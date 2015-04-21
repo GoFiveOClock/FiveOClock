@@ -8,7 +8,7 @@
         'bootstrap': 'lib/bootstrap/js/bootstrap',
         'CouchEntity': 'CouchOrm/CouchEntity',
         'CouchEntityFactory': 'CouchOrm/CouchEntityFactory',
-        'moment': 'lib/moment',
+        'moment': 'lib/momentwithlocales',
         'ui-bootstrap': 'lib/ui-bootstrap-tpls-0.12.1',
         'clockpicker': 'lib/clockpicker',
         'indexController': 'app/indexController',
