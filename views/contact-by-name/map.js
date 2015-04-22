@@ -1,5 +1,8 @@
 ﻿function(doc){
     if(doc.type == 'contact'){
+        if(!doc.name){
+            return;
+        };
         var words = doc.name.split(/\s/gi);
         var array = [];
         for (var prop in words) {

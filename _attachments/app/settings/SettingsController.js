@@ -1,13 +1,34 @@
-﻿define(['angular', 'underscore', 'moment'], function (angular, _, moment) {
-    return angular.module('fiveOClock').controller('SettingsController', function ($scope, $q, $rootScope, $http, $timeout, $routeParams, Settings) {       
+﻿define(['angular', 'underscore', 'moment','cookies','app/settings/settingsService'], function (angular, _, moment,cookies,settingsServiceFile) {
+    return angular.module('fiveOClock').controller('SettingsController', function ($scope, $q, $rootScope, $http, $timeout, $routeParams, Settings,settingsService) {
+        var promises = {
+            localizationRu: $http.get('localizationRu.json'),
+            localizationEn: $http.get('localizationEn.json')
+        };
+        $q.all(promises).then(function (data) {
+            $scope.settingsAccept =  (!cookies.get('lang'))? data.localizationRu.data.settingsAccept:(cookies.get('lang') == "en")?
+                data.localizationEn.data.settingsAccept:data.localizationRu.data.settingsAccept;
+
+            $scope.settingsDays =  (!cookies.get('lang'))? data.localizationRu.data.settingsDays:(cookies.get('lang') == "en")?
+                data.localizationEn.data.settingsDays:data.localizationRu.data.settingsDays;
+            $scope.settingsHours =  (!cookies.get('lang'))? data.localizationRu.data.settingsHours:(cookies.get('lang') == "en")?
+                data.localizationEn.data.settingsHours:data.localizationRu.data.settingsHours;
+
+            $scope.days = [{ value: (!cookies.get('lang'))? data.localizationRu.data.monday:(cookies.get('lang') == "en")?
+                data.localizationEn.data.monday:data.localizationRu.data.monday, checked: false,forMeetings: 1},
+                { value: (!cookies.get('lang'))? data.localizationRu.data.tuesday:(cookies.get('lang') == "en")?
+                    data.localizationEn.data.tuesday:data.localizationRu.data.tuesday, checked: false, forMeetings: 2 },
+                { value: (!cookies.get('lang'))? data.localizationRu.data.wednesday:(cookies.get('lang') == "en")?
+                    data.localizationEn.data.wednesday:data.localizationRu.data.wednesday, checked: false, forMeetings: 3 },
+                { value: (!cookies.get('lang'))? data.localizationRu.data.thursday:(cookies.get('lang') == "en")?
+                    data.localizationEn.data.thursday:data.localizationRu.data.thursday, checked: false, forMeetings: 4 },
+                { value: (!cookies.get('lang'))? data.localizationRu.data.friday:(cookies.get('lang') == "en")?
+                    data.localizationEn.data.friday:data.localizationRu.data.friday, checked: false, forMeetings: 5 },
+                { value: (!cookies.get('lang'))? data.localizationRu.data.saturday:(cookies.get('lang') == "en")?
+                    data.localizationEn.data.saturday:data.localizationRu.data.saturday, checked: false, forMeetings: 6 },
+                { value: (!cookies.get('lang'))? data.localizationRu.data.sunday:(cookies.get('lang') == "en")?
+                    data.localizationEn.data.sunday:data.localizationRu.data.sunday, checked: false, forMeetings: 7 }];
         $scope.contact = $routeParams.idContact;
-        $scope.days = [{ value: 'Monday', checked: false,forMeetings: 1},
-            { value: 'Tuesday', checked: false, forMeetings: 2 },
-            { value: 'Wednesday', checked: false, forMeetings: 3 },
-            { value: 'Thursday', checked: false, forMeetings: 4 },
-            { value: 'Friday', checked: false, forMeetings: 5 },
-            { value: 'Saturday', checked: false, forMeetings: 6 },
-            { value: 'Sunday', checked: false, forMeetings: 7 }];
+
         $scope.firstGroupHours = [{ value: '00', checked: false },
             { value: '01', checked: false },
             { value: '02', checked: false },
@@ -56,6 +77,27 @@
                     ArrayDays[0].checked = true;
                 }
             }
+            else {
+
+                var defaultDays = settingsService.defaultSettings.days;
+                for(var i=0;i<defaultDays.length; i++ ){
+                    if( _.findWhere($scope.days, { forMeetings: defaultDays[i] })){
+                        _.findWhere($scope.days, { forMeetings: defaultDays[i] }).checked = true;
+                    }
+                };
+                var defaultHours = settingsService.defaultSettings.hours;
+                for(var i=0;i<defaultHours.length; i++ ){
+                    if( _.findWhere($scope.firstGroupHours, { value: defaultHours[i] })){
+                        _.findWhere($scope.firstGroupHours, { value: defaultHours[i] }).checked = true;
+                    }
+                    if( _.findWhere($scope.SecondGroupHours, { value: defaultHours[i] })){
+                        _.findWhere($scope.SecondGroupHours, { value: defaultHours[i] }).checked = true;
+                    }
+                    if( _.findWhere($scope.ThirdGroupHours, { value: defaultHours[i] })){
+                        _.findWhere($scope.ThirdGroupHours, { value: defaultHours[i] }).checked = true;
+                    }
+                };
+            };
         })
         $scope.AcceptSettings = function () {
             var firstGroupChecked = _.where($scope.firstGroupHours, { checked: true });
@@ -75,6 +117,7 @@
                     Settings.post({ days: ArrayCheckedDays, hours: ArrayWithValuesHours });
                 };
             });           
-        };       
+        };
+        });
     });
 });

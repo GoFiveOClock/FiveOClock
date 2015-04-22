@@ -6,13 +6,20 @@
 		    templateUrl: 'app/contacts/Contacts.html',
 		    controller: 'ContactsController',
 		    resolve: {
-		        contacts: function (Contact, $q, $timeout) {
+		        contacts: function (Contact,Meeting,Settings, $q, $timeout) {
+                    var promises = {
+                        contactInit: Contact.init(),
+                        meetingInit: Meeting.init(),
+                        settingInit: Settings.init()
+                    };
 		            var deferred = $q.defer();
-		            Contact.get().then(function (contacts) {
-		                $timeout(function () {
-		                    deferred.resolve(contacts);
-		                });
-		            }, deferred.reject);
+                    $q.all(promises).then(function(){
+                        Contact.get().then(function (contacts) {
+                            $timeout(function () {
+                                deferred.resolve(contacts);
+                            });
+                        }, deferred.reject);
+                    });
 		            return deferred.promise;
 		        }
 		    }

@@ -1,6 +1,27 @@
-﻿define(['angular', 'underscore', 'app/confirmationService'], function (angular, _, confirmationService) {
+﻿define(['angular', 'underscore', 'app/confirmationService','cookies'], function (angular, _ , confirmationService,cookies) {
     return angular.module('fiveOClock').controller('ContactsController',
-        function ($scope, $q, $rootScope, $http, $timeout, Contact, contacts, ConfirmationService, $location) {            
+        function ($scope, $q, $rootScope, $http, $timeout, Contact, contacts, ConfirmationService, $location) {
+            var promises = {
+                localizationRu: $http.get('localizationRu.json'),
+                localizationEn: $http.get('localizationEn.json')
+            };
+            $scope.rendered = function () {
+                $timeout(function () {
+                    $scope.loaded = true;
+                });
+            };
+            $q.all(promises).then(function (data) {
+                if(!cookies.get('lang')){
+                    $scope.localization = data.localizationRu.data;
+                }
+                else{
+                    if(cookies.get('lang') == "en"){
+                        $scope.localization = data.localizationEn.data;
+                    }
+                    else{
+                        $scope.localization = data.localizationRu.data;
+                    }
+                }
             var skipContacts = 0;
             $scope.AllContacts = contacts;            
             $scope.search = function () {
@@ -26,11 +47,7 @@
                     });
                 };
             };          
-            $scope.rendered = function () {
-                $timeout(function () {
-                    $scope.loaded = true;
-                });
-            };
+
             var clientId = "1078441704585-ks4vjjmin4dn8ik081lb8206rjbt16er.apps.googleusercontent.com",
                     scopes = 'https://www.googleapis.com/auth/contacts.readonly',
                     domain = '{MY COMPANY DOMAIN}';
@@ -80,9 +97,9 @@
             $scope.AddItem = function () {
                 var that = this;
                 Contact.post({ name: this.NewNameNg }).then(function (data) {
-                    that.AllContacts.splice(that.indexEl, 0, data);
+                    contacts.splice(0, 0, data);
                     that.NewNameNg = "";
-                    $scope.AllContacts = contacts;
+                    that.AllContacts = contacts;
                 });
             };
             $scope.removeContact = function (contact) {
@@ -147,5 +164,6 @@
                 (object.MainEmail == object.email) ? response = true : response = false;
                 return response;
             };
+        });
         });
 });
