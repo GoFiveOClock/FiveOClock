@@ -1,0 +1,16 @@
+﻿.modal {
+    background-color: rgba(128, 128, 128, .5);
+}
+.cssNavbar{
+    position: fixed;
+    width: 100%;
+    z-index: 5;
+}
+.ru{
+    padding-right: 0;
+    cursor: pointer;
+}
+
+.pointer{
+    cursor: pointer;
+}

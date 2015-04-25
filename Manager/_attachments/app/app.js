@@ -1,4 +1,4 @@
-﻿define(['angular', 'app/contacts/ContactsController', 'entities/contact', 'app/meetings/MeetingsController', 'entities/meeting', 'app/settings/SettingsController', 'entities/settings'], function (angular, contactsController, contact, meetingsController, meeting, settingsController, settings) {
+﻿define(['angular', 'app/contacts/ContactsController', 'entities/contact', '../../Common/app/meetings/MeetingsController', 'entities/meeting', 'app/settings/SettingsController', 'entities/settings'], function (angular, contactsController, contact, meetingsController, meeting, settingsController, settings) {
     angular.module('fiveOClock')
 	.config(function ($routeProvider) {
 	    $routeProvider.when('/Contacts',
@@ -26,7 +26,7 @@
 		})
         .when('/Meetings/:idContact?',
 		    {
-		        templateUrl: 'app/meetings/Meetings.html',
+		        templateUrl: '../Common/app/meetings/Meetings.html',
 		        controller: 'MeetingsController'
 		    })
              .when('/Settings/:idContact?',
@@ -39,7 +39,4 @@
         });
 
 	});
-    //angular.module('fiveOClock').config(function ($rootScopeProvider) {
-    //    $rootScopeProvider.digestTtl(200);
-    //})
 });

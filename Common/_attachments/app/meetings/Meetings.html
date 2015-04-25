@@ -1,0 +1,27 @@
+﻿<link rel="stylesheet" href="../Common/../Common/app/meetings/meetings.css" />
+<div class="ng-cloak container-fluid" style="padding:0 0 0 0" ng-if="loaded">
+    <div class="row" style="margin:60px 0 0 0">
+        <div class="row visible-lg" style="position:fixed;margin-top:300px;width:100%">
+            <i class="glyphicon glyphicon-chevron-left" style="margin-left: 180px;font-size:60px;cursor:pointer" ng-click="PreviousWeek()"></i>
+            <i class="glyphicon glyphicon-chevron-right" style="font-size:60px;cursor:pointer;margin-left: 880px" ng-click="NextWeek()"></i>
+        </div>
+
+        <div class="col-lg-6 col-lg-offset-3 no-right-left-padding">
+            <div class="row visible-xs" style="position:fixed;width:100%;background:rgb(128, 128, 128);z-index:50;bottom:0">
+                <button class="glyphicon glyphicon-chevron-left" style="height: 40px;margin-bottom: 2px" ng-click="PreviousWeek()"></button>
+                <span style="margin-left: 20%" ng-bind="startWeek"></span>-<span ng-bind="endWeek"></span>
+                <button class="glyphicon glyphicon-chevron-right pull-right" style="height: 40px;margin-bottom: 2px" ng-click="NextWeek()"></button>
+            </div>
+            <label class="pull-right" for="check1" ng-bind="showAllDays? localization.btnShowWorkingDays:localization.btnShowAllDays"></label>
+            <input type="checkbox" class="pull-right" id="check1" ng-click="toggleShowAlldays()" />
+            <h3>{{contact.name}} <span ng-bind="localization.labMeetings"></span></h3>
+            <div ng-repeat="day in week">
+                <div class="well no-right-padding">
+                    <label class="pull-right" for={{day.day}} ng-bind="day.showAllHours ? localization.btnShowWorkingHours : localization.btnShowAllHours"></label>
+                    <input type="checkbox" class="pull-right" id={{day.day}} ng-click="toggleShowAllhours(day)" />
+                    <meetings-day day="day.dayView" slots="day.slots" meetingsweek="day.meetingsWeek"></meetings-day>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

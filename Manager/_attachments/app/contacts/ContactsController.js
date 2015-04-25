@@ -1,27 +1,13 @@
-﻿define(['angular', 'underscore', 'app/confirmationService','cookies'], function (angular, _ , confirmationService,cookies) {
+﻿define(['angular', 'underscore', 'confirmationService','cookies', 'json!localization/en.json', 'json!localization/ru.json'], function (angular, _ , confirmationService,cookies, en, ru) {
     return angular.module('fiveOClock').controller('ContactsController',
         function ($scope, $q, $rootScope, $http, $timeout, Contact, contacts, ConfirmationService, $location) {
-            var promises = {
-                localizationRu: $http.get('localizationRu.json'),
-                localizationEn: $http.get('localizationEn.json')
-            };
             $scope.rendered = function () {
                 $timeout(function () {
                     $scope.loaded = true;
                 });
             };
-            $q.all(promises).then(function (data) {
-                if(!cookies.get('lang')){
-                    $scope.localization = data.localizationRu.data;
-                }
-                else{
-                    if(cookies.get('lang') == "en"){
-                        $scope.localization = data.localizationEn.data;
-                    }
-                    else{
-                        $scope.localization = data.localizationRu.data;
-                    }
-                }
+			var lang = cookies.get('lang');
+			$scope.localization = lang ? (lang == 'en' ? en : ru) : ru;
             var skipContacts = 0;
             $scope.AllContacts = contacts;            
             $scope.search = function () {
@@ -164,6 +150,5 @@
                 (object.MainEmail == object.email) ? response = true : response = false;
                 return response;
             };
-        });
         });
 });

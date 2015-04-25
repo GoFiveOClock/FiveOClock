@@ -1,0 +1,33 @@
+{
+  "navContacts": "Contacts",
+  "navSchedule": "Schedule",
+  "navSettings": "Settings",
+  "logout": "logout",
+  "register": "register",
+  "settingsDays": "Days",
+  "settingsHours": "Hours",
+  "settingsAccept": "accept",
+  "getContacts":"get contacts(Gmail)",
+  "pNewContact": "get contacts...",
+  "labelPhones": "Phones:",
+  "labelEmails": "Emails:",
+  "pNewPhone": "add new phone...",
+  "pNewEmail": "add new email...",
+  "btnMeetings": "meetings",
+  "btnShowWorkingDays": "click to show working days",
+  "btnShowAllDays": "click to show all days",
+  "btnShowWorkingHours": "click to show working hours",
+  "btnShowAllHours": "click to show all hours",
+  "labMeetings": "meetings",
+
+
+
+
+  "monday": "monday",
+  "tuesday": "tuesday",
+  "wednesday": "wednesday",
+  "thursday": "thursday",
+  "friday": "friday",
+  "saturday": "saturday",
+  "sunday": "sunday"
+}

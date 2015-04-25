@@ -2,18 +2,18 @@
 <html manifest="manifest.appcache">
 <head>
     <title>FiveOCLock</title>
-    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.css" />
-    <link rel="stylesheet" href="lib/jquery-clockpicker.css" />
+    <link rel="stylesheet" href="../Common/lib/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="../Common/lib/bootstrap/css/bootstrap-theme.css" />
+    <link rel="stylesheet" href="../Common/lib/jquery-clockpicker.css" />
 
-    <link href="app/styles.css" rel="stylesheet" />
-    <link href="app/loading.css" rel="stylesheet" />
-    <script src="require.js" data-main="main"></script>
+    <link href="../Common/app/styles.css" rel="stylesheet" />
+    <link href="../Common/app/loading.css" rel="stylesheet" />
+    <script src="../Common/require.js" data-main="main"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta charset="UTF-8" />
 </head>
 <body>
-    <nav class="navbar navbar-inverse" style="position: fixed;width: 100%;z-index: 5">
+    <nav class="navbar navbar-inverse cssNavbar">
         <div class="container-fluid" ng-controller="navBarController">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#target">
@@ -31,10 +31,10 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li ng-click="lang('ru')"><a style="padding-right: 0">ru</a></li>
-                    <li ng-click="lang('en')"><a>en</a></li>
-                    <li ng-if="!anonymous" ng-click="logout()"><a ng-bind="localization.logout"></a></li>
-                    <li ng-if="anonymous" ng-click="register()"><a  ng-bind="localization.register"></a></li>
+                    <li ng-click="lang('ru')"><a class="ru">ru</a></li>
+                    <li ng-click="lang('en')"><a class="pointer">en</a></li>
+                    <li ng-if="!anonymous" ng-click="logout()"><a class="pointer" ng-bind="localization.logout"></a></li>
+                    <li ng-if="anonymous" ng-click="register()"><a class="pointer" ng-bind="localization.register"></a></li>
                 </ul>
             </div>
         </div>
