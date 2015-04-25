@@ -1,38 +1,50 @@
-﻿define(['angular', 'app/contacts/ContactsController', 'entities/contact', '../../Common/app/meetings/MeetingsController', 'entities/meeting', 'app/settings/SettingsController', 'entities/settings'], function (angular, contactsController, contact, meetingsController, meeting, settingsController, settings) {
+﻿define(['angular', 'jquery', 'app/contacts/ContactsController', 'entities/contact', '../../Common/app/meetings/MeetingsController', 'entities/meeting', 'app/settings/SettingsController', 'entities/settings'
+], function (angular, $, contactsController, contact, meetingsController, meeting, settingsController, settings) {
+    var resolve = {
+        contacts: function (Contact,Meeting,Settings, $q, $timeout) {
+            var promises = {
+                contactInit: Contact.init(),
+                meetingInit: Meeting.init(),
+                settingInit: Settings.init()
+            };
+            promises.meetingInit.then(function() {
+                $('#progress').css({ width: '75%' });
+            });
+            promises.contactInit.then(function () {
+                $('#progress').css({ width: '100%' });
+            });
+            $('#status').text('Initializing database...');
+            var deferred = $q.defer();
+            $q.all(promises).then(function () {
+                $('.progress-indicator').remove();
+                Contact.get().then(function (contacts) {
+                    $timeout(function () {
+                        deferred.resolve(contacts);
+                    });
+                }, deferred.reject);
+            });
+            return deferred.promise;
+        }
+    }
     angular.module('fiveOClock')
 	.config(function ($routeProvider) {
 	    $routeProvider.when('/Contacts',
 		{
 		    templateUrl: 'app/contacts/Contacts.html',
 		    controller: 'ContactsController',
-		    resolve: {
-		        contacts: function (Contact,Meeting,Settings, $q, $timeout) {
-                    var promises = {
-                        contactInit: Contact.init(),
-                        meetingInit: Meeting.init(),
-                        settingInit: Settings.init()
-                    };
-		            var deferred = $q.defer();
-                    $q.all(promises).then(function(){
-                        Contact.get().then(function (contacts) {
-                            $timeout(function () {
-                                deferred.resolve(contacts);
-                            });
-                        }, deferred.reject);
-                    });
-		            return deferred.promise;
-		        }
-		    }
+		    resolve: resolve
 		})
         .when('/Meetings/:idContact?',
 		    {
 		        templateUrl: '../Common/app/meetings/Meetings.html',
-		        controller: 'MeetingsController'
+		        controller: 'MeetingsController',
+                resolve: resolve
 		    })
              .when('/Settings/:idContact?',
 		    {
 		        templateUrl: 'app/settings/Settings.html',
-		        controller: 'SettingsController'
+		        controller: 'SettingsController',
+                resolve: resolve
 		    })
         .otherwise({
             redirectTo: '/Contacts'

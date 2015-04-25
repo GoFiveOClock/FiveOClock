@@ -14,3 +14,17 @@
 .pointer{
     cursor: pointer;
 }
+
+.progress-indicator {
+    height: 10px;
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+}
+
+.progress-bar {
+    background-color: cornflowerblue;
+    float:left;
+    width:0;
+    height: 10px;
+}

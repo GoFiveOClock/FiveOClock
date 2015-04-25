@@ -60,8 +60,11 @@ require(['jquery', 'angular', 'pouchDb', 'cookies'], function ($, angular, pouch
         var dbPath = window.location.origin + '/' + window.location.pathname.split('/')[1];
         var dbName = window.location.pathname.split('/')[1];
         $.get(dbPath).then(function () {
+            $("#status").text('Updating data...');
             pouchDB.replicate(dbPath, dbName).then(function (result) {
+                $('#progress').css({ width: '40%' });
                 pouchDB.replicate(dbName, dbPath).then(function (result) {
+                    $('#progress').css({ width: '50%' });
                     if (result.ok) {
                         pouchDB.replicate(dbName, dbPath, {live: true});
                         startApplication();
