@@ -1,6 +1,9 @@
 pushd Common
 call push
 popd
+pushd Views
+call push
+popd
 pushd Agenda
 call push
 popd

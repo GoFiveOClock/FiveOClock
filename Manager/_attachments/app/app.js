@@ -10,11 +10,16 @@
             promises.meetingInit.then(function() {
                 $('#progress').css({ width: '75%' });
             });
+			promises.settingInit.then(function() {
+                $('#progress').css({ width: '65%' });
+            });
             promises.contactInit.then(function () {
                 $('#progress').css({ width: '100%' });
-            });
+            }, function(e){
+				alert(JSON.stringify(e));
+			});
             $('#status').text('Initializing database...');
-            var deferred = $q.defer();
+			var deferred = $q.defer();
             $q.all(promises).then(function () {
                 $('.progress-indicator').remove();
                 Contact.get().then(function (contacts) {
@@ -22,7 +27,9 @@
                         deferred.resolve(contacts);
                     });
                 }, deferred.reject);
-            });
+            }, function(e){
+				alert(JSON.stringify(e));
+			});
             return deferred.promise;
         }
     }

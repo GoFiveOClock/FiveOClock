@@ -7673,6 +7673,7 @@ function replicate(repId, src, target, opts, returnValue, result) {
       if (opts.filter) {
         // required for the client-side filter in onChange
         changesOpts.include_docs = true;
+		changesOpts.filter = opts.filter;
       }
       if (opts.query_params) {
         changesOpts.query_params = opts.query_params;

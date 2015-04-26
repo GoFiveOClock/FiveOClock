@@ -59,24 +59,28 @@ require(['jquery', 'angular', 'pouchDb', 'cookies'], function ($, angular, pouch
         //pouchDB.debug.enable('*');
         var dbPath = window.location.origin + '/' + window.location.pathname.split('/')[1];
         var dbName = window.location.pathname.split('/')[1];
-        $.get(dbPath).then(function () {
-            $("#status").text('Updating data...');
-            pouchDB.replicate(dbPath, dbName).then(function (result) {
-                $('#progress').css({ width: '40%' });
-                pouchDB.replicate(dbName, dbPath).then(function (result) {
-                    $('#progress').css({ width: '50%' });
-                    if (result.ok) {
-                        pouchDB.replicate(dbName, dbPath, {live: true});
-                        startApplication();
-                    }
-                });
-            });
-        }, function (err) {
+		var db = new pouchDB(dbName);
+		$.get(dbPath).then(function () {
+			$("#status").text('Updating data...');
+			db.replicate.from(dbPath, {filter: 'Manager/clientReplication'}).then(function (result) {
+				$('#progress').css({ width: '40%' });
+				db.replicate.to(dbPath).then(function (result) {
+					$('#progress').css({ width: '50%' });
+					if (result.ok) {
+						db.replicate.to(dbPath, {live: true});
+						startApplication();
+					}
+				});
+			}, function(e){
+				alert(JSON.stringify(e));
+			});
+		}, function (err) {
 			if(err.status == 401){
 				window.location = cookies.get('hubUrl');
 			} else {
 				startApplication();
 			}
-        });
+		});
+	
     });
 });

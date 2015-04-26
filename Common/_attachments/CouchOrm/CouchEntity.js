@@ -10,7 +10,7 @@
             put: put,
             post: post,
             'delete': remove,
-            viewPrefix: 'Common'
+            viewPrefix: 'Views'
         }
 
         var clientDb = new pouchDb(window.location.pathname.split('/')[1]);
