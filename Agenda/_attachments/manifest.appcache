@@ -47,6 +47,10 @@ app/app.js
 ../Common/lib/bootstrap/js/bootstrap.min.js.map
 ../Common/lib/bootstrap/js/npm.js
 ../Common/lib/cookies.min.js
+../Common/lib/plugins/text.js
+../Common/lib/plugins/json.js
+../Common/localization/en.json
+../Common/localization/ru.json
 
 NETWORK:
 *
