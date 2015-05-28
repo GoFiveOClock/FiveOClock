@@ -1,11 +1,16 @@
-﻿define(['angular', 'jquery', 'app/contacts/ContactsController', 'entities/contact', '../../Common/app/meetings/MeetingsController', 'entities/meeting', 'app/settings/SettingsController', 'entities/settings'
-], function (angular, $, contactsController, contact, meetingsController, meeting, settingsController, settings) {
+﻿define(['angular', 'jquery', 'app/contacts/ContactsController', 'entities/contact', '../../Common/app/meetings/MeetingsController',
+    'entities/meeting', 'app/settings/SettingsController', 'entities/settings','entities/meetingrequest','entities/meetingRequestSession',
+    ,'entities/message'
+], function (angular, $, contactsController, contact, meetingsController, meeting, settingsController, settings,meetingrequest,meetingRequestSession,
+             message) {
     var resolve = {
-        contacts: function (Contact,Meeting,Settings, $q, $timeout) {
+        contacts: function (Contact,Meeting,Settings,MeetingRequest,RequestSession, $q, $timeout) {
             var promises = {
                 contactInit: Contact.init(),
                 meetingInit: Meeting.init(),
-                settingInit: Settings.init()
+                settingInit: Settings.init(),
+                meetingrequestInit: MeetingRequest.init(),
+                requestSessionInit: RequestSession.init()
             };
             promises.meetingInit.then(function() {
                 $('#progress').css({ width: '75%' });

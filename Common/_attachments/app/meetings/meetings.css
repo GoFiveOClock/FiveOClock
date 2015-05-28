@@ -1,10 +1,73 @@
 ﻿.meetings label{
     cursor:pointer;
 }
-.meetings .ulWidth{
-   width:100%
+.pad-zero{
+    padding:0 0 0 0;
 }
-.meetings .liCollapse{
-    width:33%;
-    text-align:center
+.main-row{
+    margin:60px 0 0 0;
+}
+.container-lg{
+    position:fixed;
+    margin-top:70px;
+    width:100%;
+}
+.container-sm{
+    position:fixed;
+    width:100%;
+    background:rgb(128, 128, 128);
+    z-index:50;
+    bottom:0;
+}
+.bttn-left-lg{
+    margin-left: 14%;
+    font-size:60px;
+    cursor:pointer;
+}
+.bttn-right-lg{
+    font-size:60px;
+    cursor:pointer;
+    margin-left: 65%;
+}
+.span-sm{
+    margin-left: 10%;
+}
+.bttn-left-sm{
+    height: 40px;
+    margin-bottom: 2px;
+}
+.bttn-right-sm{
+    height: 40px;
+    margin-bottom: 2px;
+}
+.form-messager{
+    position: fixed;
+    padding: 0;
+    width: 20%;
+    z-index: 6;
+    border-radius: 10px;
+    border: solid 2px ;
+    right: 4%;
+    background: darkgray;
+    margin-top: 125px;
+}
+.close-messager{
+    margin-right: 1%;
+    margin-top: 1%;
+}
+.h2-messager{
+    margin-left: 25px;
+    margin-right: 25px;
+}
+.container-messages{
+    padding: 10px;
+    background: #ffffff
+}
+.repeat-messages{
+    width: 80%;
+    border: solid 1px;
+    border-radius: 6px;
+    padding: 3px;
+    background: whitesmoke;
+    margin-bottom: 2px
 }

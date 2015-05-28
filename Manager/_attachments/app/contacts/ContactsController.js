@@ -27,7 +27,6 @@
                         $scope.AllContacts = _.union($scope.AllContacts, response);                      
                     });
                 } else {
-                    //$scope.AllContacts = contacts;
                     Contact.get({ skip: skipContacts }).then(function (response) {
                         $scope.AllContacts = _.union($scope.AllContacts, response);
                     });
@@ -82,7 +81,7 @@
             }
             $scope.AddItem = function () {
                 var that = this;
-                Contact.post({ name: this.NewNameNg }).then(function (data) {
+                Contact.post({ name: this.NewNameNg,visitor: "" }).then(function (data) {
                     contacts.splice(0, 0, data);
                     that.NewNameNg = "";
                     that.AllContacts = contacts;
@@ -90,7 +89,7 @@
             };
             $scope.removeContact = function (contact) {
                 var that = this;
-                ConfirmationService.confirm({ message: 'Are you sure?' }).then(function () {
+                ConfirmationService.confirm({ message: $scope.localization.serviseAUS }).then(function () {
                     Contact.delete(contact._id, contact._rev).then(function () {
                         var index = that.AllContacts.indexOf(contact);
                         that.AllContacts.splice(index, 1);

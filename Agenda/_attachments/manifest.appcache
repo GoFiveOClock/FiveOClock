@@ -9,7 +9,6 @@ app/app.js
 ../Common/app/settings/settingsService.js
 ../Common/app/styles.css
 ../Common/app/loading.css
-../Common/app/meetings/directiveMeeting.js
 ../Common/app/meetings/meetings.css
 ../Common/app/meetings/Meetings.html
 ../Common/app/meetings/MeetingsController.js
@@ -21,7 +20,9 @@ app/app.js
 ../Common/CouchOrm/CouchEntityFactory.js
 ../Common/entities/contact.js
 ../Common/entities/meeting.js
+../Common/entities/meetingrequest.js
 ../Common/entities/settings.js
+../Common/lib/crypto-js.js
 ../Common/lib/angular-route.js
 ../Common/lib/angular.js
 ../Common/lib/clockpicker.js
@@ -29,7 +30,7 @@ app/app.js
 ../Common/lib/jquery-clockpicker.css
 ../Common/lib/momentwithlocales.js
 ../Common/lib/pouchdb-3.3.1.js
-../Common/lib/ui-bootstrap-tpls-0.12.1.js
+../Common/lib/ui-bootstrap-tpls-0.13.0.js
 ../Common/lib/underscore.js
 ../Common/lib/bootstrap/css/bootstrap-theme.css
 ../Common/lib/bootstrap/css/bootstrap-theme.css.map
