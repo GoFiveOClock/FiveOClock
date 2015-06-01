@@ -1,0 +1,32 @@
+
+    <div class="input-group">
+        <span class="input-group-addon" id="view">{{slot.view}}</span>
+        <button ng-if="getSlotMeetingRequestsStrange({content:meetingrequestsweek,slot:slot}).length !== 0" style="background: darkgray;  border-radius: 30px;"  popover-trigger="mouseenter" popover-template={{"asdasds"}} class="btn btn-default popover-class">{{getSlotMeetingRequestsStrange({content:meetingrequestsweek,slot:slot}).length}}
+        </button>
+
+        <div id="divAbs">
+            <div id="divRel">
+                <div ng-repeat="meeting in getSlotMeetings({content:meetingsweek,slot:slot})"
+                     ng-style="StyleFunc({contact:slot.contact,meeting:meeting})" class="meeting" title="Подтвержденный митинг">
+                    <span class="titleMeetingAgenda">{{meeting.title}}</span>
+                        <i class="glyphicon glyphicon-ok pull-left"></i>
+                </div>
+
+                <div ng-repeat="meetingrequest in getSlotMeetingRequests({content:meetingrequestsweek,slot:slot})" ng-click="EditingMeeting({meeting:meetingrequest,row:slot})"
+                     ng-style="StyleFunc({contact:slot.contact,meeting:meetingrequest})" class="meeting">
+                    <span class="titleMeetingAgenda">{{meetingrequest.text}}</span>
+                    <i class="glyphicon glyphicon-remove pull-right"
+                       ng-click="DeleteMeeting({meeting:meetingrequest,meetings:meetingrequestsweek});$event.stopPropagation()"></i>
+                    <i class="pull-left" style="background: darkgrey;width: 15px;border-radius: 8px;" ng-bind="meetingrequest.priority"></i>
+                </div>
+            </div>
+        </div>
+        <label class="form-control" ng-click="ToggleEditMode(slot)" id="spaceForMeeting"><input type="hidden"></label>
+    </div>
+    <!--editmode-->
+    <edit-meeting-form slot="slot" slots="slots" startmeeting="startMeeting" endmeeting="endMeeting " meetingtoedit="meetingToEdit"
+                       editingmodel="editingModel" meetingsweek="meetingsweek" meetingrequestsweek="meetingrequestsweek" localization="localization"
+                       requestsessions="requestsessions" currentsession="currentsession" plaseeditform="plaseeditform" priority="priority"
+                       visitor="visitor">
+
+    </edit-meeting-form>

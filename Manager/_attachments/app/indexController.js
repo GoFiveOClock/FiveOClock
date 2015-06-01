@@ -39,6 +39,13 @@
 			if (lang == 'en') {
 				$scope.localization = en;
 			}
-		}
+		};
+        $scope.publicPage = function(){
+            var currentHref = window.location.href;
+            var indexDesign = currentHref.indexOf("/_design/");
+            var startPath = currentHref.substring(0,indexDesign);
+
+            window.open(startPath+"public/_design/Agenda/index.html#/Meetings");
+        };
     })
 })

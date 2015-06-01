@@ -9,16 +9,20 @@
         'CouchEntity': '../Common/CouchOrm/CouchEntity',
         'CouchEntityFactory': '../Common/CouchOrm/CouchEntityFactory',
         'moment': '../Common/lib/momentwithlocales',
-		'ui-bootstrap': '../Common/lib/ui-bootstrap-tpls-0.12.1',
+		'ui-bootstrap': '../Common/lib/ui-bootstrap-tpls-0.13.0',
         'clockpicker': '../Common/lib/clockpicker',
         'pouchDb': '../Common/lib/pouchdb-3.3.1',
 		'cookies': '../Common/lib/cookies.min',
+        'cryptojs': '../Common/lib/crypto-js',
 		'text' : '../Common/lib/plugins/text',
 		'json' : '../Common/lib/plugins/json',
 		'localization' : '../Common/localization',
 		'entities' : '../Common/entities',
 		'settingsService': '../Common/app/settings/settingsService',
 		'confirmationService' : '../Common/app/confirmationService',
+        'agendaSlot' : 'app/directives/agendaSlot',
+        'editMeetingForm' : 'app/directives/editMeetingForm',
+        'directiveSessions' : 'app/directiveSessions'
     },
     shim: {
         'angular': {

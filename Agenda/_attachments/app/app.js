@@ -1,4 +1,6 @@
-﻿define(['angular', '../../Common/app/meetings/MeetingsController', 'entities/contact', 'entities/meeting', 'entities/settings'], function (angular, meetingsController, contact, meeting, settings) {
+﻿define(['angular', '../../Common/app/meetings/MeetingsController', 'entities/contact', 'entities/meeting', 'entities/settings','entities/meetingrequest',
+    ,'entities/meetingRequestSession','entities/message'
+], function (angular, meetingsController, contact, meeting, settings,meetingrequest,meetingRequestSession,message) {
     angular.module('fiveOClock')
 	.config(function ($routeProvider) {
 	    $routeProvider
@@ -6,8 +8,8 @@
 			templateUrl: '../Common/app/meetings/Meetings.html',
 			controller: 'MeetingsController',
 			resolve: {
-				init: function($q, Meeting, Settings, Contact){
-					return $q.all([Meeting.init(), Settings.init(), Contact.init()]);
+				init: function($q, Meeting, Settings, Contact,MeetingRequest,RequestSession){
+					return $q.all([Meeting.init(), Settings.init(), Contact.init(),MeetingRequest.init(),RequestSession.init()]);
 				}
 			}
 		})

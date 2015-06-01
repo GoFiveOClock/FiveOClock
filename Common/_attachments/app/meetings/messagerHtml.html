@@ -1,0 +1,20 @@
+﻿<div ng-if="show()" class="ng-cloak">
+    <form class="row container-fluid form-messager" ng-submit="addMessage()">
+        <i class="glyphicon glyphicon-remove close-messager pull-right" ng-click="closeMessages()"></i>
+        <h2 class="h2-messager">{{localization.messagerHeader}}</h2>
+
+        <div class="container-messages">
+            <div ng-repeat="message in messages" class="repeat-messages">
+                {{message.text}}<br>
+               {{message.date}}
+            </div>
+        </div>
+        <div class="input-group">
+            <input type="text" class="form-control" ng-model="textMessage" ng-placeholder={{localization.placeAdd}}>
+            <span class="input-group-btn">
+             <button class="btn btn-default" type="submit">{{localization.messagerSend}}</button>
+            </span>
+        </div>
+    </form>
+</div>
+

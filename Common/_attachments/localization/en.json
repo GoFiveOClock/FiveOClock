@@ -19,6 +19,27 @@
   "btnShowWorkingHours": "click to show working hours",
   "btnShowAllHours": "click to show all hours",
   "labMeetings": "meetings",
+  "publicPage":"Public page",
+  "confirmEdit":"Confirm",
+  "cancelEdit":"Cancel",
+  "priority":"priority",
+  "username":"Username",
+  "headerSessions":"Sessions",
+  "sessionAdd":"add",
+  "placeAdd":"add message...",
+
+  "messagerHeader":"Messager",
+  "messagerSend":"send",
+  "servise-AUS":"Are you sure?",
+  "serviseWrongTime":"Wrong time",
+  "serviseTE":"This time employed",
+  
+
+
+
+
+
+
 
 
 

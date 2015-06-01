@@ -37,7 +37,7 @@ app.get('/', function(req, res){
   res.render('index.html', { title: 'Express' });
 });
 
-debugger;
+
 
 app.post('/login', function (req, res) {
     var user_name = req.body.user;
@@ -129,7 +129,7 @@ function register(req, res, user, password, propName) {
                                     if (err) {
                                         res.status(500).send(err);
                                     }
-                                    authenticated.db.replicate(ethaloneBase, user + "public", {
+                                    authenticated.db.replicate(user, user + "public", {
                                         filter: 'Manager/publicSchedule',
                                         continuous: true
                                     }, function (err, body) {
@@ -139,6 +139,7 @@ function register(req, res, user, password, propName) {
                                     });
 
                                     authenticated.db.replicate(user + "public", user, {
+                                        filter: 'Agenda/publicSchedule',
                                         continuous: true
                                     }, function (err, body) {
                                         if (err) {

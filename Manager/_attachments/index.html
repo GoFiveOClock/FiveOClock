@@ -31,6 +31,7 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
+                    <li ng-click="publicPage()"><a class="pointer" ng-bind="localization.publicPage">ru</a></li>
                     <li ng-click="lang('ru')"><a class="ru">ru</a></li>
                     <li ng-click="lang('en')"><a class="pointer">en</a></li>
                     <li ng-if="!anonymous" ng-click="logout()"><a class="pointer" ng-bind="localization.logout"></a></li>
@@ -52,6 +53,7 @@
         <div class="progress-bar" id="progress"></div>
         <div class="clearfix"></div>
     </div>
+
     <script>
         window.applicationCache.addEventListener('progress', function (e) {
             document.getElementById('status').innerHTML = "Loading application...";

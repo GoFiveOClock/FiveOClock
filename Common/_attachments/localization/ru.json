@@ -19,7 +19,19 @@
   "btnShowWorkingHours": "показать рабочие часы",
   "btnShowAllHours": "показать все часы",
   "labMeetings": "посещения",
-
+  "publicPage":"Публичная страница",
+  "confirmEdit":"Подтвердить",
+  "cancelEdit":"Отмена",
+  "priority":"приоритет",
+  "username":"Имя пользователя",
+  "headerSessions":"Сессии",
+  "sessionAdd":"добавить",
+  "placeAdd":"добавить сообщение...",
+  "messagerHeader":"Сообщения",
+  "messagerSend":"отправить",
+  "serviseAUS":"Уверены?",
+  "serviseWrongTime":"Неправильное время",
+  "serviseTE":"Время занято",
 
 
   "monday": "понедельник",

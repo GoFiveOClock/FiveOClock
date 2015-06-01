@@ -1,0 +1,32 @@
+
+    <div class="input-group">
+        <span class="input-group-addon" id="view">{{slot.view}}</span>
+
+
+
+        <div id="divAbs">
+            <div id="divRel">
+                <div ng-repeat="meeting in getSlotMeetings({content:meetingsweek,slot:slot})" ng-click="clickMeeting(meeting)"
+                     ng-style="StyleFunc({contact:slot.contact,meeting:meeting})" class="meeting">
+                    <span id="titleMeeting">{{meeting.title}}</span>
+                    <i class="pull-right">
+                        <i class=" glyphicon glyphicon-pencil"
+                           ng-click="EditingMeeting({meeting:meeting,row:slot})"></i>
+                        <i class="glyphicon glyphicon-remove"
+                           ng-click="DeleteMeeting({meeting:meeting,meetings:meetingsweek})"></i>
+                    </i>
+                </div>
+            </div>
+        </div>
+
+        <button ng-if="getSlotMeetingRequests({content:meetingrequestsweek,slot:slot}).length !== 0" popover-template= "setTemplate()" style="background: darkgray" popover-placement="bottom"  class="btn btn-default popover-class">{{getSlotMeetingRequests({content:meetingrequestsweek,slot:slot}).length}}
+        </button>
+
+        <label class="form-control" ng-click="ToggleEditMode(slot)" id="spaceForMeeting"><input type="hidden"></label>
+    </div>
+    <!--editmode-->
+    <edit-meeting-form slot="slot" startmeeting="startMeeting" endmeeting="endMeeting " meetingtoedit="meetingToEdit" slots="slots"
+                       editingmodel="editingModel" meetingsweek="meetingsweek" meetingrequestsweek="meetingrequestsweek" localization="localization">
+
+    </edit-meeting-form>
+
