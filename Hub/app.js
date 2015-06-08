@@ -8,8 +8,6 @@ var path = require('path');
 var cookie = require('cookie');
 var moment = require('moment');
 
-//var $ = require('./lib/jquery-2.1.1');
-
 var app = express();
 
 
@@ -33,10 +31,9 @@ if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
 
-app.get('/', function(req, res){
-  res.render('index.html', { title: 'Express' });
+app.get('/', function (req, res) {
+    res.render('index.html', {title: 'Express'});
 });
-
 
 
 app.post('/login', function (req, res) {
@@ -81,15 +78,159 @@ app.post('/startWR', function (req, res) {
     });
 });
 
+function addToUsers(authenticated, user_name, password) {
+    var users = authenticated.use('_users');
+    var q = require('q');
+    var promise = q.nfcall(users.insert, {
+        "_id": "org.couchdb.user:" + user_name,
+        "name": user_name,
+        "type": "user",
+        "roles": ['user'],
+        "password": password
+    });
+    return promise;
+};
 
-var server = http.createServer(app);
+function addToAdmin(authenticated, user_name, password) {
+    var fiveoclockadmin = authenticated.use('fiveoclockadmin');
+    var q = require('q');
+    var promise = q.nfcall(fiveoclockadmin.insert, {
+        "_id": user_name,
+        "name": user_name,
+        "db": user_name + "visitor",
+        "type": "user",
+        "usertype": "visitor",
+        "password": password
+    });
+    return promise;
+}
 
-server.listen(app.get('port'), function () {
-    console.log('Express server listening on port ' + app.get('port'));
+function addVisitorBase(authenticated, user_name, req, res) {
+    var cookieObject = cookie.parse(req.headers.cookie);
+    if (cookieObject.nameAgendaDB) {
+        var nameAgendaDB = cookieObject.nameAgendaDB;
+        var q = require('q');
+        var replicatePromise = q.nfcall(authenticated.db.replicate, nameAgendaDB, user_name + "visitor");
+        replicatePromise.then(function (body) {
+            var promise = q.nfcall(authenticated.db.replicate, user_name + "visitor", nameAgendaDB);
+            return promise;
+        }, function (err) {
+            res.status(500).send(err);
+        });
+    }
+    else {
+        res.status(500).send("not found cookies");
+    }
+}
+
+app.post('/registrationVisitor', function (req, res) {
+    var user_name = req.body.user;
+    var password = req.body.password;
+    var nano = require('nano')('http://localhost:5984');
+    nano.auth('admin', 'abc123', function (err, body, headers) {
+        if (err) {
+            res.status(500).send('Failed to login to couchdb.');
+        } else {
+            var auth = headers['set-cookie'][0];
+            var authenticated = require('nano')({url: 'http://localhost:5984', cookie: auth});
+            var userPromise = addToUsers(authenticated, user_name, password);
+            userPromise.then(function (body) {
+                var adminPromise = addToAdmin(authenticated, user_name, password);
+                adminPromise.then(function (body) {
+                    var visitorBasePromise = addVisitorBase(authenticated, user_name, req, res);
+                    visitorBasePromise.then(function (body) {
+                    }, function (err) {
+                        res.status(500).send(err);
+                    })
+                }, function (err) {
+                    res.status(500).send(err);
+                })
+            }, function (error) {
+                res.status(500).send(err);
+            });
+        }
+    });
 });
+function addUserBase(authenticated, user, req, res) {
+    var cookieObject = cookie.parse(req.headers.cookie);
+    if (cookieObject.anonymous) {
+        var ethaloneBase = cookieObject.anonymous;
+    }
+    else {
+        var ethaloneBase = 'managerethalon';
+    }
+    ;
+    var q = require('q');
+    var promise = q.nfcall(authenticated.db.replicate, ethaloneBase, user, {create_target: true});
+    return promise;
+};
+
+function agendaRepl(authenticated, user) {
+    var q = require('q');
+    var promise = q.nfcall(authenticated.db.replicate, 'agendaethalon', user + "public", {create_target: true});
+    return promise;
+};
+
+function userRepl(authenticated, user) {
+    var q = require('q');
+    var promise = q.nfcall(authenticated.db.replicate, user, user + "public", {
+        filter: 'Manager/publicSchedule',
+        continuous: true
+    });
+    return promise;
+};
+
+function returnUser(authenticated, user) {
+    var q = require('q');
+    var promise = q.nfcall(authenticated.db.replicate, user + "public", user, {
+        filter: 'Agenda/publicSchedule',
+        continuous: true
+    });
+    return promise;
+};
+
+function requestDbUser(authenticated, user) {
+    var q = require('q');
+    var promise = q.nfcall(authenticated.request, {
+        db: user,
+        method: 'PUT',
+        path: '/_security',
+        body: {
+            "admins": {
+                "names": [],
+                "roles": []
+            },
+            "members": {
+                "names": [user],
+                "roles": []
+            }
+        }
+    });
+    return promise;
+}
+
+function setCookies(nano, user, password, res, req,propName) {
+    nano.auth(user, password, function (err, body, headers) {
+        var auth;
+        if (err) {
+            res.status(500).send('Failed to login to couchdb.');
+        } else {
+            auth = headers['set-cookie'][0];
+            var cookieObject = cookie.parse(auth);
+            res.cookie('AuthSession', cookieObject.AuthSession, {
+                expires: moment().add(1, 'years').toDate()
+            });
+            res.cookie('hubUrl', req.body.oldpathname, {expires: moment().add(1, 'years').toDate()});
+            res.cookie(propName, user, {expires: moment().add(1, 'years').toDate()});
+            res.end(user);
+        }
+    })
+}
+
 
 function register(req, res, user, password, propName) {
     var nano = require('nano')('http://localhost:5984');
+    var q = require('q');
     nano.auth('admin', 'abc123',
         function (err, body, headers) {
             var auth;
@@ -97,101 +238,42 @@ function register(req, res, user, password, propName) {
                 res.status(500).send('Failed to login to couchdb.');
             } else {
                 auth = headers['set-cookie'][0];
-                var authenticated = require('nano')({url: 'http://localhost:5984', cookie: auth})
-                var users = authenticated.use('_users');
-                users.insert({
-                    "_id": "org.couchdb.user:" + user,
-                    "name": user,
-                    "type": "user",
-                    "roles": ['user'],
-                    "password": password
-                }, function (err, body) {
-                    if (err) {
-                        res.status(500).send(err);
-                    }
-                    else {
-                        var cookieObject = cookie.parse(req.headers.cookie);
-                        if (cookieObject.anonymous) {
-                            var ethaloneBase = cookieObject.anonymous;
-                        }
-                        else {
-                            var ethaloneBase = 'managerethalon';
-                        }
-                        ;
-
-                        authenticated.db.replicate(ethaloneBase, user, {create_target: true}, function (err, body) {
-                            if (err) {
-                                res.status(500).send(err);
-                            }
-                            else {
-
-                                authenticated.db.replicate('agendaethalon', user + "public", {create_target: true}, function (err, body) {
-                                    if (err) {
-                                        res.status(500).send(err);
-                                    }
-                                    authenticated.db.replicate(user, user + "public", {
-                                        filter: 'Manager/publicSchedule',
-                                        continuous: true
-                                    }, function (err, body) {
-                                        if (err) {
+                var authenticated = require('nano')({url: 'http://localhost:5984', cookie: auth});
+                var userPromise = addToUsers(authenticated, user, password);
+                userPromise.then(function (body) {
+                    var userBasePromise = addUserBase(authenticated, user, req, res);
+                    userBasePromise.then(function (body) {
+                        agendaRepl(authenticated, user).then(function (body) {
+                            userRepl(authenticated, user).then(function (body) {
+                                returnUser(authenticated, user).then(function (body) {
+                                        var promiseRequestUser = requestDbUser(authenticated, user);
+                                        promiseRequestUser.then(function (body) {
+                                            setCookies(nano, user, password, res, req,propName);
+                                        }, function (err) {
                                             res.status(500).send(err);
-                                        }
-                                    });
-
-                                    authenticated.db.replicate(user + "public", user, {
-                                        filter: 'Agenda/publicSchedule',
-                                        continuous: true
-                                    }, function (err, body) {
-                                        if (err) {
-                                            res.status(500).send(err);
-                                        }
-                                    });
-
-                                    authenticated.request({
-                                        db: user,
-                                        method: 'PUT',
-                                        path: '/_security',
-                                        body: {
-                                            "admins": {
-                                                "names": [],
-                                                "roles": []
-                                            },
-                                            "members": {
-                                                "names": [user],
-                                                "roles": []
-                                            }
-                                        }
+                                        });
                                     }, function (err) {
-                                        if (err) {
-                                            res.status(500).send(err);
-                                        }
-                                        else {
-                                            nano.auth(user, password, function (err, body, headers) {
-                                                var auth;
-                                                if (err) {
-                                                    res.status(500).send('Failed to login to couchdb.');
-                                                } else {
-                                                    auth = headers['set-cookie'][0];
-                                                    var cookieObject = cookie.parse(auth);
-                                                    res.cookie('AuthSession', cookieObject.AuthSession, {
-                                                        expires: moment().add(1, 'years').toDate()
-                                                    });
-                                                    res.cookie('hubUrl', req.body.oldpathname, {expires: moment().add(1, 'years').toDate()});
-                                                    res.cookie(propName, user, {expires: moment().add(1, 'years').toDate()});
-                                                    res.end(user);
-                                                }
-                                            })
-                                        }
-
+                                        res.status(500).send(err);
                                     });
-
+                                }, function (err) {
+                                    res.status(500).send(err);
                                 });
-
-                            }
+                        }, function (err) {
+                            res.status(500).send(err);
                         });
-                    }
-
+                    }, function (error) {
+                        res.status(500).send(err);
+                    });
+                }, function (error) {
+                    res.status(500).send(err);
                 });
             }
+            ;
         });
-}
+};
+
+var server = http.createServer(app);
+
+server.listen(app.get('port'), function () {
+    console.log('Express server listening on port ' + app.get('port'));
+});

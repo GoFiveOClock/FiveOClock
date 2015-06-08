@@ -1,5 +1,5 @@
 ﻿define(['angular', 'underscore', 'moment', '../../../Common/app/meetings/meetingsDay','../../../Common/app/meetings/messager', 'settingsService','cookies', 'json!localization/en.json', 'json!localization/ru.json',
-        'directiveSessions','cryptojs'],
+        'directiveSessions','registrationVisitor','cryptojs'],
     function (angular, _, moment, meetingsDayFile,messager, settingsServiceFile,cookies, en, ru, directiveSessions, cryptojs) {
         return angular.module('fiveOClock').controller('MeetingsController',
             function ($scope, $q, $rootScope, $timeout, $routeParams,

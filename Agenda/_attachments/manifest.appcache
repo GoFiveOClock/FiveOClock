@@ -1,9 +1,13 @@
 CACHE MANIFEST
 
-# v 1.0.16
+# v 1.0.22
 
 main.js
 app/app.js
+app/directiveSessions.js
+app/directives/agendaSlot.js
+app/directives/editMeetingForm.js
+app/directives/registrationVisitor.js
 ../Common/app/confirmation.html
 ../Common/app/confirmationService.js
 ../Common/app/settings/settingsService.js

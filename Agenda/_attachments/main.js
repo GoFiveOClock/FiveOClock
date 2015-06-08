@@ -22,7 +22,8 @@
 		'confirmationService' : '../Common/app/confirmationService',
         'agendaSlot' : 'app/directives/agendaSlot',
         'editMeetingForm' : 'app/directives/editMeetingForm',
-        'directiveSessions' : 'app/directiveSessions'
+        'directiveSessions' : 'app/directiveSessions',
+        'registrationVisitor' : 'app/directives/registrationVisitor'
     },
     shim: {
         'angular': {

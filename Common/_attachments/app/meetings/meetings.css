@@ -71,3 +71,9 @@
     background: whitesmoke;
     margin-bottom: 2px
 }
+.registration-visitor{
+    position: fixed;
+    z-index: 6;
+    left: 6%;
+    top: 31%;
+}
