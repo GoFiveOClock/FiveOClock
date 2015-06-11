@@ -7,21 +7,27 @@ var http = require('http');
 var path = require('path');
 var cookie = require('cookie');
 var moment = require('moment');
+//var cors = require('cors');
 
 var app = express();
-
+app.use(express.cookieParser('your secret here'));
+//app.use(cors({
+//    credentials: true,
+//    origin: function(origin, cb){ cb(null, true); }
+//}));
 
 // all environments
 app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/web');
+//app.set('views', __dirname + '/web');
 app.engine('html', require('ejs').renderFile);
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
+
 app.use(express.session());
 app.use(app.router);
+
 
 
 app.use(express.static(path.join(__dirname, 'web')));
@@ -31,9 +37,29 @@ if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
 
-app.get('/', function (req, res) {
-    res.render('index.html', {title: 'Express'});
+app.all('/*', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "http://localhost:5984");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header("Access-Control-Allow-Headers", "X-Requested-With ,Content-Type");
+    next();
 });
+
+//
+//app.all('/*', function (req, res, next) {
+//    res.header("Access-Control-Allow-Origin", "*");
+//    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+//    res.header("Access-Control-Allow-Headers", "X-Requested-With ,Content-Type");
+//    next();
+//});
+//app.use(function(req, res, next) {
+//    res.setHeader('Access-Control-Allow-Origin', "http://localhost:5984");
+//    res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+//    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-Requested-With');
+//    res.setHeader('Access-Control-Allow-Credentials', true);
+//    next();
+//});
+
 
 
 app.post('/login', function (req, res) {
@@ -133,12 +159,9 @@ app.post('/registrationVisitor', function (req, res) {
         } else {
             var auth = headers['set-cookie'][0];
             var authenticated = require('nano')({url: 'http://localhost:5984', cookie: auth});
-            var userPromise = addToUsers(authenticated, user_name, password);
-            userPromise.then(function (body) {
-                var adminPromise = addToAdmin(authenticated, user_name, password);
-                adminPromise.then(function (body) {
-                    var visitorBasePromise = addVisitorBase(authenticated, user_name, req, res);
-                    visitorBasePromise.then(function (body) {
+            addToUsers(authenticated, user_name, password).then(function (body) {
+                addToAdmin(authenticated, user_name, password).then(function (body) {
+                    addVisitorBase(authenticated, user_name, req, res).then(function (body) {
                     }, function (err) {
                         res.status(500).send(err);
                     })
@@ -239,10 +262,8 @@ function register(req, res, user, password, propName) {
             } else {
                 auth = headers['set-cookie'][0];
                 var authenticated = require('nano')({url: 'http://localhost:5984', cookie: auth});
-                var userPromise = addToUsers(authenticated, user, password);
-                userPromise.then(function (body) {
-                    var userBasePromise = addUserBase(authenticated, user, req, res);
-                    userBasePromise.then(function (body) {
+                addToUsers(authenticated, user, password).then(function (body) {
+                    addUserBase(authenticated, user, req, res).then(function (body) {
                         agendaRepl(authenticated, user).then(function (body) {
                             userRepl(authenticated, user).then(function (body) {
                                 returnUser(authenticated, user).then(function (body) {
@@ -271,6 +292,7 @@ function register(req, res, user, password, propName) {
             ;
         });
 };
+
 
 var server = http.createServer(app);
 
