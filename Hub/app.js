@@ -7,16 +7,10 @@ var http = require('http');
 var path = require('path');
 var cookie = require('cookie');
 var moment = require('moment');
-//var cors = require('cors');
 
 var app = express();
 app.use(express.cookieParser('your secret here'));
-//app.use(cors({
-//    credentials: true,
-//    origin: function(origin, cb){ cb(null, true); }
-//}));
 
-// all environments
 app.set('port', process.env.PORT || 3000);
 //app.set('views', __dirname + '/web');
 app.engine('html', require('ejs').renderFile);
@@ -45,23 +39,6 @@ app.all('/*', function (req, res, next) {
     next();
 });
 
-//
-//app.all('/*', function (req, res, next) {
-//    res.header("Access-Control-Allow-Origin", "*");
-//    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-//    res.header("Access-Control-Allow-Headers", "X-Requested-With ,Content-Type");
-//    next();
-//});
-//app.use(function(req, res, next) {
-//    res.setHeader('Access-Control-Allow-Origin', "http://localhost:5984");
-//    res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-//    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-Requested-With');
-//    res.setHeader('Access-Control-Allow-Credentials', true);
-//    next();
-//});
-
-
-
 app.post('/login', function (req, res) {
     var user_name = req.body.user;
     var password = req.body.password;
@@ -78,7 +55,6 @@ app.post('/login', function (req, res) {
                 expires: moment().add(1, 'years').toDate()
             });
             res.cookie('user', user_name);
-            res.cookie('hubUrl', req.body.oldpathname);
             res.end(JSON.stringify({success: true}));
         }
     });
@@ -96,7 +72,6 @@ app.post('/startWR', function (req, res) {
         require('crypto').randomBytes(8, function (ex, buf2) {
             var token1 = buf1.toString('hex');
             var token2 = buf1.toString('hex');
-
             var user_name = "a" + token1;
             var propName = 'anonymous';
             register(req, res, user_name, token2, propName);
@@ -132,8 +107,10 @@ function addToAdmin(authenticated, user_name, password) {
 }
 
 function addVisitorBase(authenticated, user_name, req, res) {
-    var cookieObject = cookie.parse(req.headers.cookie);
-    if (cookieObject.nameAgendaDB) {
+    if(req.headers.cookie){
+        var cookieObject = cookie.parse(req.headers.cookie);
+    };
+    if (cookieObject && cookieObject.nameAgendaDB) {
         var nameAgendaDB = cookieObject.nameAgendaDB;
         var q = require('q');
         var replicatePromise = q.nfcall(authenticated.db.replicate, nameAgendaDB, user_name + "visitor");
@@ -175,8 +152,10 @@ app.post('/registrationVisitor', function (req, res) {
     });
 });
 function addUserBase(authenticated, user, req, res) {
-    var cookieObject = cookie.parse(req.headers.cookie);
-    if (cookieObject.anonymous) {
+    if(req.headers.cookie){
+        var cookieObject = cookie.parse(req.headers.cookie);
+    };
+    if (cookieObject && cookieObject.anonymous) {
         var ethaloneBase = cookieObject.anonymous;
     }
     else {
@@ -243,7 +222,6 @@ function setCookies(nano, user, password, res, req,propName) {
             res.cookie('AuthSession', cookieObject.AuthSession, {
                 expires: moment().add(1, 'years').toDate()
             });
-            res.cookie('hubUrl', req.body.oldpathname, {expires: moment().add(1, 'years').toDate()});
             res.cookie(propName, user, {expires: moment().add(1, 'years').toDate()});
             res.end(user);
         }
