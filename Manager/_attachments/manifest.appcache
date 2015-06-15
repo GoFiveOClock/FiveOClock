@@ -1,10 +1,14 @@
 CACHE MANIFEST
 
-# v 1.0.21
+# v 1.0.22
 
 main.js
 app/app.js
+app/directiveSessions.js
 app/indexController.js
+app/directives/agendaSlot.js
+app/directives/editMeetingForm.js
+app/directives/registrationVisitor.js
 app/contacts/contacts.css
 app/contacts/Contacts.html
 app/contacts/ContactsController.js
@@ -16,7 +20,6 @@ app/settings/SettingsController.js
 ../Common/app/settings/settingsService.js
 ../Common/app/styles.css
 ../Common/app/loading.css
-
 ../Common/app/meetings/meetings.css
 ../Common/app/meetings/Meetings.html
 ../Common/app/meetings/MeetingsController.js

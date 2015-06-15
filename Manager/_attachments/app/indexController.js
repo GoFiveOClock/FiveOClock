@@ -1,10 +1,13 @@
 ﻿define(['jquery', 'angular', 'cookies', 'json!localization/en.json', 'json!localization/ru.json'], function ($, angular, cookies, en, ru) {
-    //a = cookies.get('user');
     return angular.module('fiveOClock').controller('navBarController', function ($scope, $route, $http, $q) {
 		var lang = cookies.get('lang');
 		$scope.localization = lang ? (lang == 'en' ? en : ru) : ru;
 
 		$scope.anonymous = cookies.get('anonymous');
+        function getPath(currentHref){
+            var indexDesign = currentHref.indexOf("/_design/");
+            return currentHref.substring(0,indexDesign);
+        };
 		$scope.isActiveNavbar = function (navbar) {
 			if ($route.current !== undefined && $route.current.loadedTemplateUrl == "../Common/app/meetings/Meetings.html") {
 				return ('Schedule' == navbar);
@@ -20,16 +23,15 @@
 			;
 		};
 		$scope.register = function () {
-			var hubUrl = cookies.get('hubUrl');
-			cookies.set('hubUrl', window.location.href);
 			cookies.set('setRegister', true);
-			window.location = hubUrl;
+            var startPath = getPath(window.location.href);
+            window.location = (startPath.substring(0,startPath.lastIndexOf("/"))+"/landingbase/_design/LandingApp/index.html#/");
 		};
 		$scope.logout = function () {
-			var hubUrl = cookies.get('hubUrl');
 			cookies('AuthSession', undefined);
 			cookies('user', undefined);
-			window.location = hubUrl;
+            var startPath = getPath(window.location.href);
+            window.location = (startPath.substring(0,startPath.lastIndexOf("/"))+"/landingbase/_design/LandingApp/index.html#/");
 		};
 		$scope.lang = function (lang) {
 			cookies.set('lang', lang);
@@ -41,10 +43,7 @@
 			}
 		};
         $scope.publicPage = function(){
-            var currentHref = window.location.href;
-            var indexDesign = currentHref.indexOf("/_design/");
-            var startPath = currentHref.substring(0,indexDesign);
-
+            var startPath = getPath(window.location.href);
             window.open(startPath+"public/_design/Agenda/index.html#/Meetings");
         };
     })
