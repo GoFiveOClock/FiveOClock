@@ -12,7 +12,6 @@ var app = express();
 app.use(express.cookieParser('your secret here'));
 
 app.set('port', process.env.PORT || 3000);
-//app.set('views', __dirname + '/web');
 app.engine('html', require('ejs').renderFile);
 app.use(express.favicon());
 app.use(express.logger('dev'));
@@ -67,6 +66,24 @@ app.post('/registration', function (req, res) {
     register(req, res, user_name, password, propName);
 });
 
+app.post('/sendMessage', function (req, res) {
+    if(req.headers.cookie){
+        var cookieObject = cookie.parse(req.headers.cookie);
+    };
+    if (cookieObject && cookieObject.visitor ) {
+        var user_name = cookieObject.visitor;
+        var nano = require('nano')('http://localhost:5984');
+        nano.auth('admin', 'abc123', function (err, body, headers) {
+            if (err) {
+                res.status(500).send('Failed to login to couchdb.');
+            } else {
+                var auth = headers['set-cookie'][0];
+                var authenticated = require('nano')({url: 'http://localhost:5984', cookie: auth});
+                addVisitorBase(authenticated, user_name, req, res)
+            }});
+    };
+});
+
 app.post('/startWR', function (req, res) {
     require('crypto').randomBytes(8, function (ex, buf1) {
         require('crypto').randomBytes(8, function (ex, buf2) {
@@ -113,10 +130,11 @@ function addVisitorBase(authenticated, user_name, req, res) {
     if (cookieObject && cookieObject.nameAgendaDB) {
         var nameAgendaDB = cookieObject.nameAgendaDB;
         var q = require('q');
-        var replicatePromise = q.nfcall(authenticated.db.replicate, nameAgendaDB, user_name + "visitor");
+        var replicatePromise = q.nfcall(authenticated.db.replicate, nameAgendaDB, user_name + "visitor",{create_target: true});
         replicatePromise.then(function (body) {
-            var promise = q.nfcall(authenticated.db.replicate, user_name + "visitor", nameAgendaDB);
-            return promise;
+            q.nfcall(authenticated.db.replicate, user_name + "visitor", nameAgendaDB).then(function (body) {
+                res.end(user_name + "visitor");
+            });
         }, function (err) {
             res.status(500).send(err);
         });
@@ -148,7 +166,7 @@ app.post('/registrationVisitor', function (req, res) {
             }, function (error) {
                 res.status(500).send(err);
             });
-        }
+        };
     });
 });
 function addUserBase(authenticated, user, req, res) {

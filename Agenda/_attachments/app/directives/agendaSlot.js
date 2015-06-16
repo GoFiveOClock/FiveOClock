@@ -12,8 +12,6 @@ define(['angular', "moment", "jquery", 'editMeetingForm', 'cookies'], function (
                 visitor: '=',
                 contact: '=',
                 visitors: '='
-
-
             },
             controller: function ($scope, $element) {
                 writtenInScope("","","");
