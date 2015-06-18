@@ -7,7 +7,9 @@
         return function (entityConfig) {
             var that = this;
 
-            entityConfig.dbUrl = entityConfig.dbUrl || '../..';
+            //entityConfig.dbUrl = entityConfig.dbUrl || '../..';
+           // entityConfig.dbUrl = entityConfig.dbUrl;
+
             entityConfig.relationMappings = entityConfig.relationMappings || {};
             entityConfig.indexes = entityConfig.indexes || {};
 
@@ -18,16 +20,20 @@
 
             this.get = function (param) {
                 if (_.isObject(param) || !param) {
-                    return db.get(encodeURI(db.viewPrefix + '/' + entityConfig.url), setDefaults(param)).then(formatViewRelationsResponse);
-                } else {
-                    return db.get(encodeURI(db.viewPrefix + '/' + entityConfig.url), {
-                        startkey: param,
-                        endkey: param,
-                        skip: 0,
-                        limit: 1
-                    }).then(formatViewRelationsResponse).then(function (result) {
-                        return result[0];
-                    });
+                        return db.get(encodeURI(db.viewPrefix + '/' + entityConfig.url), setDefaults(param),entityConfig.dbUrl).then(formatViewRelationsResponse)
+
+
+                }
+                else {
+                        return db.get(encodeURI(db.viewPrefix + '/' + entityConfig.url,"",entityConfig.dbUrl), {
+                            startkey: param,
+                            endkey: param,
+                            skip: 0,
+                            limit: 1
+                        }).then(formatViewRelationsResponse).then(function (result) {
+                            return result[0];
+                        });
+
                 }
             }
 

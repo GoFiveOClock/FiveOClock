@@ -9,7 +9,7 @@
         'moment': '../Common/lib/momentwithlocales',
         'ui-bootstrap': '../Common/lib/ui-bootstrap-tpls-0.13.0',
 		'cookies': '../Common/lib/cookies.min',
-		//'localization' : '../Common/localization',
+        'pouchDb': '../Common/lib/pouchdb-3.3.1',
         'text': 'plugins/text',
         'json': 'plugins/json',
 		'confirmationService' : '../Common/app/confirmationService'
@@ -37,7 +37,7 @@
     deps: ['angular', 'angular.route', 'ui-bootstrap', 'bootstrap']
 });
 
-require(['jquery', 'angular', 'cookies'], function ($, angular, cookies) {
+require(['jquery', 'angular'], function ($, angular) {
 
 
     var app = angular.module('fiveOClock', ['ngRoute']);

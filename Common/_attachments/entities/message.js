@@ -3,7 +3,8 @@ define(['angular', 'CouchEntity'], function (angular, CouchEntity) {
         var entity = {
             type: 'message',
             props: ['text','visitor','sessionId','date'],
-            url: 'message'
+            url: 'message',
+            dbUrl:'visitorethalon'
         };
 
         return new CouchEntity(entity);

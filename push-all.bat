@@ -10,3 +10,6 @@ popd
 pushd Manager
 call push
 popd
+pushd LandingApp
+call push
+popd
