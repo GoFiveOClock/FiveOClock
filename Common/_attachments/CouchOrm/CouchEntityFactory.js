@@ -20,12 +20,12 @@
 
             this.get = function (param) {
                 if (_.isObject(param) || !param) {
-                        return db.get(encodeURI(db.viewPrefix + '/' + entityConfig.url), setDefaults(param),entityConfig.dbUrl).then(formatViewRelationsResponse)
+                        return db.get(encodeURI(db.viewPrefix + '/' + entityConfig.url), setDefaults(param)).then(formatViewRelationsResponse)
 
 
                 }
                 else {
-                        return db.get(encodeURI(db.viewPrefix + '/' + entityConfig.url,"",entityConfig.dbUrl), {
+                        return db.get(encodeURI(db.viewPrefix + '/' + entityConfig.url), {
                             startkey: param,
                             endkey: param,
                             skip: 0,

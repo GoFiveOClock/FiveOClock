@@ -130,8 +130,13 @@ function addVisitorBase(authenticated, user_name, req, res) {
     if (cookieObject && cookieObject.nameAgendaDB) {
         var nameAgendaDB = cookieObject.nameAgendaDB;
         var q = require('q');
-        var replicatePromise = q.nfcall(authenticated.db.create,user_name + "visitor");
-        res.end(user_name + "visitor");
+        var replicatePromise = q.nfcall(authenticated.db.replicate,"visitorethalon",user_name + "visitor",{create_target: true});
+        replicatePromise.then(function (body) {
+            res.end(user_name + "visitor");
+        }, function (err) {
+            res.status(500).send(err);
+        })
+
         //replicatePromise.then(function (body) {
         //    q.nfcall(authenticated.db.replicate, user_name + "visitor", nameAgendaDB).then(function (body) {
         //        res.end();

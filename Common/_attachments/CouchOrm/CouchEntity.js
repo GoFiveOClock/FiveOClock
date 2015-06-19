@@ -18,7 +18,7 @@
         return CouchEntityFactory({ db: db, $q: $q });
 
         function get(url, params,dbUrl) {
-            if(dbUrl){
+            if(url == "Views/message"){
                 var pouchDbVisitor = cookies.get('pouchDbVisitor');
                 if(pouchDbVisitor){
                     var otherClientDb = new pouchDb(pouchDbVisitor);
@@ -26,10 +26,6 @@
                         a=err;
                     });
                 }
-                //var otherClientDb = new pouchDb("agenda");
-                //return otherClientDb.query(url, params).then(applyResult, function(err){
-                //    a=err;
-                //});
             }
             else{
                 return clientDb.query(url, params).then(applyResult);
@@ -41,13 +37,19 @@
         }
 
         function post(url, data) {
-            //if(url){
-            //    var otherClientDb = new pouchDb("manager");
-            //    return OtherclientDb.post(data).then(applyResult);
-            //}
-            //else{
+            if(url){
+                var pouchDbVisitor = cookies.get('pouchDbVisitor');
+                if(pouchDbVisitor) {
+                    var otherClientDb = new pouchDb(pouchDbVisitor);
+                    return otherClientDb.post(data).then(applyResult);
+                }
+                else{
+                    return clientDb.post(data).then(applyResult);
+                }
+            }
+            else{
                 return clientDb.post(data).then(applyResult);
-            //}
+            }
         }
 
         function remove(url, id, rev) {
