@@ -47,7 +47,7 @@
 
             this.post = function (doc) {
                 var model = createModel(doc);
-                return db.post(encodeURI(entityConfig.dbUrl), model).then(function (responseObject) {
+                return db.post(entityConfig, model).then(function (responseObject) {
                     doc._id = responseObject.id;
                     doc._rev = responseObject.rev;
                     return doc;

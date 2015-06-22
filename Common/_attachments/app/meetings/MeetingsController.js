@@ -45,7 +45,7 @@
                 $scope.visitor = cookies.get('visitor');
                 if(!$scope.visitor){
                     var hash = CryptoJS.SHA256(Math.random()+"");
-                    $scope.visitor = hash.toString(CryptoJS.enc.Hex).substring(0,10);
+                    $scope.visitor = "a" + hash.toString(CryptoJS.enc.Hex).substring(0,10);
                     cookies.set('visitor', $scope.visitor,{ expires: moment().add(1, 'years').toDate() });
                 }
 

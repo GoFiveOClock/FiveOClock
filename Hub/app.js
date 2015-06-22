@@ -39,11 +39,11 @@ app.all('/*', function (req, res, next) {
 });
 
 app.post('/login', function (req, res) {
-    var user_name = req.body.user;
+    var user = req.body.user;
     var password = req.body.password;
     var nano = require('nano')('http://localhost:5984');
 
-    nano.auth(user_name, password, function (err, body, headers) {
+    nano.auth(user, password, function (err, body, headers) {
         var auth;
         if (err) {
             res.status(500).send(err);
@@ -53,35 +53,17 @@ app.post('/login', function (req, res) {
             res.cookie('AuthSession', cookieObject.AuthSession, {
                 expires: moment().add(1, 'years').toDate()
             });
-            res.cookie('user', user_name);
+            res.cookie('user', user);
             res.end(JSON.stringify({success: true}));
         }
     });
 
 });
 app.post('/registration', function (req, res) {
-    var user_name = req.body.user;
+    var user = req.body.user;
     var password = req.body.password;
     var propName = 'user';
-    register(req, res, user_name, password, propName);
-});
-
-app.post('/sendMessage', function (req, res) {
-    if(req.headers.cookie){
-        var cookieObject = cookie.parse(req.headers.cookie);
-    };
-    if (cookieObject && cookieObject.visitor ) {
-        var user_name = cookieObject.visitor;
-        var nano = require('nano')('http://localhost:5984');
-        nano.auth('admin', 'abc123', function (err, body, headers) {
-            if (err) {
-                res.status(500).send('Failed to login to couchdb.');
-            } else {
-                var auth = headers['set-cookie'][0];
-                var authenticated = require('nano')({url: 'http://localhost:5984', cookie: auth});
-                addVisitorBase(authenticated, user_name, req, res)
-            }});
-    };
+    register(req, res, user, password, propName);
 });
 
 app.post('/startWR', function (req, res) {
@@ -89,19 +71,19 @@ app.post('/startWR', function (req, res) {
         require('crypto').randomBytes(8, function (ex, buf2) {
             var token1 = buf1.toString('hex');
             var token2 = buf1.toString('hex');
-            var user_name = "a" + token1;
+            var user = "a" + token1;
             var propName = 'anonymous';
-            register(req, res, user_name, token2, propName);
+            register(req, res, user, token2, propName);
         });
     });
 });
 
-function addToUsers(authenticated, user_name, password) {
+function addToUsers(authenticated, user, password) {
     var users = authenticated.use('_users');
     var q = require('q');
     var promise = q.nfcall(users.insert, {
-        "_id": "org.couchdb.user:" + user_name,
-        "name": user_name,
+        "_id": "org.couchdb.user:" + user,
+        "name": user,
         "type": "user",
         "roles": ['user'],
         "password": password
@@ -109,13 +91,13 @@ function addToUsers(authenticated, user_name, password) {
     return promise;
 };
 
-function addToAdmin(authenticated, user_name, password) {
+function addToAdmin(authenticated, user, password) {
     var fiveoclockadmin = authenticated.use('fiveoclockadmin');
     var q = require('q');
     var promise = q.nfcall(fiveoclockadmin.insert, {
-        "_id": user_name,
-        "name": user_name,
-        "db": user_name + "visitor",
+        "_id": user,
+        "name": user,
+        "db": user + "visitor",
         "type": "user",
         "usertype": "visitor",
         "password": password
@@ -123,36 +105,57 @@ function addToAdmin(authenticated, user_name, password) {
     return promise;
 }
 
-function addVisitorBase(authenticated, user_name, req, res) {
+function addVisitorBase(authenticated, user, req, res) {
     if(req.headers.cookie){
         var cookieObject = cookie.parse(req.headers.cookie);
     };
     if (cookieObject && cookieObject.nameAgendaDB) {
         var nameAgendaDB = cookieObject.nameAgendaDB;
         var q = require('q');
-        var replicatePromise = q.nfcall(authenticated.db.replicate,"visitorethalon",user_name + "visitor",{create_target: true});
+        var replicatePromise = q.nfcall(authenticated.db.replicate,"visitorethalon",user + "visitor",{create_target: true});
         replicatePromise.then(function (body) {
-            res.end(user_name + "visitor");
+            res.end(user);
         }, function (err) {
             res.status(500).send(err);
-        })
-
-        //replicatePromise.then(function (body) {
-        //    q.nfcall(authenticated.db.replicate, user_name + "visitor", nameAgendaDB).then(function (body) {
-        //        res.end();
-        //    });
-        //}, function (err) {
-        //    res.status(500).send(err);
-        //});
+        });       
     }
     else {
         res.status(500).send("not found cookies");
-    }
-}
+    };
+};
+
+function vis_coachRepl(authenticated, user,coach) {
+    var q = require('q');
+    var promise = q.nfcall(authenticated.db.replicate, user + "visitor", coach, {
+        continuous: true
+    });
+    return promise;
+};
+
+function coach_visRepl(authenticated, user,coach) {
+    var q = require('q');
+    var promise = q.nfcall(authenticated.db.replicate, coach, user + "visitor", {
+        filter: 'Manager/messageSchedule',
+        continuous: true
+    });
+    return promise;
+};
 
 app.post('/registrationVisitor', function (req, res) {
-    var user_name = req.body.user;
+    if(req.headers.cookie){
+        var cookieObject = cookie.parse(req.headers.cookie);
+    };
+    if (cookieObject && cookieObject.user) {
+        var coach = cookieObject.user;
+    }
+    else if(cookieObject && cookieObject.anonymous){
+        var coach = cookieObject.anonymous;
+    }
+    var user = req.body.user;
     var password = req.body.password;
+    if(!password){
+        password = user;
+    }
     var nano = require('nano')('http://localhost:5984');
     nano.auth('admin', 'abc123', function (err, body, headers) {
         if (err) {
@@ -160,9 +163,17 @@ app.post('/registrationVisitor', function (req, res) {
         } else {
             var auth = headers['set-cookie'][0];
             var authenticated = require('nano')({url: 'http://localhost:5984', cookie: auth});
-            addToUsers(authenticated, user_name, password).then(function (body) {
-                addToAdmin(authenticated, user_name, password).then(function (body) {
-                    addVisitorBase(authenticated, user_name, req, res).then(function (body) {
+            addToUsers(authenticated, user, password).then(function (body) {
+                addToAdmin(authenticated, user, password).then(function (body) {
+                    addVisitorBase(authenticated, user, req, res).then(function (body) {
+                        vis_coachRepl(authenticated, user,coach).then(function (body) {
+                            coach_visRepl(authenticated, user,coach).then(function (body) {
+                            }, function (err) {
+                                res.status(500).send(err);
+                            })
+                        }, function (err) {
+                            res.status(500).send(err);
+                        })
                     }, function (err) {
                         res.status(500).send(err);
                     })

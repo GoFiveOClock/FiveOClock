@@ -27,12 +27,14 @@ define(['jquery','angular','pouchDb', 'cookies', 'json!localization/en.json', 'j
                     user: user,
                     password: pass
                 }, {withCredentials: true}).then(function (data) {
-                    $.get('http://localhost:5984/' + data.data).then(function () {
-                        pouchDb.replicate('http://localhost:5984/' + data.data, data.data).then(function (result) {
-                            pouchDb.replicate(data.data, 'http://localhost:5984/' + data.data).then(function (result) {
+                    var nameVisitorBase = data.data + "visitor"
+                    $.get('http://localhost:5984/' + nameVisitorBase).then(function () {
+                        pouchDb.replicate('http://localhost:5984/' + nameVisitorBase, nameVisitorBase).then(function (result) {
+                            pouchDb.replicate(nameVisitorBase, 'http://localhost:5984/' + nameVisitorBase).then(function (result) {
                                 if (result.ok) {
-                                    pouchDb.replicate(data.data, 'http://localhost:5984/' + data.data, {live: true});
-                                    cookies.set('pouchDbVisitor', data.data);
+                                    pouchDb.replicate(nameVisitorBase, 'http://localhost:5984/' + nameVisitorBase, {live: true});
+                                    cookies.set('visitor', data.data);
+                                    cookies.set('pouchDbVisitor', nameVisitorBase);
                                     window.location = 'http://localhost:5984/' + dbAgenda + 'public' + '/_design/Agenda/index.html#/Meetings';
                                 }
                                 ;

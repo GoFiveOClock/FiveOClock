@@ -17,14 +17,17 @@
 
         return CouchEntityFactory({ db: db, $q: $q });
 
-        function get(url, params,dbUrl) {
+        function get(url, params) {
             if(url == "Views/message"){
                 var pouchDbVisitor = cookies.get('pouchDbVisitor');
                 if(pouchDbVisitor){
                     var otherClientDb = new pouchDb(pouchDbVisitor);
                     return otherClientDb.query(url, params).then(applyResult, function(err){
-                        a=err;
+                        console.log(err);
                     });
+                }
+                else{
+                    return clientDb.query(url, params).then(applyResult);
                 }
             }
             else{
@@ -37,7 +40,7 @@
         }
 
         function post(url, data) {
-            if(url){
+            if(url.dbUrl){
                 var pouchDbVisitor = cookies.get('pouchDbVisitor');
                 if(pouchDbVisitor) {
                     var otherClientDb = new pouchDb(pouchDbVisitor);
