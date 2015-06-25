@@ -60,7 +60,25 @@ require(['jquery', 'angular', 'pouchDb', 'cookies'], function ($, angular, pouch
                 angular.bootstrap('body', ['fiveOClock']);
             });
         };
-        //pouchDB.debug.enable('*');
+
+        var nameVisitorBase = cookies.get('couchDbVisitor');
+        if(nameVisitorBase){
+            $.get('http://localhost:5984/' + nameVisitorBase).then(function () {
+                pouchDB.replicate('http://localhost:5984/' + nameVisitorBase, nameVisitorBase).then(function (result) {
+                    pouchDB.replicate(nameVisitorBase, 'http://localhost:5984/' + nameVisitorBase).then(function (result) {
+                        if (result.ok) {
+                            pouchDB.replicate(nameVisitorBase, 'http://localhost:5984/' + nameVisitorBase, {live: true});
+                        };
+                    });
+                }, function (err) {
+                    console.log(err);
+                });
+            }, function (err) {
+                console.log(err);
+            });
+        }
+
+
         var dbPath = window.location.origin + '/' + window.location.pathname.split('/')[1];
         var dbName = window.location.pathname.split('/')[1];
         $.get(dbPath).then(function () {

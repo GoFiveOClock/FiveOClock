@@ -1,5 +1,5 @@
-define(['angular', "moment", "jquery", 'editMeetingForm', 'text!app/directives/PopoverTemplate.html'
-], function (angular, moment, $, editMeetingForm, popoverTemplate) {
+define(['angular', "moment", "jquery",'cookies', 'editMeetingForm', 'text!app/directives/PopoverTemplate.html'
+], function (angular, moment, $, cookies, editMeetingForm, popoverTemplate) {
     return angular.module('fiveOClock').directive('agendaSlot', function (Meeting, MeetingRequest, ConfirmationService, Contact,Message) {
         return {
             templateUrl: 'app/directives/agendaSlot.html',
@@ -55,10 +55,11 @@ define(['angular', "moment", "jquery", 'editMeetingForm', 'text!app/directives/P
                 };
                 $scope.confirmRequest = function (objRequest) {
                     $scope.$emit('showMessages',objRequest.request.sessionId);
+                    cookies.set('visitor', objRequest.request.visitor);
                     objRequest.slot.editmode = true;
                     writtenInScope(moment(objRequest.request.start).format('HH:mm'),  moment(objRequest.request.end).format('HH:mm'),"",
                         objRequest.request);
-                    Contact.byVisitor({visitor:objRequest.request.visitor }).then(function (response) {
+                    Contact.byVisitor({visitor:objRequest.request.visitor}).then(function (response) {
                         if(response.length){
                             $scope.editingModel.text = response[0].name;
                         }

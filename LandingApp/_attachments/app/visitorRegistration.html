@@ -19,7 +19,7 @@
         </div>
         <div class="btn-group" style="width: 286px;margin-top: 15px" role="group" aria-label="...">
             <button class="btn btn-default" id="registration" ng-bind="localization.registrationButton"
-                    ng-click="registration()"></button>
+                    ng-click="registration()" ng-model="checked" ng-disabled="checked"></button>
             <button class="btn btn-default" id="login" ng-click="login()" ng-bind="localization.loginButton"></button>
         </div>
     </form>

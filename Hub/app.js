@@ -57,8 +57,8 @@ app.post('/login', function (req, res) {
             res.end(JSON.stringify({success: true}));
         }
     });
-
 });
+
 app.post('/registration', function (req, res) {
     var user = req.body.user;
     var password = req.body.password;
@@ -113,11 +113,6 @@ function addVisitorBase(authenticated, user, req, res) {
         var nameAgendaDB = cookieObject.nameAgendaDB;
         var q = require('q');
         var replicatePromise = q.nfcall(authenticated.db.replicate,"visitorethalon",user + "visitor",{create_target: true});
-        replicatePromise.then(function (body) {
-            res.end(user);
-        }, function (err) {
-            res.status(500).send(err);
-        });       
     }
     else {
         res.status(500).send("not found cookies");
@@ -134,11 +129,12 @@ function vis_coachRepl(authenticated, user,coach) {
 
 function coach_visRepl(authenticated, user,coach) {
     var q = require('q');
-    var promise = q.nfcall(authenticated.db.replicate, coach, user + "visitor", {
+    var promise = q.nfcall(authenticated.db.replicate, {"url":'http://localhost:5984/' + coach,"headers":{"visitor":user}}, user + "visitor", {
         filter: 'Manager/messageSchedule',
         continuous: true
     });
     return promise;
+
 };
 
 app.post('/registrationVisitor', function (req, res) {
@@ -164,28 +160,43 @@ app.post('/registrationVisitor', function (req, res) {
             var auth = headers['set-cookie'][0];
             var authenticated = require('nano')({url: 'http://localhost:5984', cookie: auth});
             addToUsers(authenticated, user, password).then(function (body) {
-                addToAdmin(authenticated, user, password).then(function (body) {
-                    addVisitorBase(authenticated, user, req, res).then(function (body) {
-                        vis_coachRepl(authenticated, user,coach).then(function (body) {
-                            coach_visRepl(authenticated, user,coach).then(function (body) {
-                            }, function (err) {
-                                res.status(500).send(err);
-                            })
-                        }, function (err) {
-                            res.status(500).send(err);
-                        })
-                    }, function (err) {
-                        res.status(500).send(err);
-                    })
-                }, function (err) {
-                    res.status(500).send(err);
-                })
-            }, function (error) {
+                return addToAdmin(authenticated, user, password);
+            }).then(function (body) {
+                return addVisitorBase(authenticated, user, req, res);
+            }).then(function(body){
+                return coach_visRepl(authenticated, user,coach);
+            }).then(function (body) {
+                return vis_coachRepl(authenticated, user,coach);
+            }).then(function (body) {
+                return requestDbUser(authenticated, user,'visitor');
+            }).then(function (body) {
+                authUser(nano,res,user,password);
+            }).catch(function (err) {
                 res.status(500).send(err);
             });
         };
     });
 });
+
+app.post('/visitorLogin', function (req, res) {
+    var user = req.body.user;
+    var password = req.body.password;
+    var nano = require('nano')('http://localhost:5984');
+
+    authUser(nano,res,user,password);
+});
+
+function authUser(nano,res,user,password){
+    nano.auth(user, password, function (err, body, headers) {
+        var auth;
+        auth = headers['set-cookie'][0];
+        var cookieObject = cookie.parse(auth);
+        res.cookie('AuthSession', cookieObject.AuthSession, {
+            expires: moment().add(1, 'years').toDate()
+        });
+        res.end(user);
+    });
+}
 function addUserBase(authenticated, user, req, res) {
     if(req.headers.cookie){
         var cookieObject = cookie.parse(req.headers.cookie);
@@ -208,7 +219,7 @@ function agendaRepl(authenticated, user) {
     return promise;
 };
 
-function userRepl(authenticated, user) {
+function user_publRepl(authenticated, user) {
     var q = require('q');
     var promise = q.nfcall(authenticated.db.replicate, user, user + "public", {
         filter: 'Manager/publicSchedule',
@@ -217,7 +228,7 @@ function userRepl(authenticated, user) {
     return promise;
 };
 
-function returnUser(authenticated, user) {
+function publ_userRepl(authenticated, user) {
     var q = require('q');
     var promise = q.nfcall(authenticated.db.replicate, user + "public", user, {
         filter: 'Agenda/publicSchedule',
@@ -226,10 +237,16 @@ function returnUser(authenticated, user) {
     return promise;
 };
 
-function requestDbUser(authenticated, user) {
+function requestDbUser(authenticated, user, visitor) {
     var q = require('q');
+    if(visitor){
+        var  dbUser =  user + 'visitor' ;
+    }
+    else{
+        var  dbUser =  user;
+    }
     var promise = q.nfcall(authenticated.request, {
-        db: user,
+        db: dbUser,
         method: 'PUT',
         path: '/_security',
         body: {
@@ -276,33 +293,21 @@ function register(req, res, user, password, propName) {
                 auth = headers['set-cookie'][0];
                 var authenticated = require('nano')({url: 'http://localhost:5984', cookie: auth});
                 addToUsers(authenticated, user, password).then(function (body) {
-                    addUserBase(authenticated, user, req, res).then(function (body) {
-                        agendaRepl(authenticated, user).then(function (body) {
-                            userRepl(authenticated, user).then(function (body) {
-                                returnUser(authenticated, user).then(function (body) {
-                                        var promiseRequestUser = requestDbUser(authenticated, user);
-                                        promiseRequestUser.then(function (body) {
-                                            setCookies(nano, user, password, res, req,propName);
-                                        }, function (err) {
-                                            res.status(500).send(err);
-                                        });
-                                    }, function (err) {
-                                        res.status(500).send(err);
-                                    });
-                                }, function (err) {
-                                    res.status(500).send(err);
-                                });
-                        }, function (err) {
-                            res.status(500).send(err);
-                        });
-                    }, function (error) {
-                        res.status(500).send(err);
-                    });
-                }, function (error) {
+                    return addUserBase(authenticated, user, req, res);
+                }).then(function(body){
+                    return agendaRepl(authenticated, user);
+                }).then(function(body){
+                    return user_publRepl(authenticated, user);
+                }).then(function(body){
+                    return publ_userRepl(authenticated, user);
+                }).then(function(body){
+                    return requestDbUser(authenticated, user);
+                }).then(function(body){
+                    setCookies(nano, user, password, res, req,propName);
+                }).catch(function (err) {
                     res.status(500).send(err);
                 });
-            }
-            ;
+            };
         });
 };
 

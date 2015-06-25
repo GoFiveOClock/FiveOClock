@@ -19,8 +19,8 @@
 
         function get(url, params) {
             if(url == "Views/message"){
-                var pouchDbVisitor = cookies.get('pouchDbVisitor');
-                if(pouchDbVisitor){
+                var pouchDbVisitor = cookies.get('couchDbVisitor');
+                if(pouchDbVisitor && clientDb._db_name.indexOf("public") !== -1){
                     var otherClientDb = new pouchDb(pouchDbVisitor);
                     return otherClientDb.query(url, params).then(applyResult, function(err){
                         console.log(err);
@@ -41,8 +41,8 @@
 
         function post(url, data) {
             if(url.dbUrl){
-                var pouchDbVisitor = cookies.get('pouchDbVisitor');
-                if(pouchDbVisitor) {
+                var pouchDbVisitor = cookies.get('couchDbVisitor');
+                if(pouchDbVisitor && clientDb._db_name.indexOf("public") !== -1) {
                     var otherClientDb = new pouchDb(pouchDbVisitor);
                     return otherClientDb.post(data).then(applyResult);
                 }

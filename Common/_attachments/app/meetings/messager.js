@@ -15,8 +15,9 @@
             },
             controller: function ($scope,$http) {
                 $scope.addMessage = function(){
-                  if(cookies.get('pouchDbVisitor')) {
-                      Message.post({text:this.textMessage, sessionId:$scope.currentsessionid, visitor:$scope.visitor, date:moment().format("YYYY.MM.DD   HH:mm") }).then(function (data) {
+                  var dbName = window.location.pathname.split('/')[1];
+                  if(cookies.get('couchDbVisitor') || dbName.indexOf("public") == -1) {
+                      Message.post({text:this.textMessage, sessionId:$scope.currentsessionid, visitor: cookies.get('visitor'), date:moment().format("YYYY.MM.DD   HH:mm") }).then(function (data) {
                           $scope.messages.push(data);
                       });
                   }
@@ -52,17 +53,6 @@
                       }).catch(function (data) {
                       });
                   }
-                    //Message.post({text:this.textMessage, sessionId:$scope.currentsessionid, visitor:$scope.visitor, date:moment().format("YYYY.MM.DD   HH:mm") }).then(function (data) {
-                    //    $scope.messages.push(data);
-                    //    var nameAgendaDB = window.location.href.substring(7).substring(window.location.href.substring(7).indexOf("/")+1).substring(0,window.location.href.substring(7).substring(window.location.href.substring(7).indexOf("/")+1).indexOf("/"));
-                    //    cookies.set('nameAgendaDB',nameAgendaDB);
-                    //    $http.post("http://localhost:3000/sendMessage",{oldpathname:window.location.href},{withCredentials:true}).then(function (data) {
-                    //        //localStorage.setItem("userName", data.data);
-                    //        //window.location = 'http://localhost:5984/' + data.data + '/_design/Manager/index.html#/Contacts';
-                    //    }).catch(function (data) {
-                    //    });
-                    //});
-
                 };
                 $scope.closeMessages = function(){
                     $scope.$emit('hideMessages');

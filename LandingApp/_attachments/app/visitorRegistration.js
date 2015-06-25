@@ -2,6 +2,7 @@ define(['jquery','angular','pouchDb', 'cookies', 'json!localization/en.json', 'j
     return angular.module('fiveOClock').controller('visitorRegistration',
         function ($scope, $q, $rootScope, $http, $timeout) {
             var lang = cookies.get('lang');
+            var user, pass;
             $scope.localization = lang ? (lang == 'en' ? en : ru) : ru;
             $scope.lang = function(lang){
                 if(lang == 'ru'){
@@ -21,33 +22,30 @@ define(['jquery','angular','pouchDb', 'cookies', 'json!localization/en.json', 'j
                     return;
                 };
                 var dbAgenda = cookies.get('nameAgendaDB');
-
-
                 $http.post("http://localhost:3000/registrationVisitor", {
                     user: user,
                     password: pass
                 }, {withCredentials: true}).then(function (data) {
-                    var nameVisitorBase = data.data + "visitor"
-                    $.get('http://localhost:5984/' + nameVisitorBase).then(function () {
-                        pouchDb.replicate('http://localhost:5984/' + nameVisitorBase, nameVisitorBase).then(function (result) {
-                            pouchDb.replicate(nameVisitorBase, 'http://localhost:5984/' + nameVisitorBase).then(function (result) {
-                                if (result.ok) {
-                                    pouchDb.replicate(nameVisitorBase, 'http://localhost:5984/' + nameVisitorBase, {live: true});
-                                    cookies.set('visitor', data.data);
-                                    cookies.set('pouchDbVisitor', nameVisitorBase);
-                                    window.location = 'http://localhost:5984/' + dbAgenda + 'public' + '/_design/Agenda/index.html#/Meetings';
-                                }
-                                ;
-                            });
-                        }, function (err) {
-                            console.log(err);
-                        });
-                    }, function (err) {
-                        console.log(err);
-                    });
+                    cookies.set('visitor', data.data);
+                    cookies.set('couchDbVisitor',  data.data + 'visitor');
+                    window.location = 'http://localhost:5984/' + dbAgenda + 'public' + '/_design/Agenda/index.html#/Meetings';
                 }).catch(function (data) {
                 });
-
+            };
+            $scope.login = function () {
+                user = $scope.name;
+                pass = $scope.password;
+                user = user.toLowerCase();
+                var dbAgenda = cookies.get('nameAgendaDB');
+                $http.post("http://localhost:3000/visitorLogin",{user: user,password: pass},{withCredentials:true}).then(function (data) {
+                    cookies.set('visitor', data.data);
+                    cookies.set('couchDbVisitor',  data.data + 'visitor');
+                    window.location = 'http://localhost:5984/' + dbAgenda + 'public' + '/_design/Agenda/index.html#/Meetings';
+                }).catch(function (data) {
+                    if (data.data.statusCode == 401) {
+                        $scope.warningLogin = true;
+                    }
+                });
             };
         })
 })

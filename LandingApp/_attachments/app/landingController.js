@@ -18,7 +18,7 @@
                 user = $scope.name;
                 pass = $scope.password;
                 user = user.toLowerCase();
-                $http.post("http://localhost:3000/login",{user: user,password: pass,oldpathname:window.location.href},{withCredentials:true}).then(function (user) {
+                $http.post("http://localhost:3000/login",{user: user,password: pass},{withCredentials:true}).then(function (user) {
                     window.location = 'http://localhost:5984/' + user + '/_design/Manager/index.html#/Contacts';
                 }).catch(function (data) {
                     if (data.data.statusCode == 401) {
@@ -35,7 +35,7 @@
                     $scope.warningLoginLat = true;
                     return;
                 };
-                $http.post("http://localhost:3000/registration",{ user: user,password: pass,oldpathname:window.location.href},{withCredentials:true}).then(function (data) {
+                $http.post("http://localhost:3000/registration",{ user: user,password: pass},{withCredentials:true}).then(function (data) {
                     window.location = 'http://localhost:5984/' + user + '/_design/Manager/index.html#/Contacts';
                     cookies.set('anonymous', undefined);
                 }).catch(function (data) {
@@ -55,7 +55,7 @@
                 }
             };
             $scope.start_without_registration = function () {
-                $http.post("http://localhost:3000/startWR",{oldpathname:window.location.href},{withCredentials:true}).then(function (data) {
+                $http.post("http://localhost:3000/startWR",{withCredentials:true}).then(function (data) {
                     localStorage.setItem("userName", data.data);
                     window.location = 'http://localhost:5984/' + data.data + '/_design/Manager/index.html#/Contacts';
                 }).catch(function (data) {

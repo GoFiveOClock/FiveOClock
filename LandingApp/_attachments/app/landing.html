@@ -22,7 +22,7 @@
             <button class="btn btn-default" id="login" ng-click="login()" ng-bind="localization.loginButton"></button>
         </div>
     </form>
-    <button ng-if="!anonymous" class="btn btn-default" ng-click="start_without_registration()" ng-bind="localization.start_without_registration"></button>
+    <button ng-if="!anonymous" class="btn btn-default"  ng-model="checked" ng-disabled="checked" ng-click="start_without_registration()" ng-bind="localization.start_without_registration"></button>
     <button ng-if="anonymous" class="btn btn-default" ng-click="continue_without_registration()" ng-bind="localization.continue_without_registration"></button>
 </div>
 
