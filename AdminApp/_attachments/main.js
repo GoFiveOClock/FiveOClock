@@ -13,7 +13,9 @@
         'text': 'plugins/text',
         'json': 'plugins/json',
 		'confirmationService' : '../Common/app/confirmationService',
-        'entities' : '../Common/entities'
+        'entities' : '../Common/entities',
+        'CouchEntity': '../Common/CouchOrm/CouchEntity',
+        'CouchEntityFactory': '../Common/CouchOrm/CouchEntityFactory'
     },
     shim: {
         'angular': {
@@ -35,13 +37,13 @@
             exports: 'angular'
         }
     },
-    deps: ['angular', 'angular.route', 'ui-bootstrap', 'bootstrap']
+    deps: ['angular', 'angular.route', 'ui-bootstrap', 'bootstrap','CouchEntity']
 });
 
-require(['jquery', 'angular'], function ($, angular) {
+require(['jquery', 'angular','pouchDb'], function ($, angular,pouchDB) {
 
 
-    var app = angular.module('fiveOClock', ['ngRoute']);
+    var app = angular.module('fiveOClock', ['ngRoute','angularCouch']);
     app.config(function($httpProvider) {
         $httpProvider.defaults.useXDomain = true;
         delete $httpProvider.defaults.headers.common['X-Requested-With'];
@@ -52,6 +54,24 @@ require(['jquery', 'angular'], function ($, angular) {
                 angular.bootstrap('body', ['fiveOClock']);
             });
         };
-        startApplication();
+
+        var dbPath = window.location.origin + '/' + window.location.pathname.split('/')[1];
+        var dbName = window.location.pathname.split('/')[1];
+        $.get(dbPath).then(function () {
+            pouchDB.replicate(dbPath, dbName).then(function (result) {
+                pouchDB.replicate(dbName, dbPath).then(function (result) {
+                    if (result.ok) {
+                        pouchDB.replicate(dbName, dbPath, {live: true});
+                        startApplication();
+                    }
+                });
+            });
+        }, function (err) {
+            if(err.status == 401){
+                window.location = cookies.get('hubUrl');
+            } else {
+                startApplication();
+            }
+        });
     });
 });

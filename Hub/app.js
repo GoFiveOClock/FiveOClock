@@ -91,15 +91,14 @@ function addToUsers(authenticated, user, password) {
     return promise;
 };
 
-function addToAdmin(authenticated, user, password) {
+function addToAdmin(authenticated, user, password,usertype) {
     var fiveoclockadmin = authenticated.use('fiveoclockadmin');
     var q = require('q');
     var promise = q.nfcall(fiveoclockadmin.insert, {
         "_id": user,
         "name": user,
-        "db": user + "visitor",
         "type": "user",
-        "usertype": "visitor",
+        "usertype": usertype,
         "password": password
     });
     return promise;
@@ -129,7 +128,9 @@ function vis_coachRepl(authenticated, user,coach) {
 
 function coach_visRepl(authenticated, user,coach) {
     var q = require('q');
-    var promise = q.nfcall(authenticated.db.replicate, {"url":'http://localhost:5984/' + coach,"headers":{"visitor":user}}, user + "visitor", {
+    var encoded = new Buffer('admin:abc123').toString('base64');
+    //var encoded = btoa('abc123');
+    var promise = q.nfcall(authenticated.db.replicate, {"url":'http://localhost:5984/' + coach,"headers":{Authorization:'Basic '+encoded,visitor: user}}, user + "visitor", {
         filter: 'Manager/messageSchedule',
         continuous: true
     });
@@ -160,7 +161,7 @@ app.post('/registrationVisitor', function (req, res) {
             var auth = headers['set-cookie'][0];
             var authenticated = require('nano')({url: 'http://localhost:5984', cookie: auth});
             addToUsers(authenticated, user, password).then(function (body) {
-                return addToAdmin(authenticated, user, password);
+                return addToAdmin(authenticated, user, password,'visitor');
             }).then(function (body) {
                 return addVisitorBase(authenticated, user, req, res);
             }).then(function(body){
@@ -293,6 +294,8 @@ function register(req, res, user, password, propName) {
                 auth = headers['set-cookie'][0];
                 var authenticated = require('nano')({url: 'http://localhost:5984', cookie: auth});
                 addToUsers(authenticated, user, password).then(function (body) {
+                    return addToAdmin(authenticated, user, password,'coach');
+                }).then(function (body) {
                     return addUserBase(authenticated, user, req, res);
                 }).then(function(body){
                     return agendaRepl(authenticated, user);
