@@ -130,7 +130,7 @@ function coach_visRepl(authenticated, user,coach) {
     var q = require('q');
     var encoded = new Buffer('admin:abc123').toString('base64');
     //var encoded = btoa('abc123');
-    var promise = q.nfcall(authenticated.db.replicate, {"url":'http://localhost:5984/' + coach,"headers":{Authorization:'Basic '+encoded,visitor: user}}, user + "visitor", {
+    var promise = q.nfcall(authenticated.db.replicate, {"url":'http://localhost:5984/' + coach,"headers":{Authorization:'Basic '+encoded,Visitor: user}}, user + "visitor", {
         filter: 'Manager/messageSchedule',
         continuous: true
     });

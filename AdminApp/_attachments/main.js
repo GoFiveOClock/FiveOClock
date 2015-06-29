@@ -15,7 +15,8 @@
 		'confirmationService' : '../Common/app/confirmationService',
         'entities' : '../Common/entities',
         'CouchEntity': '../Common/CouchOrm/CouchEntity',
-        'CouchEntityFactory': '../Common/CouchOrm/CouchEntityFactory'
+        'CouchEntityFactory': '../Common/CouchOrm/CouchEntityFactory',
+        'angularjs-dropdown-multiselect':'app/angularjs-dropdown-multiselect'
     },
     shim: {
         'angular': {

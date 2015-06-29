@@ -1,24 +1,28 @@
 <body>
+<div style="margin-top: 10px">
+    <div class="col-lg-4 col-lg-offset-2">
+        <ul class="list-group">
+            <B>Coaches</B>
+            <li class="list-group-item" ng-repeat="coach in coaches">
+                {{coach.name}}
+                <button class="btn btn-danger pull-right" style="margin-top: -7px;margin-left: 1px;" ng-click="deleteButton(coach)"> DEL</button>
+                <div class="pull-right" style="margin-top: -7px;" ng-dropdown-multiselect="" options= coach.bases
+                     selected-model="example1model"></div>
+            </li>
 
-<div class="col-lg-2 col-lg-offset-3">
-    <ul class="list-group">
-        <B>Coachers</B>
-        <li class="list-group-item">Cras justo odio</li>
-        <li class="list-group-item">Dapibus ac facilisis in</li>
-        <li class="list-group-item">Morbi leo risus</li>
-        <li class="list-group-item">Porta ac consectetur ac</li>
-        <li class="list-group-item">Vestibulum at eros</li>
-    </ul>
-</div>
-<div class="col-lg-2 col-lg-offset-1">
-    <ul class="list-group">
-        <B>Visitors</B>
-        <li class="list-group-item">Cras justo odio</li>
-        <li class="list-group-item">Dapibus ac facilisis in</li>
-        <li class="list-group-item">Morbi leo risus</li>
-        <li class="list-group-item">Porta ac consectetur ac</li>
-        <li class="list-group-item">Vestibulum at eros</li>
-    </ul>
+        </ul>
+    </div>
+    <div class="col-lg-4 col-lg-offset-1">
+        <ul class="list-group">
+            <B>Visitors</B>
+            <li class="list-group-item" ng-repeat="visitor in visitors">
+                {{visitor.name}}
+                <button class="btn btn-danger pull-right" style="margin-top: -7px;margin-left: 1px;" ng-click="deleteButton(visitor)"> DEL</button>
+                <div class="pull-right" style="margin-top: -7px;" ng-dropdown-multiselect="" options="visitor.bases"
+                     selected-model="example1model"></div>
+            </li>
+        </ul>
+    </div>
 </div>
 
 </body>

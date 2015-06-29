@@ -1,4 +1,4 @@
-﻿define(['angular', 'app/adminController','entities/users'], function (angular, adminController,user) {
+﻿define(['angular', 'app/adminController','entities/user'], function (angular, adminController,user) {
     angular.module('fiveOClock')
         .config(function ($routeProvider) {
             $routeProvider.when('/',
