@@ -4,9 +4,17 @@
         <ul class="list-group">
             <B>Coaches</B>
             <li class="list-group-item" ng-repeat="coach in coaches">
-                {{coach.name}}
-                <button class="btn btn-danger pull-right" style="margin-top: -7px;margin-left: 1px;" ng-click="deleteButton(coach)"> DEL</button>
-                <div class="pull-right" style="margin-top: -7px;" ng-dropdown-multiselect="" options= coach.bases
+                <div class="input-group">
+                      <span class="input-group-addon">
+                        <input type="checkbox" aria-label="...">
+                      </span>
+                    <label class="form-control">{{coach.name}}</label>
+                </div>
+
+                <button class="btn btn-danger pull-right" style="margin-top: -7px;margin-left: 1px;"
+                        ng-click="deleteButton(coach)"> DEL
+                </button>
+                <div class="pull-right" style="margin-top: -7px;" ng-dropdown-multiselect="" options=coach.bases
                      selected-model="example1model"></div>
             </li>
 

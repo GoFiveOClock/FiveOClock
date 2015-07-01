@@ -277,6 +277,9 @@
                             $scope.selectedModel.push(finalObj);
                             $scope.externalEvents.onItemSelect(finalObj);
                         }
+
+                        $scope.$emit("dropdownevent",$scope.selectedModel);
+
                         if ($scope.settings.closeOnSelect) $scope.open = false;
                     };
 
