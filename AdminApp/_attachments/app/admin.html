@@ -1,35 +1,74 @@
 <body>
-<div style="margin-top: 10px">
-    <div class="col-lg-4 col-lg-offset-2">
-        <ul class="list-group">
-            <B>Coaches</B>
-            <li class="list-group-item" ng-repeat="coach in coaches">
-                <div class="input-group">
-                      <span class="input-group-addon">
-                        <input type="checkbox" aria-label="...">
-                      </span>
-                    <label class="form-control">{{coach.name}}</label>
-                </div>
 
-                <button class="btn btn-danger pull-right" style="margin-top: -7px;margin-left: 1px;"
-                        ng-click="deleteButton(coach)"> DEL
-                </button>
-                <div class="pull-right" style="margin-top: -7px;" ng-dropdown-multiselect="" options=coach.bases
-                     selected-model="example1model"></div>
-            </li>
-
-        </ul>
+<div class="col-lg-offset-2" style="margin-top: 20px">
+    <div style="margin-left: 15px;">
+        <input type="checkbox" ng-click="allClick()">
+        <span>check/uncheck all</span>
+        <button class="btn btn-danger" ng-click="removeSelected()" style="margin-left: 20px;">remove selected</button>
     </div>
-    <div class="col-lg-4 col-lg-offset-1">
-        <ul class="list-group">
-            <B>Visitors</B>
-            <li class="list-group-item" ng-repeat="visitor in visitors">
-                {{visitor.name}}
-                <button class="btn btn-danger pull-right" style="margin-top: -7px;margin-left: 1px;" ng-click="deleteButton(visitor)"> DEL</button>
-                <div class="pull-right" style="margin-top: -7px;" ng-dropdown-multiselect="" options="visitor.bases"
-                     selected-model="example1model"></div>
-            </li>
-        </ul>
+
+
+    <div style="margin-top: 10px">
+        <div class="col-lg-5">
+            <ul class="list-group">
+                <B>Coaches</B>
+                <li class="list-group-item" ng-repeat="coach in coaches" style="position: relative">
+
+                    <div style="position: absolute;top: 1px;">
+                        <input type="checkbox" ng-model="coach.checked">
+                        <span>{{coach.name}}</span>
+                    </div>
+
+                    <button class="btn btn-danger" style="position: absolute; right: 3px;top: 1px;"
+                            ng-click="deleteButton(coach)"> DEL
+                    </button>
+
+                    <div style="margin-left: 30px; margin-top: 10px;">
+                        <a ng-repeat="baseUrl in coach.baseUrls" href={{baseUrl}}
+                           style="margin-left: 5px ;font-size: 11px">
+                            {{baseUrl}}
+                            <br>
+                        </a>
+                    </div>
+
+
+                </li>
+
+            </ul>
+        </div>
+        <div class="col-lg-5 col-lg-offset-1">
+            <ul class="list-group">
+                <B>Visitors</B>
+                <li class="list-group-item" ng-repeat="visitor in visitors">
+
+                    <div style="position: absolute;top: 1px;">
+                        <input type="checkbox"ng-model="visitor.checked">
+                        <span>{{visitor.name}}</span>
+                    </div>
+
+                    <button class="btn btn-danger" style="position: absolute; right: 3px;top: 1px;"
+                            ng-click="deleteButton(visitor)"> DEL
+                    </button>
+
+                    <div style="margin-left: 30px;  margin-top: 10px;">
+                        <a ng-repeat="baseUrl in visitor.baseUrls" href={{baseUrl}}
+                           style="margin-left: 5px ;font-size: 11px">
+                            {{baseUrl}}
+                            <br>
+                        </a>
+                    </div>
+                    <!--<input type="checkbox" aria-label="...">-->
+                    <!--<span>{{visitor.name}}</span>-->
+                    <!--<span style="margin-left: 15px">-->
+                    <!--<a ng-repeat="baseUrl in visitor.baseUrls" href={{baseUrl}} style="margin-left: 5px ;font-size: 11px">-->
+                    <!--{{baseUrl}}-->
+                    <!--</a>-->
+                    <!--</span>-->
+                    <!--<button class="btn btn-danger pull-right" style="margin-top: -7px;margin-left: 1px;" ng-click="deleteButton(visitor)"> DEL</button>-->
+
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 

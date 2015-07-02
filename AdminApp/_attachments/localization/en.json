@@ -7,5 +7,7 @@
   "continue_without_registration": "continue without registration",
   "warningTextExist": "such user already exists!",
   "warningTextLat": "use only latin symbols!",
-  "warningTextLogin": "wrong name or password!"
+  "warningTextLogin": "wrong name or password!",
+  "ok":"ok",
+  "no":"no"
 }

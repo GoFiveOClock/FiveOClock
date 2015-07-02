@@ -7,5 +7,7 @@
   "continue_without_registration": "продолжить без регистрации",
   "warningTextExist": "такой пользователь уже существует!",
   "warningTextLat": "используйте только латинские символы!",
-  "warningTextLogin": "неправильный логин или пароль!"
+  "warningTextLogin": "неправильный логин или пароль!",
+  "ok":"да",
+  "no":"нет"
 }

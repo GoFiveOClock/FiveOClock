@@ -44,7 +44,7 @@
 require(['jquery', 'angular','pouchDb'], function ($, angular,pouchDB) {
 
 
-    var app = angular.module('fiveOClock', ['ngRoute','angularCouch']);
+    var app = angular.module('fiveOClock', ['ngRoute','angularCouch', 'ui.bootstrap']);
     app.config(function($httpProvider) {
         $httpProvider.defaults.useXDomain = true;
         delete $httpProvider.defaults.headers.common['X-Requested-With'];
