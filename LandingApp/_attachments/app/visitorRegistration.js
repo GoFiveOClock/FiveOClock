@@ -1,6 +1,7 @@
 define(['jquery','angular','pouchDb', 'cookies', 'json!localization/en.json', 'json!localization/ru.json'], function ($, angular, pouchDb, cookies, en, ru) {
     return angular.module('fiveOClock').controller('visitorRegistration',
         function ($scope, $q, $rootScope, $http, $timeout) {
+            $scope.pressedButton = false;
             var lang = cookies.get('lang');
             var user, pass;
             $scope.localization = lang ? (lang == 'en' ? en : ru) : ru;
@@ -31,6 +32,7 @@ define(['jquery','angular','pouchDb', 'cookies', 'json!localization/en.json', 'j
                     window.location = 'http://localhost:5984/' + dbAgenda + 'public' + '/_design/Agenda/index.html#/Meetings';
                 }).catch(function (data) {
                 });
+                $scope.pressedButton = true;
             };
             $scope.login = function () {
                 user = $scope.name;
@@ -46,6 +48,7 @@ define(['jquery','angular','pouchDb', 'cookies', 'json!localization/en.json', 'j
                         $scope.warningLogin = true;
                     }
                 });
+                $scope.pressedButton = true;
             };
         })
 })

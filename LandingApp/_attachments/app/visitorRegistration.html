@@ -18,9 +18,9 @@
             <input type="password" class="form-control" ng-model="password" placeholder={{localization.placeholderPassword}} required>
         </div>
         <div class="btn-group" style="width: 286px;margin-top: 15px" role="group" aria-label="...">
-            <button class="btn btn-default" id="registration" ng-bind="localization.registrationButton"
+            <button class="btn btn-default"  ng-disabled="pressedButton" id="registration" ng-bind="localization.registrationButton"
                     ng-click="registration()" ng-model="checked" ng-disabled="checked"></button>
-            <button class="btn btn-default" id="login" ng-click="login()" ng-bind="localization.loginButton"></button>
+            <button class="btn btn-default"  ng-disabled="pressedButton" id="login" ng-click="login()" ng-bind="localization.loginButton"></button>
         </div>
     </form>
 </div>

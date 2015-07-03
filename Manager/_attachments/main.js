@@ -35,7 +35,7 @@
         'angular.route': {
             deps: ['angular'],
             exports: 'angular'
-        },       
+        },
         'bootstrap': {
             deps: ['jquery']
         },
@@ -86,6 +86,6 @@ require(['jquery', 'angular', 'pouchDb', 'cookies'], function ($, angular, pouch
 				startApplication();
 			}
 		});
-	
+
     });
 });

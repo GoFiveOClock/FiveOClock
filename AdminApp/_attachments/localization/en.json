@@ -8,6 +8,6 @@
   "warningTextExist": "such user already exists!",
   "warningTextLat": "use only latin symbols!",
   "warningTextLogin": "wrong name or password!",
-  "ok":"ok",
-  "no":"no"
+  "ok":"ok ",
+  "no":"no "
 }

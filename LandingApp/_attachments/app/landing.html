@@ -17,13 +17,13 @@
             <input type="password" class="form-control" ng-model="password" placeholder={{localization.placeholderPassword}} required>
         </div>
         <div class="btn-group" style="width: 286px;margin-top: 15px" role="group" aria-label="...">
-            <button class="btn btn-default" id="registration" ng-bind="localization.registrationButton"
+            <button ng-disabled="pressedButton" class="btn btn-default" id="registration" ng-bind="localization.registrationButton"
                     ng-click="registration()"></button>
-            <button class="btn btn-default" id="login" ng-click="login()" ng-bind="localization.loginButton"></button>
+            <button ng-disabled="pressedButton" class="btn btn-default" id="login" ng-click="login()" ng-bind="localization.loginButton"></button>
         </div>
     </form>
-    <button ng-if="!anonymous" class="btn btn-default"  ng-model="checked" ng-disabled="checked" ng-click="start_without_registration()" ng-bind="localization.start_without_registration"></button>
-    <button ng-if="anonymous" class="btn btn-default" ng-click="continue_without_registration()" ng-bind="localization.continue_without_registration"></button>
+    <button ng-disabled="pressedButton" ng-if="!anonymous" class="btn btn-default"  ng-model="checked" ng-disabled="checked" ng-click="start_without_registration()" ng-bind="localization.start_without_registration"></button>
+    <button ng-disabled="pressedButton" ng-if="anonymous" class="btn btn-default" ng-click="continue_without_registration()" ng-bind="localization.continue_without_registration"></button>
 </div>
 
 

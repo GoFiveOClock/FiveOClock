@@ -54,7 +54,7 @@ app.post('/login', function (req, res) {
                 expires: moment().add(1, 'years').toDate()
             });
             res.cookie('user', user);
-            res.end(JSON.stringify({success: true}));
+            res.end();
         }
     });
 });
@@ -129,7 +129,6 @@ function vis_coachRepl(authenticated, user,coach) {
 function coach_visRepl(authenticated, user,coach) {
     var q = require('q');
     var encoded = new Buffer('admin:abc123').toString('base64');
-    //var encoded = btoa('abc123');
     var promise = q.nfcall(authenticated.db.replicate, {"url":'http://localhost:5984/' + coach,"headers":{Authorization:'Basic '+encoded,Visitor: user}}, user + "visitor", {
         filter: 'Manager/messageSchedule',
         continuous: true
