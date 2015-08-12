@@ -1,8 +1,17 @@
+.body{
+    margin-left: 0;
+    margin-right: 0;
+}
+.hr{
+    border: solid 1px;margin-right: 5%;margin-left: 2%;
+}
+.white-button{
+    color:lightslategrey ;
+}
+
+
+
 @media (max-width: 600px) {
-    .body{
-        margin-left: 0;
-        margin-right: 0;
-    }
     .menu{
         padding-left: 4%;display: flex;justify-content: space-between;border-bottom: solid;
         border-bottom-color: skyblue;border-width: thin;height: 40px;margin-bottom: 10px;
@@ -12,9 +21,6 @@
     }
     .lab-calendar{
         font-size: 13px;margin-left: 2%;font-family: cursive;
-    }
-    .hr{
-        border: solid 1px;margin-right: 5%;margin-left: 2%;
     }
     .shevron-down{
         position: absolute;top: 19px;right: 4%;
@@ -30,10 +36,6 @@
     }
 }
 @media (max-width: 1279px)and (min-width: 601px){
-    .body{
-        margin-left: 0;
-        margin-right: 0;
-    }
     .menu{
         padding-left: 4%;display: flex;justify-content: space-between;border-bottom: solid;
         border-bottom-color: skyblue;border-width: thin;height: 45px;margin-bottom: 15px;
@@ -43,9 +45,6 @@
     }
     .lab-calendar{
         font-size: 18px;margin-left: 2%;font-family: cursive;
-    }
-    .hr{
-        border: solid 1px;margin-right: 5%;margin-left: 2%;
     }
     .shevron-down{
         position: absolute;top: 26px;right: 4%;
@@ -67,9 +66,6 @@
     .agenda{
         margin-left: -2%;font-family: cursive;font-weight: 600;font-size: 13px;
     }
-    .white-button{
-        color:lightslategrey ;
-    }
     .finished-event{
         display: flex;
     }
@@ -90,10 +86,6 @@
     }
 }
 @media (min-width: 1280px){
-    .body{
-        margin-left: 0;
-        margin-right: 0;
-    }
     .menu{
         padding-left: 4%;display: flex;justify-content: space-between;border-bottom: solid;
         border-bottom-color: skyblue;border-width: thin;height: 70px;margin-bottom: 20px;
@@ -103,9 +95,6 @@
     }
     .lab-calendar{
         font-size: 18px;margin-left: 2%;font-family: cursive;
-    }
-    .hr{
-        border: solid 1px;margin-right: 5%;margin-left: 2%;
     }
     .shevron-down{
         position: absolute;top: 26px;right: 4%;
@@ -130,9 +119,6 @@
     }
     .agenda{
         margin-left: -2%;font-family: cursive;font-weight: 600;font-size: 13px;
-    }
-    .white-button{
-        color:lightslategrey ;
     }
     .finished-event{
         display: flex;

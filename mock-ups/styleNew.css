@@ -1,0 +1,35 @@
+.menu-icons{
+    float: left;
+    width: 20%;
+}
+.row-menu{
+    padding: 1%;
+    padding-left: 5%;
+    background-color: aliceblue;
+    border-bottom: solid;
+    border-bottom-color: gainsboro;
+}
+.hr{
+    margin-top: -10px;
+    border: solid;
+    border-width: 1px;
+}
+.lab-hr{
+    margin-top: 2%;
+}
+.row-content{
+    margin-left: 2%;
+}
+.row-days{
+    margin-left: 2%;
+    padding: 1%;
+}
+.chevron{
+    margin-left: 100%;
+}
+.lab-day{
+    margin-left: 2%;
+}
+.font-event{
+    font-size: 13px;
+}
