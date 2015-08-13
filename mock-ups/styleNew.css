@@ -1,13 +1,23 @@
-.menu-icons{
+.menu-elements{
     float: left;
     width: 20%;
+}
+.menu-icons{
+    float: left;
+}
+.menu-lables{
+    float: left;
+    padding-top: 4%;
+    padding-left: 2%;
+    font-size: 13px;
+    font-weight: 600;
 }
 .row-menu{
     padding: 1%;
     padding-left: 5%;
-    background-color: aliceblue;
+    background-color: rgba(220, 220, 220, 0.31);
     border-bottom: solid;
-    border-bottom-color: gainsboro;
+    border-bottom-color: rgba(192, 192, 192, 0.17);
 }
 .hr{
     margin-top: -10px;
@@ -22,14 +32,64 @@
 }
 .row-days{
     margin-left: 2%;
-    padding: 1%;
+    padding-left: 1%;
 }
 .chevron{
     margin-left: 100%;
 }
-.lab-day{
+.day{
     margin-left: 2%;
+    margin-bottom: 1%;
+    font-size: 25px;
+    font-family: cursive;
 }
-.font-event{
+.margin-day{
+    margin-top: 2%;
+}
+.calendar{
+    margin-bottom: -1%;
+    font-size: 18px;
+    font-family: cursive;
+}
+.event{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 1%;
+    padding-left: 2%;
+    border-right: solid;
+}
+.own-event{
+    color: red;
+    border-color: black;
+}
+.end-event{
+    float: left;
+    font-size: 7px;
+    padding-left: 2%;
+}
+.current-event{
+    background-color: hsla(0, 17%, 11%, 0.21);
+}
+.event-form{
+    background-color: hsla(0, 17%, 11%, 0.21);
+    height: 8em;
+    width: 94%
+}
+.white-button{
+    float: left;
+    padding-left: 3%;
+    color:lightslategrey ;
+}
+.float{
+    float: left;
+}
+.cont-events{
+    width: 80%;
+    float: left;
+}
+.slot-font{
     font-size: 13px;
+    font-family: cursive;
+    font-weight: 600;
 }
