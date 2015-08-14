@@ -15,7 +15,7 @@
 .row-menu{
     padding: 1%;
     padding-left: 5%;
-    background-color: rgba(220, 220, 220, 0.31);
+    background-color: #F4F4F4;
     border-bottom: solid;
     border-bottom-color: rgba(192, 192, 192, 0.17);
 }
@@ -23,6 +23,9 @@
     margin-top: -10px;
     border: solid;
     border-width: 1px;
+}
+.margin-event-hr{
+    margin-right: 8%;
 }
 .lab-hr{
     margin-top: 2%;
@@ -36,6 +39,10 @@
 }
 .chevron{
     margin-left: 100%;
+}
+.chevron-event{
+    margin-top: -0.5em;
+    margin-left: 92%;
 }
 .day{
     margin-left: 2%;
@@ -72,9 +79,18 @@
     background-color: hsla(0, 17%, 11%, 0.21);
 }
 .event-form{
+    position: relative;
+    margin-top: -1.6em;
+    padding: 1%;
     background-color: hsla(0, 17%, 11%, 0.21);
-    height: 8em;
-    width: 94%
+    height: 11em;
+    width: 93%
+}
+.exp-map{
+    height: 14em;
+}
+.height-move{
+    height: 22em;
 }
 .white-button{
     float: left;
@@ -92,4 +108,49 @@
     font-size: 13px;
     font-family: cursive;
     font-weight: 600;
+}
+.white-info{
+    color: #F4F4F4;
+}
+.show-map{
+    font-size: 10px;
+    padding: 0.5%;
+}
+.grey-icons{
+    padding-top: 1%;
+    color: rgba(91, 93, 95, 0.57);
+}
+.grey-color{
+    color: rgba(91, 93, 95, 0.57);
+}
+.pad-left{
+    padding-left: 1%;
+}
+.pad-top{
+    padding-top: 1%;
+}
+.time-icon{
+    float: left;
+    padding-top: 1%;
+}
+.slot-span{
+    border: solid;
+    background-color: white;
+    padding-right: 1%;
+    padding-left: 1%;
+}
+.slot-div{
+    margin-left: 5%;
+    margin-top: 1.5%;
+    padding-bottom: 1%;
+}
+.margin-reject{
+    position: absolute;
+    bottom: 7px;
+    right: 35px;
+}
+.margin-ok{
+    position: absolute;
+    bottom: 7px;
+    right: 100px;
 }
