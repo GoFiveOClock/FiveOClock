@@ -1,5 +1,6 @@
 .menu-elements{
     float: left;
+    position: relative;
     width: 20%;
 }
 .menu-icons{
@@ -12,6 +13,18 @@
     font-size: 13px;
     font-weight: 600;
 }
+.red-circle{
+    background-color: red;
+    width: 20px;
+    position: absolute;
+    top: 65%;
+    left: 10%;
+    border-radius: 15px;
+    color: white;
+}
+.font-middle{
+    font-size: 13px;
+}
 .row-menu{
     padding: 1%;
     padding-left: 5%;
@@ -20,6 +33,7 @@
     border-bottom-color: rgba(192, 192, 192, 0.17);
 }
 .hr{
+    margin-bottom: 0;
     margin-top: -10px;
     border: solid;
     border-width: 1px;
@@ -30,10 +44,11 @@
 .lab-hr{
     margin-top: 2%;
 }
-.row-content{
+.row-header{
     margin-left: 2%;
 }
 .row-days{
+    margin-top: 1%;
     margin-left: 2%;
     padding-left: 1%;
 }
@@ -54,7 +69,7 @@
     margin-top: 2%;
 }
 .calendar{
-    margin-bottom: -1%;
+    margin-bottom: -5px;
     font-size: 18px;
     font-family: cursive;
 }
@@ -80,7 +95,6 @@
 }
 .event-form{
     position: relative;
-    margin-top: -1.6em;
     padding: 1%;
     background-color: hsla(0, 17%, 11%, 0.21);
     height: 11em;
@@ -111,17 +125,21 @@
 }
 .white-info{
     color: #F4F4F4;
+    margin-bottom: 1%;
 }
 .show-map{
     font-size: 10px;
     padding: 0.5%;
 }
-.grey-icons{
+.grey-button{
     padding-top: 1%;
     color: rgba(91, 93, 95, 0.57);
 }
 .grey-color{
     color: rgba(91, 93, 95, 0.57);
+}
+.black-button{
+    padding-top: 1%;
 }
 .pad-left{
     padding-left: 1%;
@@ -154,3 +172,21 @@
     bottom: 7px;
     right: 100px;
 }
+.drop-calendar{
+    margin-left: 2%;
+    margin-right: 7.5%;
+    padding-left: 10px;
+    padding-top: 5px;
+    background-color: hsla(0, 17%, 11%, 0.21);
+    padding-bottom: 1%;
+}
+.margin-calendar{
+margin-top: 10px;
+}
+.span-invit{
+    margin-left: 3%;
+}
+.left-zero{
+    margin-left: 0;
+}
+

@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.css"/>
     <link rel="stylesheet" href="lib/font-awesome-4.4.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="styleNew.css"/>
-    <title>calendar_event move</title>
+    <title>calendar_incoming invitation</title>
 </head>
 <body>
 <div class="row row-menu">
@@ -40,15 +40,19 @@
         <div class="menu-lables">Map</div>
     </div>
 
-    <i class="fa fa-calendar fa-2x visible-xs menu-elements"></i>
+
+    <i class="fa fa-calendar fa-2x visible-xs menu-elements"><div class="red-circle font-middle">+2</div></i>
     <div class="visible-sm menu-elements">
+        <div class="red-circle">+2</div>
         <i class="fa fa-calendar fa-2x menu-icons"></i>
         <div class="menu-lables">Calendar</div>
     </div>
     <div class="visible-md menu-elements">
+        <div class="red-circle">+2</div>
         <i class="fa fa-calendar fa-3x menu-icons"></i>
         <div class="menu-lables">Calendar</div>
     </div>
+
 
     <i class="fa fa-user fa-2x visible-xs menu-elements"></i>
     <div class="visible-sm menu-elements">
@@ -91,7 +95,7 @@
 
         <div class="float">11:00</div>
         <div class="cont-events">
-            <div class="event float current-event" style="width: 25%">Спортивный зал,Подол, номер: 096-888-55-44</div>
+            <div class="event float" style="width: 25%">Спортивный зал,Подол, номер: 096-888-55-44</div>
             <div class="float" style="width: 25%">
                 <div class="end-event own-event">11:20</div>
                 <div class="event own-event">Бассейн, Протасов Яp, номер: 096-888-55-44</div>
@@ -103,42 +107,6 @@
             <div class="white-button">Create</div>
         </div>
         <br>
-
-        <div class="chevron-event">
-            <i class="fa fa-chevron-circle-up shevron-down"></i>
-        </div>
-        <hr class="hr margin-event-hr">
-
-        <div class="event-form height-move">
-            <div class="white-info">Monday, 20th of March, 11:00-12:00, Спортзал, Михаил Иванович, Океан плаза", м.Лыбедская</div>
-            <img class="float visible-xs visible-sm" src="additional_icons/small%20map.png">
-            <img class="float visible-md" src="additional_icons/expanded%20map.png">
-            <i class="fa fa-map-marker pad-left"></i><u class="show-map pad-left">ТРЦ "Океан Плаза", м. Лыбедская</u>
-            <div class="clearfix"></div>
-            <div class="grey-button">
-                <i class="fa fa-refresh fa-2x"></i><span class="pad-left">Move to another tomeslot</span>
-            </div>
-
-            <i class="time-icon fa fa-clock-o fa-2x"></i>
-            <div class="slot-div">
-                <span class="slot-span">14:00</span>
-                <span>-</span>
-                <span class="slot-span">15:00</span>
-                <span class="grey-color">Monday, 20th of March</span>
-                <i class="fa fa-calendar grey-color"></i>
-            </div>
-
-            <div class="grey-button">
-                <i class="fa fa-plus pad-left pad-top"></i><span class="pad-left">Add alternate timeslot</span>
-            </div>
-
-            <div class="grey-button">
-                <i class="fa fa-check-square-o pad-left"></i><span class="pad-left">Do not publish my name</span>
-            </div>
-
-            <span class="margin-reject">Reject</span>
-            <span class="margin-ok">Ok</span>
-        </div>
 
         <div class="float">12:00</div>
         <div class="cont-events">
@@ -165,9 +133,47 @@
 
         <div class="float">15:00</div>
         <div class="cont-events">
-            <div class="white-button">Create</div>
+            <div class="span-invit">+ 1 invitation</div>
         </div>
         <br>
+
+        <div class="chevron-event">
+            <i class="fa fa-chevron-circle-up shevron-down"></i>
+        </div>
+        <hr class="hr margin-event-hr">
+
+        <div class="event-form height-move">
+            <div class="white-info">Invitation from Тренер по йоге, re-arrange from 9:00</div>
+            <i class="fa fa-map-marker"></i><u class="show-map">Показать карту</u>
+
+            <div class="slot-div left-zero">
+                <input type="radio" checked>
+                <span class="slot-span">15:00</span>
+                <span>-</span>
+                <span class="slot-span">16:00</span>
+                <span class="grey-color">Monday, 20th of March</span>
+                <i class="fa fa-calendar grey-color"></i>
+            </div>
+            <div class="slot-div left-zero">
+                <input type="radio">
+                <span class="slot-span">10:00</span>
+                <span>-</span>
+                <span class="slot-span">11:00</span>
+                <span class="grey-color">Monday, 21st of March</span>
+                <i class="fa fa-calendar grey-color"></i>
+            </div>
+
+            <div class="grey-button">
+                <i class="fa fa-plus pad-left pad-top"></i><span class="pad-left">Propose another timeslot</span>
+            </div>
+
+            <div class="grey-button">
+                <i class="fa fa-check-square-o pad-left"></i><span class="pad-left">Do not publish my name</span>
+            </div>
+
+            <span class="margin-reject">Reject</span>
+            <span class="margin-ok">Ok</span>
+        </div>
 
         <div class="float">16:00</div>
         <div class="cont-events">
