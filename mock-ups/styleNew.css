@@ -38,6 +38,9 @@
     border: solid;
     border-width: 1px;
 }
+.hr-inner{
+    margin: 0;
+}
 .margin-event-hr{
     margin-right: 8%;
 }
@@ -48,7 +51,6 @@
     margin-left: 2%;
 }
 .row-days{
-    margin-top: 1%;
     margin-left: 2%;
     padding-left: 1%;
 }
@@ -97,15 +99,10 @@
     position: relative;
     padding: 1%;
     background-color: hsla(0, 17%, 11%, 0.21);
-    height: 11em;
+    /*height: 11em;*/
     width: 93%
 }
-.exp-map{
-    height: 14em;
-}
-.height-move{
-    height: 22em;
-}
+
 .white-button{
     float: left;
     padding-left: 3%;
@@ -125,7 +122,6 @@
 }
 .white-info{
     color: #F4F4F4;
-    margin-bottom: 1%;
 }
 .show-map{
     font-size: 10px;
@@ -147,10 +143,21 @@
 .pad-top{
     padding-top: 1%;
 }
+.pad-bottom{
+    padding-bottom: 1%;
+}
 .time-icon{
     float: left;
-    padding-top: 1%;
+    padding-top: 2%;
+    padding-left: 0.7%;
+    font-size: 18px;
 }
+.form-icon{
+    padding-top: 1%;
+    padding-left: 1%;
+    font-size: 13px;
+}
+
 .slot-span{
     border: solid;
     background-color: white;
@@ -162,15 +169,13 @@
     margin-top: 1.5%;
     padding-bottom: 1%;
 }
-.margin-reject{
-    position: absolute;
-    bottom: 7px;
-    right: 35px;
+
+.ok-reject{
+    margin-right: 4%;
+    margin-bottom: 2%;
 }
-.margin-ok{
-    position: absolute;
-    bottom: 7px;
-    right: 100px;
+.margin-reject{
+   margin-right: 10px;
 }
 .drop-calendar{
     margin-left: 2%;
@@ -186,7 +191,7 @@ margin-top: 10px;
 .span-invit{
     margin-left: 3%;
 }
-.left-zero{
-    margin-left: 0;
+.pad-zero{
+    padding: 0;
 }
 
