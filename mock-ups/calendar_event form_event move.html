@@ -63,16 +63,18 @@
 
 <div class="row row-header">
     <div class="col-md-11 col-sm-11 col-xs-11 lab-hr">
-        <div class="calendar">My calendar</div>
+        <div class="calendar visible-sm visible-md">
+            <span>My calendar</span>
+        </div>
+        <div class="calendar calendar-xs visible-xs">
+            <span>My calendar</span>
+        </div>
         <div class="chevron">
             <i class="fa fa-chevron-circle-down chevron-down"></i>
         </div>
-        <hr class="hr">
+        <hr class="hr-chevr">
     </div>
 </div>
-
-
-
 
 
 <div class="row row-days">
@@ -113,7 +115,7 @@
             <div class="chevron-event">
                 <i class="fa fa-chevron-circle-up shevron-down"></i>
             </div>
-            <hr class="hr margin-event-hr">
+            <hr class="hr-chevr margin-event-hr">
             <div class="event-form height-move">
                 <div class="white-info pad-bottom">Monday, 20th of March, 11:00-12:00, Спортзал, Михаил Иванович, Океан плаза", м.Лыбедская</div>
                 <img class="float visible-xs visible-sm" src="additional_icons/small%20map.png">
@@ -135,7 +137,8 @@
                     <i class="fa fa-plus form-icon"></i><span class="pad-left">Add alternate timeslot</span>
                 </div>
                 <div class="grey-button">
-                    <i class="fa fa-check-square-o form-icon"></i><span class="pad-left">Do not publish my name</span>
+                    <div class="div-check"><input type="checkbox" class="form-icon"></div>
+                    <div><span class="pad-left">Do not publish my name</span></div>
                 </div>
                 <div class="ok-reject">
                     <div class="pull-right">

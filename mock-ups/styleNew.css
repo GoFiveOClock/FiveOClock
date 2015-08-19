@@ -14,12 +14,28 @@
     font-weight: 600;
 }
 .red-circle{
-    background-color: red;
-    width: 20px;
     position: absolute;
-    top: 65%;
-    left: 10%;
+    background-color: red;
+    font-size: 11px;
+    padding: 1px 0 1px 1.7px;
+    width: 17px;
+    top: 30px;
+    left: 28px;
     border-radius: 15px;
+    color: white;
+}
+.rc-sm{
+    top: 19px;
+    left: 14px;
+}
+.rc-xs{
+    font-size: 9px;
+    padding: 3px 0 0 1.1px;
+    width: 17px;
+    top: 19px;
+    left: 16px;
+    border-radius: 36px;
+    height: 16px;
     color: white;
 }
 .font-middle{
@@ -32,7 +48,7 @@
     border-bottom: solid;
     border-bottom-color: rgba(192, 192, 192, 0.17);
 }
-.hr{
+.hr-chevr{
     margin-bottom: 0;
     margin-top: -10px;
     border: solid;
@@ -40,6 +56,7 @@
 }
 .hr-inner{
     margin: 0;
+    border-color: black;
 }
 .margin-event-hr{
     margin-right: 8%;
@@ -75,6 +92,9 @@
     font-size: 18px;
     font-family: cursive;
 }
+.calendar-xs{
+    font-size: 13px;
+}
 .event{
     white-space: nowrap;
     overflow: hidden;
@@ -106,6 +126,9 @@
 .white-button{
     float: left;
     padding-left: 3%;
+    color:lightslategrey ;
+}
+.white-message{
     color:lightslategrey ;
 }
 .float{
@@ -193,5 +216,33 @@ margin-top: 10px;
 }
 .pad-zero{
     padding: 0;
+}
+.div-check{
+    float: left;
+    padding-top: 1.5px;
+    margin-left: 1%;
+}
+.align{
+    text-align: center;
+}
+.form-input{
+    position: relative;
+    width: 60%;
+    border: solid;
+    background-color: white;
+    margin-top: 1%;
+    padding: 2px;
+}
+.icon-input{
+    position: absolute;
+    right: 3px;
+    top: 4px;
+    color: green;
+}
+.icon-input-red{
+    position: absolute;
+    right: 3px;
+    top: 4px;
+    color: salmon;
 }
 

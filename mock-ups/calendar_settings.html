@@ -63,11 +63,16 @@
 
 <div class="row row-header">
     <div class="col-md-11 col-sm-11 col-xs-11 lab-hr">
-        <div class="calendar">My calendar</div>
+        <div class="calendar visible-sm visible-md">
+            <span>My calendar</span>
+        </div>
+        <div class="calendar calendar-xs visible-xs">
+            <span>My calendar</span>
+        </div>
         <div class="chevron">
             <i class="fa fa-chevron-circle-up chevron-down"></i>
         </div>
-        <hr class="hr">
+        <hr class="hr-chevr">
     </div>
 </div>
 
@@ -80,11 +85,13 @@
     </select>
     <img class="visible-xs margin-calendar" src="additional_icons/small%20calendar.png">
     <img class="visible-sm visible-md margin-calendar" src="additional_icons/big%20calendar.png">
-    <div class="black-button">
-        <i class="fa fa-check-square-o pad-left"></i><span class="pad-left">Do not show non-working ours</span>
+    <div class="grey-button">
+        <div class="div-check"><input type="checkbox" class="form-icon"></div>
+        <div><span class="pad-left">Do not show non-working hours</span></div>
     </div>
-    <div class="black-button">
-        <i class="fa fa-check-square-o pad-left"></i><span class="pad-left">Do not show non-working days</span>
+    <div class="grey-button">
+        <div class="div-check"><input type="checkbox" class="form-icon"></div>
+        <div><span class="pad-left">Do not show non-working days</span></div>
     </div>
 </div>
 

@@ -41,9 +41,9 @@
     </div>
 
 
-    <i class="fa fa-calendar fa-2x visible-xs menu-elements"><div class="red-circle font-middle">+2</div></i>
+    <i class="fa fa-calendar fa-2x visible-xs menu-elements"><div class="red-circle rc-xs">+2</div></i>
     <div class="visible-sm menu-elements">
-        <div class="red-circle">+2</div>
+        <div class="red-circle rc-sm">+2</div>
         <i class="fa fa-calendar fa-2x menu-icons"></i>
         <div class="menu-lables">Calendar</div>
     </div>
@@ -67,12 +67,24 @@
 
 <div class="row row-header">
     <div class="col-md-11 col-sm-11 col-xs-11 lab-hr">
-        <div class="calendar">My calendar</div>
+        <div class="calendar visible-sm visible-md">
+            <span>My calendar</span>
+        </div>
+        <div class="calendar calendar-xs visible-xs">
+            <span>My calendar</span>
+        </div>
         <div class="chevron">
             <i class="fa fa-chevron-circle-down chevron-down"></i>
         </div>
-        <hr class="hr">
+        <hr class="hr-chevr">
     </div>
+</div>
+
+<div class="row row-days slot-font pad-top">
+    <div>Incoming requests:</div>
+    <div>Monday, 20th of March, 9:00-10:30, Сергей Игнатьевич</div>
+    <div>Tusday, 21st of March, 9:00-10:00, Ирина Александровна, 096-569-88-33</div>
+    <div>Wednesday, 22nd of March, 15:00-16:00, Света Индиго</div>
 </div>
 
 <div class="row row-days">
@@ -142,8 +154,7 @@
             <div class="chevron-event">
                 <i class="fa fa-chevron-circle-up shevron-down"></i>
             </div>
-            <hr class="hr margin-event-hr">
-
+            <hr class="hr-chevr margin-event-hr">
             <div class="event-form">
                 <div class="pad-bottom">
                     <span class="white-info">Invitation from Тренер по йоге, re-arrange from 9:00</span>
@@ -165,13 +176,14 @@
                     <span class="grey-color">Monday, 21st of March</span>
                     <i class="fa fa-calendar grey-color"></i>
                 </div>
-                <div class="grey-button row">
+                <div class="grey-button">
                     <i class="fa fa-plus form-icon"></i><span class="pad-left">Propose another timeslot</span>
                 </div>
-                <div class="grey-button row">
-                    <i class="fa fa-check-square-o form-icon"></i><span class="pad-left">Do not publish my name</span>
+                <div class="grey-button">
+                    <div class="div-check"><input type="checkbox" class="form-icon"></div>
+                    <div><span class="pad-left">Do not publish my name</span></div>
                 </div>
-                <div class="row ok-reject">
+                <div class="ok-reject">
                     <div class="pull-right">
                         <span class="margin-reject">Reject</span>
                         <span>Ok</span>
