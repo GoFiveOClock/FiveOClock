@@ -1,2 +1,7 @@
-## webstorm utility folder:
+## IDE utility folders:
 .idea/
+**/.settings/
+
+## components folders:
+**/node_modules
+**/bower_components
