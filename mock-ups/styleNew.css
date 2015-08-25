@@ -78,6 +78,10 @@
     margin-top: -0.5em;
     margin-left: 92%;
 }
+.chevron-extra{
+    padding-right: 3%;
+    margin-top: -5px;
+}
 .day{
     margin-left: 2%;
     margin-bottom: 1%;
@@ -99,8 +103,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-left: 1%;
-    padding-left: 2%;
     border-right: solid;
 }
 .own-event{
@@ -110,7 +112,7 @@
 .end-event{
     float: left;
     font-size: 7px;
-    padding-left: 2%;
+    padding: 0 2% 0 2%;
 }
 .current-event{
     background-color: hsla(0, 17%, 11%, 0.21);
@@ -119,16 +121,13 @@
     position: relative;
     padding: 1%;
     background-color: hsla(0, 17%, 11%, 0.21);
-    /*height: 11em;*/
+    margin-bottom: 1%;
     width: 93%
 }
 
 .white-button{
     float: left;
-    padding-left: 3%;
-    color:lightslategrey ;
-}
-.white-message{
+    /*padding-left: 3%;*/
     color:lightslategrey ;
 }
 .float{
@@ -171,7 +170,7 @@
 }
 .time-icon{
     float: left;
-    padding-top: 2%;
+    padding-top: 10px;
     padding-left: 0.7%;
     font-size: 18px;
 }
@@ -188,14 +187,14 @@
     padding-left: 1%;
 }
 .slot-div{
-    margin-left: 5%;
-    margin-top: 1.5%;
+    margin-left: 30px;
+    margin-top: 10px;
     padding-bottom: 1%;
 }
 
 .ok-reject{
     margin-right: 4%;
-    margin-bottom: 2%;
+    /*margin-bottom: 2%;*/
 }
 .margin-reject{
    margin-right: 10px;
@@ -222,27 +221,324 @@ margin-top: 10px;
     padding-top: 1.5px;
     margin-left: 1%;
 }
-.align{
-    text-align: center;
-}
 .form-input{
     position: relative;
-    width: 60%;
-    border: solid;
-    background-color: white;
+    width: 93%;
     margin-top: 1%;
     padding: 2px;
 }
 .icon-input{
     position: absolute;
-    right: 3px;
-    top: 4px;
+    right: 8px;
+    top: 7px;
     color: green;
 }
 .icon-input-red{
     position: absolute;
-    right: 3px;
-    top: 4px;
+    right: 8px;
+    top: 7px;
     color: salmon;
 }
+.hr-lock{
+    margin: -2px 0 0 0;
+    margin-left: 5%;
+    margin-right: 5%;
+    border-top: 1px solid;
+}
+.hr-lock-white{
+    margin: -2px 0 0 0;
+    margin-right: 5%;
+    border-top: 1px solid;
+    color: #ffffff;
+}
+.pad-time{
+    padding-right: 2%;
+}
+.exist-events{
+    margin-left: 2%;
+}
+.lock-time{
+    float: left;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-right: solid;
+}
+.overflow-float{
+    float: left;
+    overflow: hidden;
+}
+.input-caret{
+    position: absolute;
+    top: 1px;
+    right: 3px;
+    font-size: 22px;
+}
+.icon-search{
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 22px;
+    color: darkgray;
+}
+.input-search{
+    padding: 5px;
+    border: solid;
+    border-width: 2px;
+    font-size: 20px;
+}
+.all-width{
+    width: 100%;
+}
+.relat{
+   position: relative;
+}
+.row-dialogs{
+    margin: 2%;
+}
+.dialog-cont{
+    height: 6em;
+    padding: 1%;
+    background-color: #F4F4F4;
+}
+.dialog-outbox{
+    margin-left: 5%;
+    font-family: cursive;
+    color: darkgray;
+}
+.dialog-inbox{
+    float: right;
+    font-family: cursive;
+    color: darkgray;
+}
+.message-inbox{
+    float: left;
+    width: 267px;
+    padding: 10px;
+    border: solid;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+.message-outbox{
+    float: right;
+    width: 267px;
+    padding: 10px;
+    border: solid;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+.message-time-left{
+    margin: 15px 15px 15px 0;
+}
+.message-time-right{
+    margin: 15px 0 15px 15px;
+}
+.hr-dialog{
+    margin: 0;
+    border: solid;
+    border-width: 1px;
+}
+.old-message{
+    background-color: #ffffff;
+}
+.header-dialog{
+    font-size: 20px;
+    padding: 6px 0 6px 0;
+    font-family: cursive;
+}
+.dialog-day{
+    background-color: #F4F4F4;
+    text-align: center;
+    font-family: cursive;
+    position: relative;
+    color: darkgray;
+}
+.dialog-search{
+    margin-left: 6%;
+}
+.next-day{
+    text-align: center;
+    font-family: cursive;
+    margin-bottom: 20px;
+    color: darkgray;
+}
+.spin{
+    margin-left: 50%;
+}
+.send-form{
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    padding: 15px 15px 0 15px;
+    height: 7em;
+    background-color: #F4F4F4;
+}
+.textarea-size{
+    width: 100%;
+    height: 70%;
+}
+.ignore-btn{
+    margin: -5px 0 0 15px;
+}
+.send-group{
+    float: right;
+    margin: -5px 20px 0 0;
+}
+.as-sms{
+    margin-right: 20px;
+}
+.cont-messages{
+    font-family: cursive;
+    height:400px;
+    overflow-y:scroll;
+}
+.cont-dialogs{
+    font-family: cursive;
+    height:520px;
+    overflow-y:scroll;
+}
+.service-info{
+    float: left;
+    padding-right: 5px
+}
+.top-zero{
+    margin-top: 0;
+}
+.red{
+    color: red;
+}
+.green{
+    color: green;
+}
+.float-right{
+    float: right;
+}
+.cursive-font{
+    font-family: cursive;
+}
+.registration{
+    float: left;
+}
+.language{
+    float: right;
+    margin-left: 10px;
+}
+.big-buttons{
+    border: solid;
+    width: 300px;
+    padding: 25px;
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+.small-landing{
+    margin: auto;
+}
+.label-Iwant{
+    width: 300px;
+    padding: 25px;
+    text-align: center;
+    font-size: 36px;
+}
+.padding-buttons{
+    padding-top: 10px;
+}
+.no-border{
+    border: none;
+}
+.big-landing{
+    display: inline-block;
+    margin: auto;
+}
+.land-big{
+    text-align: center;
+    margin-top: 120px;
+}
+.advanced-drop-cont{
+    padding: 5% 7% 5% 0;
+}
+.advanced-drop{
+    border: solid;
+    border-width: 2px;
+    margin-bottom: 15px;
+}
+.advanced-drop-big{
+    width: 47%;
+    float: left;
+}
+.advanced-cont-big{
+    padding-left: 6%;
+}
+.margin-five{
+    margin-left: 5%;
+}
+.pad-land{
+    padding: 15px;
+}
+.form-extra-opt{
+    width: 98%;
+}
+.list-block{
+    margin-bottom: 5px;
+}
+.icon-list{
+    font-size: 16px;
+    margin-right: 3px;
+}
+.big-font{
+    font-size: 16px;
+}
+.header-big-font{
+    font-size: 23px;
+    font-weight: 100;
+}
 
+
+
+
+
+
+
+.tabs {
+    position: relative;
+    min-height: 200px; /* This part sucks */
+    clear: both;
+    margin: 35px 0 25px;
+    background: white;
+}
+.tab {
+    float: left;
+
+}
+.tab label {
+    background: hsla(0, 17%, 11%, 0.21);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    margin-left: -1px;
+    position: relative;
+    left: 1px;
+    top: -29px;
+}
+.tab [type=radio] {
+    display: none;
+}
+.content {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    background: #eee;
+    right: 0;
+    bottom: 0;
+    padding: 20px;
+    opacity: 0;
+}
+[type=radio]:checked ~ label {
+    background: #eee;
+    z-index: 2;
+}
+[type=radio]:checked ~ label ~ .content {
+    z-index: 1;
+    opacity: 1;
+}

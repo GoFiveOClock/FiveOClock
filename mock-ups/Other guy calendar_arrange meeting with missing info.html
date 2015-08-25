@@ -85,55 +85,69 @@
     </div>
 </div>
 
+
 <div class="row row-days">
     <div class="col-xs-12  col-md-6">
         <div class="day margin-day">Monday, 20th of March</div>
         <div class="slot-font">
-            <div class="float">09:00</div>
+            <div class="float pad-time">09:00</div>
             <div class="cont-events">
-                <div class="event float" style="width: 50%">Михал Борисович,"Дрим Таун", номер:
-                    096-888-55-44
+                <div class="overflow-float" style="width: 50%">
+                    <div class="event">
+                        Михал Борисович,"Дрим Таун", номер:096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
                 </div>
-                <div class="white-button">Arrange</div>
+                <div class="white-button exist-events">Arrange</div>
             </div>
             <br>
 
-            <div class="float">10:00</div>
+            <div class="float pad-time">10:00</div>
             <div class="cont-events">
                 <div class="white-button">Arrange</div>
             </div>
             <br>
 
-            <div class="float">11:00</div>
+            <div class="float pad-time">11:00</div>
             <div class="cont-events">
-                <div class="event float" style="width: 33%">Анна Богдановна,Подол, номер: 096-888-55-44
+                <div class="overflow-float" style="width: 33%">
+                    <div class="event">
+                        Анна Богдановна,Подол, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
                 </div>
-                <div class="float" style="width: 33%">
-                    <div class="end-event own-event">15:30</div>
-                    <div class="event own-event">Павел Юрьевич,"Дрим Таун",Зат, номер: 096-888-55-44</div>
+                <div class="overflow-float" style="width: 33%">
+                    <div class="end-event">
+                        11:20
+                    </div>
+                    <div class="event">
+                        Павел Юрьевич,"Дрим Таун",Зат, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
                 </div>
-                <div class="white-button">Arrange</div>
+                <div class="white-button exist-events">Arrange</div>
             </div>
             <br>
 
-            <div class="float">12:00</div>
+            <div class="float pad-time">12:00</div>
             <div class="cont-events">
                 <div class="white-button">Arrange</div>
             </div>
             <br>
 
-            <div class="float">13:00</div>
+            <div class="float pad-time">13:00</div>
             <div class="cont-events">
                 <div class="white-button">Arrange</div>
             </div>
             <br>
 
-            <div class="float">14:00</div>
+            <div class="float pad-time">14:00</div>
             <div class="cont-events">
-                <div class="event float align" style="width: 50%">
+                <div class="lock-time" style="width: 50%">
                     <i class="fa fa-lock"></i>
+                    <hr class="hr-lock">
                 </div>
-                <div class="white-button">Arrange</div>
+                <div class="white-button exist-events">Arrange</div>
             </div>
             <br>
 
@@ -143,7 +157,7 @@
             <hr class="hr-chevr margin-event-hr">
             <div class="event-form height-move">
                 <div class="white-info pad-bottom">Arrange a meeting with Сергей, тренер по сквошу</div>
-               <div>Павел Юрьевич, 093-251-64-22</div>
+                <div>Павел Юрьевич, 093-251-64-22</div>
 
                 <div class="chevron-event">
                     <i class="fa fa-chevron-circle-up shevron-down"></i>
@@ -152,11 +166,11 @@
 
                 <div class="form-input">
                     <i class="fa fa-check icon-input"></i>
-                    <span>Павел Юрьевич</span>
+                    <input class="all-width" value=" Павел Юрьевич">
                 </div>
                 <div class="form-input">
                     <i class="fa fa-exclamation-triangle icon-input-red"></i>
-                    <span class="white-message"> Contact phone</span>
+                    <input class="all-width" placeholder=" Contact phone">
                 </div>
 
                 <i class="time-icon fa fa-clock-o"></i>
@@ -179,8 +193,8 @@
                     <i class="fa fa-plus form-icon"></i><span class="pad-left">Add alternate timeslot</span>
                 </div>
                 <div class="grey-button">
-                    <div class="div-check"><input type="checkbox" class="form-icon"></div>
-                    <div><span class="pad-left">Do not publish my name</span></div>
+                    <div class="div-check"><input type="checkbox" class="form-icon" id="check2"></div>
+                    <label for="check2" class="pad-left">Do not publish my name</label>
                 </div>
                 <div class="ok-reject">
                     <div class="pull-right">
@@ -191,27 +205,38 @@
                 </div>
             </div>
 
-            <div class="float">15:00</div>
+            <div class="float pad-time">15:00</div>
             <div class="cont-events">
-                <div class="event float align" style="width: 33%">
+                <div class="lock-time" style="width: 33%">
                     <i class="fa fa-lock"></i>
+                    <hr class="hr-lock">
                 </div>
-                <div class="float" style="width: 33%">
-                    <div class="end-event">15:30</div>
-                    <div class="event">Pablo Garcia,"Дрим Таун",Зат, номер: 096-888-55-44</div>
+                <div class="overflow-float" style="width: 33%">
+                    <div class="end-event own-event">
+                        15:30
+                    </div>
+                    <div class="event own-event">
+                        Павел Юрьевич,"Дрим Таун",Зат, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
                 </div>
-                <div class="white-button">Arrange</div>
+                <div class="white-button exist-events">Arrange</div>
             </div>
             <br>
 
-            <div class="float">16:00</div>
+            <div class="float pad-time">16:00</div>
             <div class="cont-events">
-                <div class="event float" style="width: 33%">Juan Gemenez,Подол, номер: 096-888-55-44
+                <div class="overflow-float" style="width: 33%">
+                    <div class="event">
+                        Juan Gemenez,Подол, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
                 </div>
-                <div class="float align" style="width: 33%">
-                    <div class="event"> <i class="fa fa-lock"></i></div>
+                <div class="lock-time" style="width: 33%">
+                    <i class="fa fa-lock"></i>
+                    <hr class="hr-lock">
                 </div>
-                <div class="white-button">Arrange</div>
+                <div class="white-button exist-events">Arrange</div>
             </div>
             <br>
         </div>
@@ -220,137 +245,182 @@
     <div class="col-xs-12  col-md-6">
         <div class="day margin-day">Tuesday, 21th of March</div>
         <div class="slot-font">
-            <div class="float">09:00</div>
+            <div class="float pad-time">09:00</div>
             <div class="cont-events">
-                <div class="event float" style="width: 50%">Качалка,Михаил Сергеевич,ул.Бориса Тена, номер:
-                    096-888-55-44
+                <div class="overflow-float" style="width: 50%">
+                    <div class="event">
+                        Качалка,Михал Борисович,"Дрим Таун", номер:096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
                 </div>
-                <div class="white-button">Arrange</div>
+                <div class="white-button exist-events">Arrange</div>
             </div>
             <br>
 
-            <div class="float">10:00</div>
+            <div class="float pad-time">10:00</div>
             <div class="cont-events">
                 <div class="white-button">Arrange</div>
             </div>
             <br>
 
-            <div class="float">11:00</div>
+            <div class="float pad-time">11:00</div>
             <div class="cont-events">
-                <div class="event float align" style="width: 33%">
+                <div class="lock-time" style="width: 33%">
                     <i class="fa fa-lock"></i>
+                    <hr class="hr-lock">
                 </div>
-                <div class="float" style="width: 33%">
-                    <div class="end-event own-event">15:30</div>
-                    <div class="event own-event">Павел Юрьевич,"Дрим Таун",Зат, номер: 096-888-55-44</div>
+                <div class="overflow-float" style="width: 33%">
+                    <div class="end-event">
+                        11:20
+                    </div>
+                    <div class="event">
+                        Павел Юрьевич,"Дрим Таун",Зат, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
                 </div>
-                <div class="white-button">Arrange</div>
+                <div class="white-button exist-events">Arrange</div>
             </div>
             <br>
 
-            <div class="float">12:00</div>
+            <div class="float pad-time">12:00</div>
             <div class="cont-events">
                 <div class="white-button">Arrange</div>
             </div>
             <br>
 
-            <div class="float">13:00</div>
+            <div class="float pad-time">13:00</div>
             <div class="cont-events">
                 <div class="white-button">Arrange</div>
             </div>
             <br>
 
-            <div class="float">14:00</div>
+            <div class="float pad-time">14:00</div>
             <div class="cont-events">
-                <div class="event float" style="width: 33%">Маникюр,Зоя,Дрим Таун, номер: 096-888-55-44</div>
-                <div class="float" style="width: 33%">
-                    <div class="end-event">14:40</div>
-                    <div class="event">Пиллинг,Маша,"Дрим Таун",Зат, номер: 096-888-55-44</div>
+                <div class="overflow-float" style="width: 33%">
+                    <div class="event">
+                        Анна Богдановна,Подол, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
                 </div>
-                <div class="white-button">Arrange</div>
+                <div class="overflow-float" style="width: 33%">
+                    <div class="end-event">
+                        11:20
+                    </div>
+                    <div class="event">
+                        Павел Юрьевич,"Дрим Таун",Зат, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
+                </div>
+                <div class="white-button exist-events">Arrange</div>
             </div>
             <br>
 
-            <div class="float">15:00</div>
+            <div class="float pad-time">15:00</div>
             <div class="cont-events">
                 <div class="white-button">Arrange</div>
             </div>
             <br>
 
-            <div class="float">16:00</div>
+            <div class="float pad-time">16:00</div>
             <div class="cont-events">
                 <div class="white-button">Arrange</div>
             </div>
             <br>
         </div>
     </div>
-
 </div>
 
 <div class="row row-days">
     <div class="col-xs-12  col-md-6">
         <div class="day margin-day">Wednesday, 22nd of March</div>
         <div class="slot-font">
-            <div class="float">09:00</div>
+            <div class="float pad-time">09:00</div>
             <div class="cont-events">
-                <div class="event float" style="width: 50%">Качалка,Михаил Сергеевич,ул.Бориса Тена, номер:
-                    096-888-55-44
+                <div class="overflow-float" style="width: 50%">
+                    <div class="event">
+                        Тренажерный зал,"Дрим Таун", номер:096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
                 </div>
-                <div class="white-button">Arrange</div>
+                <div class="white-button exist-events">Arrange</div>
             </div>
             <br>
 
-            <div class="float">10:00</div>
+            <div class="float pad-time">10:00</div>
             <div class="cont-events">
                 <div class="white-button">Arrange</div>
             </div>
             <br>
 
-            <div class="float">11:00</div>
+            <div class="float pad-time">11:00</div>
             <div class="cont-events">
-                <div class="event float" style="width: 25%">Спортивный зал,Подол, номер: 096-888-55-44</div>
-                <div class="float" style="width: 25%">
-                    <div class="end-event own-event">11:20</div>
-                    <div class="event own-event">Бассейн, Протасов Яp, номер: 096-888-55-44</div>
+                <div class="overflow-float" style="width: 25%">
+                    <div class="event">
+                        Спортивный зал, Андрей Денисович, 093-666-85-65
+                    </div>
                 </div>
-                <div class="float" style="width: 25%">
-                    <div class="end-event">11:45</div>
-                    <div class="event">Паркур, пробное занятие, номер: 096-888-55-44</div>
+                <div class="overflow-float" style="width: 25%">
+                    <div class="end-event">
+                        11:20
+                    </div>
+                    <div class="event">
+                        Бассейн,"Дрим Таун",Зат, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
                 </div>
-                <div class="white-button">Arrange</div>
-            </div>
-            <br>
-
-            <div class="float">12:00</div>
-            <div class="cont-events">
-                <div class="white-button">Arrange</div>
-            </div>
-            <br>
-
-            <div class="float">13:00</div>
-            <div class="cont-events">
-                <div class="white-button">Arrange</div>
-            </div>
-            <br>
-
-            <div class="float">14:00</div>
-            <div class="cont-events">
-                <div class="event float" style="width: 33%">Маникюр,Зоя,Дрим Таун, номер: 096-888-55-44</div>
-                <div class="float" style="width: 33%">
-                    <div class="end-event">14:40</div>
-                    <div class="event">Пиллинг,Маша,"Дрим Таун",Зат, номер: 096-888-55-44</div>
+                <div class="overflow-float" style="width: 25%">
+                    <div class="end-event">
+                        11:20
+                    </div>
+                    <div class="event">
+                        Паркур,"Дрим Таун",Зат, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
                 </div>
-                <div class="white-button">Arrange</div>
+                <div class="white-button exist-events">Arrange</div>
             </div>
             <br>
 
-            <div class="float">15:00</div>
+            <div class="float pad-time">12:00</div>
             <div class="cont-events">
                 <div class="white-button">Arrange</div>
             </div>
             <br>
 
-            <div class="float">16:00</div>
+            <div class="float pad-time">13:00</div>
+            <div class="cont-events">
+                <div class="white-button">Arrange</div>
+            </div>
+            <br>
+
+            <div class="float pad-time">14:00</div>
+            <div class="cont-events">
+                <div class="overflow-float" style="width: 33%">
+                    <div class="event">
+                        Анна Богдановна,Подол, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
+                </div>
+                <div class="overflow-float" style="width: 33%">
+                    <div class="end-event">
+                        11:20
+                    </div>
+                    <div class="event">
+                        Павел Юрьевич,"Дрим Таун",Зат, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
+                </div>
+                <div class="white-button exist-events">Arrange</div>
+            </div>
+            <br>
+
+            <div class="float pad-time">15:00</div>
+            <div class="cont-events">
+                <div class="white-button">Arrange</div>
+            </div>
+            <br>
+
+            <div class="float pad-time">16:00</div>
             <div class="cont-events">
                 <div class="white-button">Arrange</div>
             </div>
@@ -361,66 +431,83 @@
     <div class="col-xs-12  col-md-6">
         <div class="day margin-day">Thursday, 23rd of March</div>
         <div class="slot-font">
-            <div class="float">09:00</div>
+            <div class="float pad-time">09:00</div>
             <div class="cont-events">
-                <div class="event float" style="width: 50%">Качалка,Михаил Сергеевич,ул.Бориса Тена, номер:
-                    096-888-55-44
+                <div class="overflow-float" style="width: 50%">
+                    <div class="event">
+                        Качалка,Михал Борисович,"Дрим Таун", номер:096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
                 </div>
-                <div class="white-button">Arrange</div>
+                <div class="white-button exist-events">Arrange</div>
             </div>
             <br>
 
-            <div class="float">10:00</div>
+            <div class="float pad-time">10:00</div>
             <div class="cont-events">
                 <div class="white-button">Arrange</div>
             </div>
             <br>
 
-            <div class="float">11:00</div>
+            <div class="float pad-time">11:00</div>
             <div class="cont-events">
-                <div class="event float" style="width: 25%">Спортивный зал,Подол, номер: 096-888-55-44</div>
-                <div class="float" style="width: 25%">
-                    <div class="end-event own-event">11:20</div>
-                    <div class="event own-event">Бассейн, Протасов Яp, номер: 096-888-55-44</div>
+                <div class="lock-time" style="width: 33%">
+                    <i class="fa fa-lock"></i>
+                    <hr class="hr-lock">
                 </div>
-                <div class="float" style="width: 25%">
-                    <div class="end-event">11:45</div>
-                    <div class="event">Паркур, пробное занятие, номер: 096-888-55-44</div>
+                <div class="overflow-float" style="width: 33%">
+                    <div class="end-event">
+                        11:20
+                    </div>
+                    <div class="event">
+                        Павел Юрьевич,"Дрим Таун",Зат, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
                 </div>
-                <div class="white-button">Arrange</div>
+                <div class="white-button exist-events">Arrange</div>
             </div>
             <br>
 
-            <div class="float">12:00</div>
+            <div class="float pad-time">12:00</div>
             <div class="cont-events">
                 <div class="white-button">Arrange</div>
             </div>
             <br>
 
-            <div class="float">13:00</div>
+            <div class="float pad-time">13:00</div>
             <div class="cont-events">
                 <div class="white-button">Arrange</div>
             </div>
             <br>
 
-            <div class="float">14:00</div>
+            <div class="float pad-time">14:00</div>
             <div class="cont-events">
-                <div class="event float" style="width: 33%">Маникюр,Зоя,Дрим Таун, номер: 096-888-55-44</div>
-                <div class="float" style="width: 33%">
-                    <div class="end-event">14:40</div>
-                    <div class="event">Пиллинг,Маша,"Дрим Таун",Зат, номер: 096-888-55-44</div>
+                <div class="overflow-float" style="width: 33%">
+                    <div class="event">
+                        Анна Богдановна,Подол, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
                 </div>
-                <div class="white-button">Arrange</div>
+                <div class="overflow-float" style="width: 33%">
+                    <div class="end-event">
+                        11:20
+                    </div>
+                    <div class="event">
+                        Павел Юрьевич,"Дрим Таун",Зат, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
+                </div>
+                <div class="white-button exist-events">Arrange</div>
             </div>
             <br>
 
-            <div class="float">15:00</div>
+            <div class="float pad-time">15:00</div>
             <div class="cont-events">
                 <div class="white-button">Arrange</div>
             </div>
             <br>
 
-            <div class="float">16:00</div>
+            <div class="float pad-time">16:00</div>
             <div class="cont-events">
                 <div class="white-button">Arrange</div>
             </div>
