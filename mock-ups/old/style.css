@@ -1,0 +1,142 @@
+.body{
+    margin-left: 0;
+    margin-right: 0;
+}
+.hr{
+    border: solid 1px;margin-right: 5%;margin-left: 2%;
+}
+.white-button{
+    color:lightslategrey ;
+}
+
+
+
+@media (max-width: 600px) {
+    .menu{
+        padding-left: 4%;display: flex;justify-content: space-between;border-bottom: solid;
+        border-bottom-color: skyblue;border-width: thin;height: 40px;margin-bottom: 10px;
+    }
+    .content{
+        position: relative;
+    }
+    .lab-calendar{
+        font-size: 13px;margin-left: 2%;font-family: cursive;
+    }
+    .big-font{
+        position: absolute;top: 19px;right: 4%;
+    }
+    .lab-day{
+        margin-left: 5%;font-size: 20px;font-family: cursive;
+    }
+    .middle-size {
+        display: none;
+    }
+    .big-size {
+        display: none;
+    }
+}
+@media (max-width: 1279px)and (min-width: 601px){
+    .menu{
+        padding-left: 4%;display: flex;justify-content: space-between;border-bottom: solid;
+        border-bottom-color: skyblue;border-width: thin;height: 45px;margin-bottom: 15px;
+    }
+    .content{
+        position: relative;
+    }
+    .lab-calendar{
+        font-size: 18px;margin-left: 2%;font-family: cursive;
+    }
+    .big-font{
+        position: absolute;top: 26px;right: 4%;
+    }
+    .days-col{
+        display: flex;justify-content: space-between;
+    }
+    .next-days-col{
+        margin-top: 1%;
+    }
+    .first-column{
+        margin-left: 4%
+    }
+
+    .lab-day{
+        font-size: 27px;font-family: cursive;
+    }
+
+    .agenda{
+        margin-left: -2%;font-family: cursive;font-weight: 600;font-size: 13px;
+    }
+    .finished-event{
+        display: flex;
+    }
+    .lab-fin-event{
+        font-size: 7px;
+    }
+    .lab-after-fin{
+        margin-left: 3px;
+    }
+    .red{
+        color: red;
+    }
+    .big-size {
+        display: none;
+    }
+    .small-size {
+        display: none;
+    }
+}
+@media (min-width: 1280px){
+    .menu{
+        padding-left: 4%;display: flex;justify-content: space-between;border-bottom: solid;
+        border-bottom-color: skyblue;border-width: thin;height: 70px;margin-bottom: 20px;
+    }
+    .content{
+        position: relative;
+    }
+    .lab-calendar{
+        font-size: 18px;margin-left: 2%;font-family: cursive;
+    }
+    .big-font{
+        position: absolute;top: 26px;right: 4%;
+    }
+    .days-col{
+        display: flex;justify-content: space-between;
+    }
+    .next-days-col{
+        margin-top: 1%;
+    }
+    .first-column{
+        margin-left: 4%;width: 50%;
+    }
+    .second-column{
+       width: 50%;
+    }
+    .lab-day{
+        font-size: 27px;font-family: cursive;
+    }
+    .lab-day-sc{
+        font-size: 27px;font-family: cursive;
+    }
+    .agenda{
+        margin-left: -2%;font-family: cursive;font-weight: 600;font-size: 13px;
+    }
+    .finished-event{
+        display: flex;
+    }
+    .lab-fin-event{
+        font-size: 7px;
+    }
+    .lab-after-fin{
+        margin-left: 3px;
+    }
+    .red{
+        color: red;
+    }
+    .middle-size {
+        display: none;
+    }
+    .small-size {
+        display: none;
+    }
+
+}

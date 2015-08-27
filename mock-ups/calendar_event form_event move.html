@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.css"/>
+    <link rel="stylesheet" href="lib/font-awesome-4.4.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="styleNew.css"/>
+    <title>calendar_event move</title>
+</head>
+<body>
+<div class="row row-menu">
+    <i class="fa fa-search fa-2x visible-xs menu-elements"></i>
+    <div class="visible-sm menu-elements">
+        <i class="fa fa-search fa-2x menu-icons"></i>
+        <div class="menu-lables">Search</div>
+    </div>
+    <div class="visible-md menu-elements">
+        <i class="fa fa-search fa-3x menu-icons"></i>
+        <div class="menu-lables">Search</div>
+    </div>
+
+    <i class="fa fa-weixin fa-2x visible-xs menu-elements"></i>
+    <div class="visible-sm menu-elements">
+        <i class="fa fa-weixin fa-2x menu-icons"></i>
+        <div class="menu-lables">Message</div>
+    </div>
+    <div class="visible-md menu-elements">
+        <i class="fa fa-weixin fa-3x menu-icons"></i>
+        <div class="menu-lables">Message</div>
+    </div>
+
+    <i class="fa fa-map-marker fa-2x visible-xs menu-elements"></i>
+    <div class="visible-sm menu-elements">
+        <i class="fa fa-map-marker fa-2x menu-icons"></i>
+        <div class="menu-lables">Map</div>
+    </div>
+    <div class="visible-md menu-elements">
+        <i class="fa fa-map-marker fa-3x menu-icons"></i>
+        <div class="menu-lables">Map</div>
+    </div>
+
+    <i class="fa fa-calendar fa-2x visible-xs menu-elements"></i>
+    <div class="visible-sm menu-elements">
+        <i class="fa fa-calendar fa-2x menu-icons"></i>
+        <div class="menu-lables">Calendar</div>
+    </div>
+    <div class="visible-md menu-elements">
+        <i class="fa fa-calendar fa-3x menu-icons"></i>
+        <div class="menu-lables">Calendar</div>
+    </div>
+
+    <i class="fa fa-user fa-2x visible-xs menu-elements"></i>
+    <div class="visible-sm menu-elements">
+        <i class="fa fa-user fa-2x menu-icons"></i>
+        <div class="menu-lables">Profile</div>
+    </div>
+    <div class="visible-md menu-elements">
+        <i class="fa fa-user fa-3x menu-icons"></i>
+        <div class="menu-lables">Profile</div>
+    </div>
+</div>
+
+<div class="row row-header">
+    <div class="col-md-11 col-sm-11 col-xs-11 lab-hr">
+        <div class="calendar visible-sm visible-md">
+            <span>My calendar</span>
+        </div>
+        <div class="calendar calendar-xs visible-xs">
+            <span>My calendar</span>
+        </div>
+        <div class="chevron">
+            <i class="fa fa-chevron-circle-down chevron-down"></i>
+        </div>
+        <hr class="hr-chevr">
+    </div>
+</div>
+
+<div class="row row-days">
+<div class="col-xs-12  col-md-6">
+    <div class="day margin-day">Monday, 20th of March</div>
+    <div class="slot-font">
+        <div class="float pad-time">09:00</div>
+        <div class="cont-events">
+            <div class="overflow-float" style="width: 50%">
+                <div class="event">
+                    Качалка,Михаил Сергеевич,ул.Бориса Тена, номер:096-888-55-44
+                </div>
+                <hr class="hr-lock-white">
+            </div>
+            <div class="white-button exist-events">Create</div>
+        </div>
+        <br>
+
+        <div class="float pad-time">10:00</div>
+        <div class="cont-events">
+            <div class="white-button">Create</div>
+        </div>
+        <br>
+
+        <div class="float pad-time">11:00</div>
+        <div class="cont-events">
+            <div class="overflow-float current-event" style="width: 25%">
+                <div class="event">
+                    Спортивный зал,Подол, номер: 096-888-55-44
+                </div>
+            </div>
+            <div class="overflow-float" style="width: 25%">
+                <div class="end-event own-event">
+                    11:20
+                </div>
+                <div class="event own-event">
+                    Бассейн, Протасов Яp, номер: 096-888-55-44
+                </div>
+                <hr class="hr-lock-white">
+            </div>
+            <div class="overflow-float" style="width: 25%">
+                <div class="end-event">
+                    11:45
+                </div>
+                <div class="event">
+                    Паркур, пробное занятие, номер: 096-888-55-44
+                </div>
+                <hr class="hr-lock-white">
+            </div>
+            <div class="white-button exist-events">Create</div>
+        </div>
+        <br>
+
+        <div class="chevron-event">
+            <i class="fa fa-chevron-circle-up big-font"></i>
+        </div>
+        <hr class="hr-chevr margin-event-hr">
+        <div class="event-form height-move">
+            <div class="white-info pad-bottom">Monday, 20th of March, 11:00-12:00, Спортзал, Михаил Иванович, Океан плаза", м.Лыбедская</div>
+            <img class="float visible-xs visible-sm" src="additional_icons/small%20map.png">
+            <img class="float visible-md" src="additional_icons/expanded%20map.png">
+            <i class="fa fa-map-marker pad-left"></i><u class="show-map pad-left">ТРЦ "Океан Плаза", м. Лыбедская</u>
+            <div class="clearfix"></div>
+            <div class="grey-button">
+                <i class="fa fa-refresh form-icon"></i><span class="pad-left">Move to another tomeslot</span>
+            </div>
+            <i class="time-icon fa fa-clock-o"></i>
+            <div class="slot-div">
+                <span class="slot-span">14:00</span>
+                <span>-</span>
+                <span class="slot-span">15:00</span>
+                <span class="grey-color">Monday, 20th of March</span>
+                <i class="fa fa-calendar grey-color"></i>
+            </div>
+            <div class="grey-button">
+                <i class="fa fa-plus form-icon"></i><span class="pad-left">Add alternate timeslot</span>
+            </div>
+            <div class="grey-button">
+                <div class="div-check"><input type="checkbox" class="form-icon" id="check2"></div>
+                <label for="check2" class="pad-left">Do not publish my name</label>
+            </div>
+            <div class="ok-reject">
+                <div class="pull-right">
+                    <span class="margin-reject">Reject</span>
+                    <span>Ok</span>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+        <div class="float pad-time">12:00</div>
+        <div class="cont-events">
+            <div class="white-button">Create</div>
+        </div>
+        <br>
+
+        <div class="float pad-time">13:00</div>
+        <div class="cont-events">
+            <div class="white-button">Create</div>
+        </div>
+        <br>
+
+        <div class="float pad-time">14:00</div>
+        <div class="cont-events">
+            <div class="overflow-float" style="width: 33%">
+                <div class="event">
+                    Маникюр,Зоя,Дрим Таун, номер: 096-888-55-44
+                </div>
+                <hr class="hr-lock-white">
+            </div>
+            <div class="overflow-float" style="width: 33%">
+                <div class="end-event">
+                    14:40
+                </div>
+                <div class="event">
+                    Пиллинг,Маша,"Дрим Таун",Зат, номер: 096-888-55-44
+                </div>
+                <hr class="hr-lock-white">
+            </div>
+            <div class="white-button exist-events">Create</div>
+        </div>
+        <br>
+
+        <div class="float pad-time">15:00</div>
+        <div class="cont-events">
+            <div class="white-button">Create</div>
+        </div>
+        <br>
+
+        <div class="float pad-time">16:00</div>
+        <div class="cont-events">
+            <div class="white-button">Create</div>
+        </div>
+        <br>
+    </div>
+</div>
+
+<div class="col-xs-12  col-md-6">
+    <div class="day margin-day">Tuesday, 21th of March</div>
+    <div class="slot-font">
+        <div class="float pad-time">09:00</div>
+        <div class="cont-events">
+            <div class="overflow-float" style="width: 50%">
+                <div class="event">
+                    Качалка,Михаил Сергеевич,ул.Бориса Тена, номер:096-888-55-44
+                </div>
+                <hr class="hr-lock-white">
+            </div>
+            <div class="white-button exist-events">Create</div>
+        </div>
+        <br>
+
+        <div class="float pad-time">10:00</div>
+        <div class="cont-events">
+            <div class="white-button">Create</div>
+        </div>
+        <br>
+
+        <div class="float pad-time">11:00</div>
+        <div class="cont-events">
+            <div class="overflow-float" style="width: 25%">
+                <div class="event">
+                    Спортивный зал,Подол, номер: 096-888-55-44
+                </div>
+                <hr class="hr-lock-white">
+            </div>
+            <div class="overflow-float" style="width: 25%">
+                <div class="end-event own-event">
+                    11:20
+                </div>
+                <div class="event own-event">
+                    Бассейн, Протасов Яp, номер: 096-888-55-44
+                </div>
+                <hr class="hr-lock-white">
+            </div>
+            <div class="overflow-float" style="width: 25%">
+                <div class="end-event">
+                    11:45
+                </div>
+                <div class="event">
+                    Паркур, пробное занятие, номер: 096-888-55-44
+                </div>
+                <hr class="hr-lock-white">
+            </div>
+            <div class="white-button exist-events">Create</div>
+        </div>
+        <br>
+
+        <div class="float pad-time">12:00</div>
+        <div class="cont-events">
+            <div class="white-button">Create</div>
+        </div>
+        <br>
+
+        <div class="float pad-time">13:00</div>
+        <div class="cont-events">
+            <div class="white-button">Create</div>
+        </div>
+        <br>
+
+        <div class="float pad-time">14:00</div>
+        <div class="cont-events">
+            <div class="overflow-float" style="width: 33%">
+                <div class="event">
+                    Маникюр,Зоя,Дрим Таун, номер: 096-888-55-44
+                </div>
+                <hr class="hr-lock-white">
+            </div>
+            <div class="overflow-float" style="width: 33%">
+                <div class="end-event">
+                    14:40
+                </div>
+                <div class="event">
+                    Пиллинг,Маша,"Дрим Таун",Зат, номер: 096-888-55-44
+                </div>
+                <hr class="hr-lock-white">
+            </div>
+            <div class="white-button exist-events">Create</div>
+        </div>
+        <br>
+
+        <div class="float pad-time">15:00</div>
+        <div class="cont-events">
+            <div class="white-button">Create</div>
+        </div>
+        <br>
+
+        <div class="float pad-time">16:00</div>
+        <div class="cont-events">
+            <div class="white-button">Create</div>
+        </div>
+        <br>
+    </div>
+</div>
+
+</div>
+
+<div class="row row-days">
+    <div class="col-xs-12  col-md-6">
+        <div class="day margin-day">Wednesday, 22nd of March</div>
+        <div class="slot-font">
+            <div class="float pad-time">09:00</div>
+            <div class="cont-events">
+                <div class="overflow-float" style="width: 50%">
+                    <div class="event">
+                        Качалка,Михаил Сергеевич,ул.Бориса Тена, номер:096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
+                </div>
+                <div class="white-button exist-events">Create</div>
+            </div>
+            <br>
+
+            <div class="float pad-time">10:00</div>
+            <div class="cont-events">
+                <div class="white-button">Create</div>
+            </div>
+            <br>
+
+            <div class="float pad-time">11:00</div>
+            <div class="cont-events">
+                <div class="overflow-float" style="width: 25%">
+                    <div class="event">
+                        Спортивный зал,Подол, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
+                </div>
+                <div class="overflow-float" style="width: 25%">
+                    <div class="end-event own-event">
+                        11:20
+                    </div>
+                    <div class="event own-event">
+                        Бассейн, Протасов Яp, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
+                </div>
+                <div class="overflow-float" style="width: 25%">
+                    <div class="end-event">
+                        11:45
+                    </div>
+                    <div class="event">
+                        Паркур, пробное занятие, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
+                </div>
+                <div class="white-button exist-events">Create</div>
+            </div>
+            <br>
+
+            <div class="float pad-time">12:00</div>
+            <div class="cont-events">
+                <div class="white-button">Create</div>
+            </div>
+            <br>
+
+            <div class="float pad-time">13:00</div>
+            <div class="cont-events">
+                <div class="white-button">Create</div>
+            </div>
+            <br>
+
+            <div class="float pad-time">14:00</div>
+            <div class="cont-events">
+                <div class="overflow-float" style="width: 33%">
+                    <div class="event">
+                        Маникюр,Зоя,Дрим Таун, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
+                </div>
+                <div class="overflow-float" style="width: 33%">
+                    <div class="end-event">
+                        14:40
+                    </div>
+                    <div class="event">
+                        Пиллинг,Маша,"Дрим Таун",Зат, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
+                </div>
+                <div class="white-button exist-events">Create</div>
+            </div>
+            <br>
+
+            <div class="float pad-time">15:00</div>
+            <div class="cont-events">
+                <div class="white-button">Create</div>
+            </div>
+            <br>
+
+            <div class="float pad-time">16:00</div>
+            <div class="cont-events">
+                <div class="white-button">Create</div>
+            </div>
+            <br>
+        </div>
+    </div>
+
+    <div class="col-xs-12  col-md-6">
+        <div class="day margin-day">Thursday, 23rd of March</div>
+        <div class="slot-font">
+            <div class="float pad-time">09:00</div>
+            <div class="cont-events">
+                <div class="overflow-float" style="width: 50%">
+                    <div class="event">
+                        Качалка,Михаил Сергеевич,ул.Бориса Тена, номер:096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
+                </div>
+                <div class="white-button exist-events">Create</div>
+            </div>
+            <br>
+
+            <div class="float pad-time">10:00</div>
+            <div class="cont-events">
+                <div class="white-button">Create</div>
+            </div>
+            <br>
+
+            <div class="float pad-time">11:00</div>
+            <div class="cont-events">
+                <div class="overflow-float" style="width: 25%">
+                    <div class="event">
+                        Спортивный зал,Подол, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
+                </div>
+                <div class="overflow-float" style="width: 25%">
+                    <div class="end-event own-event">
+                        11:20
+                    </div>
+                    <div class="event own-event">
+                        Бассейн, Протасов Яp, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
+                </div>
+                <div class="overflow-float" style="width: 25%">
+                    <div class="end-event">
+                        11:45
+                    </div>
+                    <div class="event">
+                        Паркур, пробное занятие, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
+                </div>
+                <div class="white-button exist-events">Create</div>
+            </div>
+            <br>
+
+            <div class="float pad-time">12:00</div>
+            <div class="cont-events">
+                <div class="white-button">Create</div>
+            </div>
+            <br>
+
+            <div class="float pad-time">13:00</div>
+            <div class="cont-events">
+                <div class="white-button">Create</div>
+            </div>
+            <br>
+
+            <div class="float pad-time">14:00</div>
+            <div class="cont-events">
+                <div class="overflow-float" style="width: 33%">
+                    <div class="event">
+                        Маникюр,Зоя,Дрим Таун, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
+                </div>
+                <div class="overflow-float" style="width: 33%">
+                    <div class="end-event">
+                        14:40
+                    </div>
+                    <div class="event">
+                        Пиллинг,Маша,"Дрим Таун",Зат, номер: 096-888-55-44
+                    </div>
+                    <hr class="hr-lock-white">
+                </div>
+                <div class="white-button exist-events">Create</div>
+            </div>
+            <br>
+
+            <div class="float pad-time">15:00</div>
+            <div class="cont-events">
+                <div class="white-button">Create</div>
+            </div>
+            <br>
+
+            <div class="float pad-time">16:00</div>
+            <div class="cont-events">
+                <div class="white-button">Create</div>
+            </div>
+            <br>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
