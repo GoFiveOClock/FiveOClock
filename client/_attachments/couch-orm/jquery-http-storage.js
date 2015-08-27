@@ -1,7 +1,18 @@
 define(['jquery'], function ($) {
+	'use strict';
+
 	function JQueryHttpStorage(config) {
 		this._config = config;
 	}
+
+	JQueryHttpStorage.prototype.queryView = function (view, params) {
+		var queryString = formatParams(params);
+		var url = urlFormat("../" + this._config.dDoc + "/_view/{0}{1}", view, queryString);
+		return this._ajax({
+			type: 'GET',
+			url: url
+		});
+	};
 
 	JQueryHttpStorage.prototype.post = function (doc) {
 		return this._ajax({
@@ -18,7 +29,7 @@ define(['jquery'], function ($) {
 			url: url
 		});
 	};
-	
+
 	JQueryHttpStorage.prototype['delete'] = function (id, rev) {
 		var url = urlFormat('{0}/{1}?rev={2}', this._config.db, id, rev);
 		return this._ajax({
@@ -49,6 +60,7 @@ define(['jquery'], function ($) {
 	}
 
 	function formatParams(params) {
+		params = $.extend({ include_docs: true }, params);
 		var str = $.map(params, function (value, key) {
 			if ($.type(value) == 'string') {
 				return key + '=' + JSON.stringify(encodeURIComponent(value));
