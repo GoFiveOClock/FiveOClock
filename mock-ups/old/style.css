@@ -22,7 +22,7 @@
     .lab-calendar{
         font-size: 13px;margin-left: 2%;font-family: cursive;
     }
-    .shevron-down{
+    .big-font{
         position: absolute;top: 19px;right: 4%;
     }
     .lab-day{
@@ -46,7 +46,7 @@
     .lab-calendar{
         font-size: 18px;margin-left: 2%;font-family: cursive;
     }
-    .shevron-down{
+    .big-font{
         position: absolute;top: 26px;right: 4%;
     }
     .days-col{
@@ -96,7 +96,7 @@
     .lab-calendar{
         font-size: 18px;margin-left: 2%;font-family: cursive;
     }
-    .shevron-down{
+    .big-font{
         position: absolute;top: 26px;right: 4%;
     }
     .days-col{

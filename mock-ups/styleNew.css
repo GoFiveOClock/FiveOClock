@@ -79,7 +79,8 @@
     margin-left: 92%;
 }
 .chevron-extra{
-    padding-right: 3%;
+    width: 98%;
+    padding-right: 6px;
     margin-top: -5px;
 }
 .day{
@@ -221,6 +222,10 @@ margin-top: 10px;
     padding-top: 1.5px;
     margin-left: 1%;
 }
+.check-prof{
+    float: left;
+    margin-left: 1%;
+}
 .form-input{
     position: relative;
     width: 93%;
@@ -312,17 +317,21 @@ margin-top: 10px;
     font-family: cursive;
     color: darkgray;
 }
-.message-inbox{
+.mess-xs-width{
+    width: 80%;
+}
+.mess-sm-width{
+    width: 50%;
+}
+.mess-inbox{
     float: left;
-    width: 267px;
     padding: 10px;
     border: solid;
     border-radius: 15px;
     margin-bottom: 25px;
 }
-.message-outbox{
+.mess-outbox{
     float: right;
-    width: 267px;
     padding: 10px;
     border: solid;
     border-radius: 15px;
@@ -411,6 +420,9 @@ margin-top: 10px;
 .green{
     color: green;
 }
+.gray{
+    color: darkgrey;
+}
 .float-right{
     float: right;
 }
@@ -426,20 +438,20 @@ margin-top: 10px;
 }
 .big-buttons{
     border: solid;
-    width: 300px;
+    /*width: 300px;*/
     padding: 25px;
     text-align: center;
-    font-size: 22px;
+    font-size: 20px;
     margin-bottom: 15px;
 }
 .small-landing{
     margin: auto;
+    width: 300px;
 }
 .label-Iwant{
-    width: 300px;
     padding: 25px;
-    text-align: center;
     font-size: 36px;
+    margin-top: 45px;
 }
 .padding-buttons{
     padding-top: 10px;
@@ -449,19 +461,19 @@ margin-top: 10px;
 }
 .big-landing{
     display: inline-block;
-    margin: auto;
+    margin: 0.5%;
 }
-.land-big{
+.center{
     text-align: center;
-    margin-top: 120px;
 }
 .advanced-drop-cont{
-    padding: 5% 7% 5% 0;
+    padding: 5% 2% 2% 0;
 }
 .advanced-drop{
     border: solid;
     border-width: 2px;
     margin-bottom: 15px;
+    font-size: 16px;
 }
 .advanced-drop-big{
     width: 47%;
@@ -493,6 +505,35 @@ margin-top: 10px;
     font-size: 23px;
     font-weight: 100;
 }
+.big-caret{
+    font-size: 26px;
+}
+.login-cont{
+    padding: 17%;
+}
+.login-buttons{
+    margin-top: 6%;
+}
+.recover-cont{
+    padding-top: 17%;
+}
+.recovered-cont{
+    padding-top: 4%;
+}
+.prof-big-icon{
+    float: left;
+    font-size: 115px;
+    padding: 25px 3%;
+}
+.prof-name{
+    width: 60%;
+    margin-bottom: 5px;
+    border: solid;
+    border-width: 2px;
+}
+.prof-name-cont{
+    padding-top: 32px;
+}
 
 
 
@@ -500,6 +541,15 @@ margin-top: 10px;
 
 
 
+@media (min-width:800px){
+   #smallLand{
+       display: none !important;
+   }
+    #bigLand{
+        display: block !important;
+    }
+
+}
 .tabs {
     position: relative;
     min-height: 200px; /* This part sucks */
@@ -520,6 +570,7 @@ margin-top: 10px;
     position: relative;
     left: 1px;
     top: -29px;
+    border-radius: 4px;
 }
 .tab [type=radio] {
     display: none;
@@ -534,9 +585,10 @@ margin-top: 10px;
     padding: 20px;
     opacity: 0;
 }
-[type=radio]:checked ~ label {
+[type=radio]:checked ~ .tab-lab {
     background: #eee;
     z-index: 2;
+    padding: 15px;
 }
 [type=radio]:checked ~ label ~ .content {
     z-index: 1;
