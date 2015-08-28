@@ -1,0 +1,7 @@
+{
+  "env": {
+	"default": {
+	  "db": "http://admin:abc123@localhost:5984/fiveoclock"
+	}
+  }
+}

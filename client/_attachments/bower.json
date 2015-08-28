@@ -8,7 +8,9 @@
   "main": "index.html",
   "license": "MIT",
   "dependencies": {
+    "bluebird": "~2.9.34",
     "jquery": "~2.1.4",
-    "lodash": "~3.10.1"
+    "lodash": "~3.10.1",
+    "pouchdb": "~4.0.0"
   }
 }

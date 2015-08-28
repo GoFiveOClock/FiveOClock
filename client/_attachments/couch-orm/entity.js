@@ -3,23 +3,26 @@ define(['lodash'], function (_) {
 
 	function Entity(entity, storage) {
 		var that = this;
-		
+
 		entity.indexes = entity.indexes || {};
 		entity.relationMappings = entity.relationMappings || {};
 
 		this._entity = entity;
 		this._storage = storage;
-		
+
 		_.each(entity.indexes, function (index, name) {
 			that[name] = function (param) {
 				var result = index.apply(that, arguments);
-				return that._storage.queryView(result.view, result.params).then(function(response){
+				if (_.isString(result)) {
+					result = { view: result };
+				}
+				return that._storage.queryView(result.view, result.params).then(function (response) {
 					return that._processViewResponse(response);
 				});
 			}
 		});
 	};
-	
+
 	Entity.prototype.get = function (param) {
 		var that = this;
 
@@ -66,32 +69,32 @@ define(['lodash'], function (_) {
 		var that = this;
 
 		var relations = _.chain(response.rows).
-			pluck('value').
+			pluck('doc').
 			pluck('type').
 			uniq().
-			reject(function (value) {
-				return value == that._entity.type;
+			reject(function (doc) {
+				return doc == that._entity.type;
 			}).value();
-		if (relations) {
+		if (relations && relations.length) {
 			var rows = _.chain(response.rows)
 				.filter(function (row) {
-					return row.value.type == that._entity.type;
+					return row.doc.type == that._entity.type;
 				})
 				.each(function (row) {
 					for (var i in relations) {
 						var relation = relations[i];
 						var relationProp = that._entity.relationMappings[relation] || relation + 's';
-						row.value[relationProp] = _.chain(response.rows)
+						row.doc[relationProp] = _.chain(response.rows)
 							.filter(function (relationRow) {
-								return relationRow.value.type == relation && relationRow.key == row.key;
-							}).pluck('value').value();
+								return relationRow.doc.type == relation && relationRow.key == row.key;
+							}).pluck('doc').value();
 					}
 				})
-				.pluck('value')
+				.pluck('doc')
 				.value();
 			return rows;
 		} else {
-			return response.rows;
+			return _.pluck(response.rows, 'doc');
 		}
 	};
 
@@ -101,7 +104,7 @@ define(['lodash'], function (_) {
 			var prop = this._entity.props[i];
 			model[prop] = doc[prop];
 		}
-		
+
 		model._id = doc._id;
 		model._rev = doc._rev;
 		model.type = this._entity.type;
