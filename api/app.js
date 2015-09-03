@@ -78,7 +78,6 @@ function register(req, res, user, password) {
         }).then(function () {
             return addToAdminDb(authenticated, user, password);
         }).then(function () {
-            return Promise.reject({message: 'hui'});
             return addOwnDb(authenticated, user, req, res);
         }).then(function () {
             return setupUserRole(authenticated, user);
