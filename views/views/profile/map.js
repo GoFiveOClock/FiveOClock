@@ -1,5 +1,5 @@
 function(doc){
-	if(doc.type == 'contact'){
+	if(doc.type == 'profile'){
 		emit(doc._id);
 	}
 }

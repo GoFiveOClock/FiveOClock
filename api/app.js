@@ -33,6 +33,8 @@ var couchDbHost = 'http://localhost:5984';
 var host = Promise.promisifyAll(nano(couchDbHost));
 var adminLogin = 'admin';
 var adminPassword = 'abc123';
+var appDb = 'fiveoclock';
+var userDbreplicationFilter = 'views/ownDbReplication'
 
 app.all('/*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", couchDbHost);
@@ -53,7 +55,7 @@ app.post('/login', function (req, res) {
         res.cookie('AuthSession', cookieObject.AuthSession, {
             expires: moment().add(1, 'years').toDate()
         });
-        res.cookie('user', user, {expires: moment().add(1, 'years').toDate()});
+        res.cookie('user', user, { expires: moment().add(1, 'years').toDate() });
         res.end();
     }).catch(function (err) {
         res.status(500).send(err);
@@ -70,10 +72,10 @@ function register(req, res, user, password) {
     host.authAsync(adminLogin, adminPassword).then(function (body) {
         var headers = body[1];
         var auth = headers['set-cookie'][0];
-        var authenticated = nano({url: couchDbHost, cookie: auth});
+        var authenticated = nano({ url: couchDbHost, cookie: auth });
         Promise.promisifyAll(authenticated);
         Promise.promisifyAll(authenticated.db);
-        return addToUsersDb(authenticated, user, password).then(function(){
+        return addToUsersDb(authenticated, user, password).then(function () {
             return checkAdminDB(authenticated);
         }).then(function () {
             return addToAdminDb(authenticated, user, password);
@@ -83,8 +85,8 @@ function register(req, res, user, password) {
             return setupUserRole(authenticated, user);
         }).then(function () {
             return setCookies(host, user, password, res, req);
-        }).catch(function(err){
-            return cleanup(authenticated, user).finally(function(){
+        }).catch(function (err) {
+            return cleanup(authenticated, user).finally(function () {
                 return Promise.reject(err);
             })
         });
@@ -93,31 +95,31 @@ function register(req, res, user, password) {
     });
 };
 
-function cleanup(authenticated, user, err){
-    return removeFromUsers(authenticated, user).finally(function(){
+function cleanup(authenticated, user, err) {
+    return removeFromUsers(authenticated, user).finally(function () {
         return removeDb(authenticated, user);
-    }).finally(function(){
+    }).finally(function () {
         return removeFromAdminDb(authenticated, user);
     });
 }
 
-function removeFromAdminDb(authenticated, user){
+function removeFromAdminDb(authenticated, user) {
     var fiveoclockadmin = authenticated.use(adminDB);
     Promise.promisifyAll(fiveoclockadmin);
-    fiveoclockadmin.getAsync(user).then(function(doc){
+    fiveoclockadmin.getAsync(user).then(function (doc) {
         return fiveoclockadmin.destroyAsync(doc[0]._id, doc[0]._rev);
     });
 }
 
-function removeDb(authenticated, user){
+function removeDb(authenticated, user) {
     var dbName = getDbName(user);
     return authenticated.db.destroyAsync(dbName);
 }
 
-function removeFromUsers(authenticated, user){
+function removeFromUsers(authenticated, user) {
     var users = authenticated.use('_users');
     Promise.promisifyAll(users);
-    return users.getAsync("org.couchdb.user:" + user).then(function(doc){
+    return users.getAsync("org.couchdb.user:" + user).then(function (doc) {
         return users.destroyAsync(doc[0]._id, doc[0]._rev);
     });
 }
@@ -134,10 +136,10 @@ function addToUsersDb(authenticated, user, password) {
     });
 };
 
-function checkAdminDB(authenticated){
-    return authenticated.requestAsync({db: adminDB, method: 'HEAD'}).catch(function(err){
-        if(err.statusCode == 404){
-            return authenticated.requestAsync({db: adminDB, method: 'PUT'});
+function checkAdminDB(authenticated) {
+    return authenticated.requestAsync({ db: adminDB, method: 'HEAD' }).catch(function (err) {
+        if (err.statusCode == 404) {
+            return authenticated.requestAsync({ db: adminDB, method: 'PUT' });
         }
         return Promise.reject(err);
     });
@@ -147,7 +149,7 @@ function addToAdminDb(authenticated, user, password) {
     var fiveoclockadmin = authenticated.use(adminDB);
     Promise.promisifyAll(fiveoclockadmin);
     return fiveoclockadmin.insertAsync({
-        "_id":  user,
+        "_id": user,
         "name": user,
         "type": "user",
         "password": password
@@ -156,7 +158,7 @@ function addToAdminDb(authenticated, user, password) {
 
 function addOwnDb(authenticated, user, req, res) {
     var dbName = getDbName(user);
-    return authenticated.db.createAsync(dbName);
+    return authenticated.db.replicateAsync(appDb, dbName, { create_target: true, filter:userDbreplicationFilter });
 };
 
 
@@ -180,8 +182,8 @@ function setupUserRole(authenticated, user) {
     return prom;
 };
 
-function getDbName(user){
-    return user.replace(/\./gi, '/').replace(/@/gi, '+');
+function getDbName(user) {
+    return user.replace(/\./gi, '-').replace(/@/gi, '$');
 }
 
 function setCookies(host, user, password, res, req) {
@@ -192,7 +194,8 @@ function setCookies(host, user, password, res, req) {
         res.cookie('AuthSession', cookieObject.AuthSession, {
             expires: moment().add(1, 'years').toDate()
         });
-        res.cookie('user', user, {expires: moment().add(1, 'years').toDate()});
+        res.cookie('user', user, { expires: moment().add(1, 'years').toDate() });
+        res.cookie('db', getDbName(user), { expires: moment().add(1, 'years').toDate() });
         res.end(user);
     });
 };

@@ -7,7 +7,12 @@ require.config({
         'angular.route': 'bower_components/angular-route/angular-route',
         'cookies': 'bower_components/angular-cookies/angular-cookies',
 		'pouchdb': 'bower_components/pouchdb/dist/pouchdb.min',
-		'bluebird': 'bower_components/bluebird/js/browser/bluebird.min'
+		'bluebird': 'bower_components/bluebird/js/browser/bluebird.min',
+        'native-pouchdb-storage': 'couch-orm/pouchdb-storage',
+        'client-storage': 'couch-orm/angular-pouchdb-storage',
+        'entity': 'couch-orm/entity',
+        'user-storage': 'storages/user',
+        'profile': 'entities/profile'
     },
     shim: {
         'angular': {
@@ -26,8 +31,8 @@ require.config({
     deps: ['angular', 'angular.route']
 });
 
-require(['jquery', 'angular', 'lodash', 'cookies', 'couch-orm/entity', 'couch-orm/jquery-http-storage.js'], function ($, angular, _, cookies, Entity, Storage) {
-    angular.module('fiveOClock', ['ngRoute','ngCookies']);
+require(['jquery', 'angular', 'lodash', 'cookies', 'client-storage'], function ($, angular, _, cookies, ClientStorage) {
+    angular.module('fiveOClock', ['ngRoute','ngCookies', 'angularCouch']);
     $(function () {
         require(['app/app'], function () {
             angular.bootstrap('body', ['fiveOClock']);
