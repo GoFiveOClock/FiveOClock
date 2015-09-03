@@ -14,10 +14,14 @@
     "tests"
   ],
   "dependencies": {
-    "angular-cookies": "~1.4.5",
+<<<<<<< Updated upstream
+    "bluebird": "~2.9.34",
+=======
     "angular-route": "~1.4.4",
-    "angular": "~1.4.5",
+    "angular": "~1.4.4",
+>>>>>>> Stashed changes
     "jquery": "~2.1.4",
-    "lodash": "~3.10.1"
+    "lodash": "~3.10.1",
+    "pouchdb": "~4.0.0"
   }
 }
