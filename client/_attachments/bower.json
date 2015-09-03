@@ -1,14 +1,22 @@
 {
-  "name": "fiveoclock-client",
+  "name": "_attachments",
   "version": "0.0.0",
-  "homepage": "https://github.com/GoFiveOClock/FiveOClock",
+  "homepage": "https://github.com/ATonkovid/FiveOClock",
   "authors": [
-    "AntonShanyuk"
+    "ATonkovid <assembly26@gmail.com>"
   ],
-  "main": "index.html",
   "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
   "dependencies": {
     "bluebird": "~2.9.34",
+    "angular-route": "~1.4.4",
+    "angular": "~1.4.4",
     "jquery": "~2.1.4",
     "lodash": "~3.10.1",
     "pouchdb": "~4.0.0"
