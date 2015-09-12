@@ -14,9 +14,8 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.4.5",
-    "angular-cookies": "~1.4.5",
     "angular-route": "~1.4.4",
+    "angular": "~1.4.5",
     "bluebird": "~2.9.34",
     "jquery": "~2.1.4",
     "lodash": "~3.10.1",

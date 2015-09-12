@@ -1,13 +1,12 @@
-define(['angular', 'jquery', 'app/loginController', 'app/landingController', 'app/profileController', 'user-storage', 'profile'],
-    function (angular, $, loginController, landingController, profileController, userStorage, Profile) {
+define(['angular', 'jquery', 'loginController', 'landingController', 'profileController', 'user-storage', 'profile', 'serviceProviderInfo'],
+    function (angular, $, loginController, landingController, profileController, userStorage, profile, serviceProviderInfo) {
         angular.module('fiveOClock')
             .config(function ($routeProvider) {
                 var resolve = {
-                    sync: function (userStorage, Profile) {
+                    syncProfile: function (userStorage, Profile) {
                         return userStorage.sync([Profile]);
                     }
-                }
-
+                };
                 $routeProvider.when('/login',
                     {
                         templateUrl: 'app/login_registration.html',

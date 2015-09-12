@@ -456,6 +456,7 @@ margin-top: 10px;
     border: solid;
     border-width: 2px;
     margin-bottom: 15px;
+    padding-left: 1%;
 }
 .advanced-drop-big{
     width: 47%;
@@ -508,6 +509,7 @@ margin-top: 10px;
     margin-bottom: 5px;
     border: solid;
     border-width: 2px;
+    padding-left: 1%;
 }
 .prof-name-cont{
     padding-top: 32px;
