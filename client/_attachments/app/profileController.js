@@ -1,32 +1,71 @@
 define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calendarSettings'], function (angular, $, _, cookies, serviceProviderFile, calendarSettingsFIle) {
     return angular.module('fiveOClock').controller('profileController',
         function ($scope, $q, Profile, ServiceProviderInfo, CalendarSettings) {
-            var profileInfo, serviceProviderInfo;
-            var massHours = [{'check00':false},{'check01':false},{'check02':false},{'check03':false},{'check04':false},{'check05':false},
-                {'check06':false},{'check07':false},{'check08':false},{'check09':false},{'check10':false},{'check11':false},{'check12':false},
-                {'check13':false},{'check14':false},{'check15':false},{'check16':false},{'check17':false},{'check18':false},{'check19':false},
-                {'check20':false},{'check21':false},{'check22':false},{'check23':false}];
-            $scope.userName = cookies.get('user');
-            $scope.serviceProvider = {
-                value: "no"
-            };
-            var promises = {
-                profile: Profile.get('profile'),
-                serviceProviderInfo: ServiceProviderInfo.get('serviceProviderInfo')
-            };
-            $q.all(promises).then(function (result) {
-                profileInfo = result.profile;
-                if (profileInfo) {
-                    $scope.nameProfile = profileInfo.name;
-                    $scope.phoneProfile = profileInfo.phone;
+            var profileInfo, serviceProviderInfo, calendarSettings;
+            mapInit();
+            formSettings_userInfo();
+
+            function formSettings_userInfo(){
+                $scope.userName = cookies.get('user');
+                $scope.serviceProvider = {
+                    value: "no"
                 };
-                serviceProviderInfo = result.serviceProviderInfo;
-                if (serviceProviderInfo) {
-                    $scope.serviceProvider.value = "yes";
-                    $scope.speciality = serviceProviderInfo.speciality;
-                    $scope.additionalInfo = serviceProviderInfo.additionalInfo;
+                var promises = {
+                    profile: Profile.get('profile'),
+                    serviceProviderInfo: ServiceProviderInfo.get('serviceProviderInfo'),
+                    calendarSettings: CalendarSettings.get('calendarSettings')
                 };
-            });
+                $q.all(promises).then(function (result) {
+                    profileInfo = result.profile;
+                    if (profileInfo) {
+                        $scope.nameProfile = profileInfo.name;
+                        $scope.phoneProfile = profileInfo.phone;
+                    };
+                    serviceProviderInfo = result.serviceProviderInfo;
+                    if (serviceProviderInfo) {
+                        $scope.serviceProvider.value = "yes";
+                        $scope.speciality = serviceProviderInfo.speciality;
+                        $scope.additionalInfo = serviceProviderInfo.additionalInfo;
+                    };
+                    calendarSettings = result.calendarSettings;
+                    if (calendarSettings) {
+                        for(var i = 0; i < calendarSettings.days.length; i++){
+                            $scope[calendarSettings.days[i]] = true;
+                        };
+                        for(var i = 0; i < calendarSettings.hours.length; i++){
+                            $scope[calendarSettings.hours[i]] = true;
+                        };
+                    };
+                });
+            };
+
+            function onSuccess(position) {
+                $scope.map.center = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                };
+                $scope.markers.push({
+                    idKey: 1,
+                    coords: {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude
+                    }
+                });
+                $scope.$apply();
+            };
+
+            function onError(error) {
+                console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
+            };
+
+            function mapInit(){
+                $scope.markers = [];
+                $scope.map = {
+                    center: { latitude: 36.132411, longitude: -80.290481 },
+                    zoom: 15
+                };
+                navigator.geolocation.getCurrentPosition(onSuccess, onError);
+            };
 
             function save_Profile(){
                 if (profileInfo) {
@@ -70,29 +109,31 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calend
                 };
             };
 
-            function save_calendarSettings(){
-                var Days = [
-                    {Monday: $scope.Monday},
-                    {Tuesday: $scope.Tuesday},
-                    {Wednesday: $scope.Wednesday},
-                    {Thursday: $scope.Thursday},
-                    {Friday: $scope.Friday},
-                    {Saturday: $scope.Saturday},
-                    {Sunday: $scope.Sunday}
-                ];
-                var Hours = _.clone(massHours,true);
-                for(var i = 0; i < Hours.length; i++){
-                    var hourObj = Hours[i];
-                    var key = Object.keys(hourObj)[0];
-                    hourObj[key] = ($scope[key]) ? $scope[key] : false;
+            function save_CalendarSettings(){
+                var Hours = [], Days, scopeKeys, allDays;
+                allDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+                scopeKeys = _.keys($scope);
+                for(var i = 0; i < scopeKeys.length; i++){
+                    if(scopeKeys[i].indexOf('workingHour') !== -1){
+                        Hours.push(scopeKeys[i]);
+                    };
                 };
-                var a = 5 ;
+                Days =  _.intersection(allDays,scopeKeys);
+
+                if(calendarSettings){
+                    calendarSettings.days = Days;
+                    calendarSettings.hours = Hours;
+                    CalendarSettings.put(calendarSettings);
+                }
+                else {
+                    CalendarSettings.put({_id: 'calendarSettings', days: Days, hours: Hours});
+                };
             };
 
             $scope.save = function () {
-//                save_Profile();
-//                save_ServiceProviderInfo();
-                save_calendarSettings();
+                save_Profile();
+                save_ServiceProviderInfo();
+                save_CalendarSettings();
             };
         });
 });
