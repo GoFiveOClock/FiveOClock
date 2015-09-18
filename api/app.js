@@ -1,6 +1,5 @@
 var express = require('express');
 var http = require('http');
-var path = require('path');
 var cookie = require('cookie');
 var moment = require('moment');
 var Promise = require("bluebird");
@@ -194,10 +193,10 @@ function setCookies(host, user, password, res) {
         res.cookie('db', getDbName(user), { expires: moment().add(1, 'years').toDate() });
         res.end(user);
     });
-};
+}
 
 var server = http.createServer(app);
 
 server.listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
-})
+});
