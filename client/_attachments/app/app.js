@@ -1,5 +1,5 @@
-define(['angular', 'jquery', 'loginController', 'landingController', 'profileController', 'user-storage', 'profile', 'serviceProviderInfo'],
-    function (angular, $, loginController, landingController, profileController, userStorage, profile, serviceProviderInfo) {
+define(['angular', 'jquery', 'loginController', 'landingController', 'profileController', 'calendarController', 'user-storage', 'profile', 'serviceProviderInfo'],
+    function (angular, $, loginController, landingController, profileController, calendarController, userStorage, profile, serviceProviderInfo) {
         angular.module('fiveOClock')
             .config(function ($routeProvider) {
                 var resolve = {
@@ -18,6 +18,12 @@ define(['angular', 'jquery', 'loginController', 'landingController', 'profileCon
                             controller: 'landingController',
                             resolve: resolve
                         })
+                    .when('/calendar',
+                    {
+                        templateUrl: 'app/calendar.html',
+                        controller: 'calendarController',
+                        resolve: resolve
+                    })
                     .when('/profile',
                         {
                             templateUrl: 'app/profile.html',

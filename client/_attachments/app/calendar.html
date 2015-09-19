@@ -1,0 +1,239 @@
+<div class="row row-menu">
+    <i class="fa fa-search fa-2x visible-xs menu-elements"></i>
+    <div class="visible-sm menu-elements">
+        <i class="fa fa-search fa-2x menu-icons"></i>
+        <div class="menu-lables">Search</div>
+    </div>
+    <div class="visible-md menu-elements">
+        <i class="fa fa-search fa-3x menu-icons"></i>
+        <div class="menu-lables">Search</div>
+    </div>
+
+    <i class="fa fa-weixin fa-2x visible-xs menu-elements"></i>
+    <div class="visible-sm menu-elements">
+        <i class="fa fa-weixin fa-2x menu-icons"></i>
+        <div class="menu-lables">Message</div>
+    </div>
+    <div class="visible-md menu-elements">
+        <i class="fa fa-weixin fa-3x menu-icons"></i>
+        <div class="menu-lables">Message</div>
+    </div>
+
+    <i class="fa fa-map-marker fa-2x visible-xs menu-elements"></i>
+    <div class="visible-sm menu-elements">
+        <i class="fa fa-map-marker fa-2x menu-icons"></i>
+        <div class="menu-lables">Map</div>
+    </div>
+    <div class="visible-md menu-elements">
+        <i class="fa fa-map-marker fa-3x menu-icons"></i>
+        <div class="menu-lables">Map</div>
+    </div>
+
+    <i class="fa fa-calendar fa-2x visible-xs menu-elements"></i>
+    <div class="visible-sm menu-elements">
+        <i class="fa fa-calendar fa-2x menu-icons"></i>
+        <div class="menu-lables">
+            <a href="#calendar">Calendar</a>
+        </div>
+    </div>
+    <div class="visible-md menu-elements">
+        <i class="fa fa-calendar fa-3x menu-icons"></i>
+        <div class="menu-lables">
+            <a href="#calendar">Calendar</a>
+        </div>
+    </div>
+
+    <i class="fa fa-user fa-2x visible-xs menu-elements"></i>
+    <div class="visible-sm menu-elements">
+        <i class="fa fa-user fa-2x menu-icons"></i>
+        <div class="menu-lables">
+            <a href="#profile">{{userName}}</a>
+        </div>
+    </div>
+    <div class="visible-md menu-elements">
+        <i class="fa fa-user fa-3x menu-icons"></i>
+        <div class="menu-lables">
+            <a href="#profile">{{userName}}</a>
+        </div>
+    </div>
+</div>
+
+<div class="row row-header">
+    <div class="col-md-11 col-sm-11 col-xs-11 lab-hr">
+        <div class="calendar font-big visible-sm visible-md">
+            <span>My calendar</span>
+        </div>
+        <div class="calendar font-middle visible-xs">
+            <span>My calendar</span>
+        </div>
+        <div class="chevron">
+            <i ng-if="calSet_hide" class="fa fa-chevron-circle-down chevron-down cursor" ng-click="showSet()"></i>
+            <i ng-if="!calSet_hide" class="fa fa-chevron-circle-up chevron-down cursor" ng-click="hideSet()"></i>
+        </div>
+        <hr class="hr-chevr">
+    </div>
+</div>
+
+<div ng-if="!calSet_hide" class="row drop-calendar slot-font font-middle">
+    <select class="calendar font-big">
+        <option value="My calendar">My calendar</option>
+        <option value="My calendar">My calendar</option>
+        <option value="My calendar">My calendar</option>
+        <option value="My calendar">My calendar</option>
+    </select>
+    <div class="pad-top">
+        <input type="date">
+    </div>
+    <div class="grey-button">
+        <div class="div-check"><input type="checkbox" class="form-icon font-middle" id="check4"></div>
+        <label for="check4" class="pad-left cursor">Do not show non-working hours</label>
+    </div>
+    <div class="grey-button">
+        <div class="div-check"><input type="checkbox" class="form-icon" id="check1"></div>
+        <label for="check1" class="pad-left cursor">Do not show non-working days</label>
+    </div>
+</div>
+
+<div class="row row-days" ng-repeat="twain in Days">
+    <div class="col-xs-12  col-md-6">
+        <div class="day font-xxl margin-day">{{twain[0].dayname}}, {{twain[0].date}}</div>
+        <div class="slot-font font-middle">
+
+            <div ng-repeat="slot_hour in twain[0].hours">
+                <div class="float pad-time">{{slot_hour.hour}}</div>
+                <div class="cont-events">
+                    <div class="overflow-float" ng-repeat="meeting in current_meets({hourNum:slot_hour.num, day:twain[0].dayname })"
+                         ng-style="meetStyle(meeting)">
+                        <div ng-if="endMeeting({meeting:meeting,meetings:current_meets({hourNum:slot_hour.num, day:twain[0].dayname })})" class="end-event" ng-bind="transformDate(meeting.start)">
+                        </div>
+                        <div class="event">
+                            {{meeting.title}}
+                        </div>
+                        <hr class="hr-lock-white">
+                    </div>
+                    <div class="white-button" ng-class="{exist_events:current_meets({hourNum:slot_hour.num, day:twain[0].dayname }).length}" ng-click="click_Create({slot_hour:slot_hour,day:twain[0].dayname})">
+                        Create
+                    </div>
+                </div>
+                <br>
+
+                <div ng-if="slot_hour.selectedCreate">
+                    <div class="chevron-event">
+                        <i class="fa fa-chevron-circle-up font-big cursor" ng-click="hideForm(slot_hour)"></i>
+                    </div>
+                    <hr class="hr-chevr margin-event-hr">
+                    <div class="event-form">
+
+                        <div class="pad-bottom pad-top">
+                            <span class="white-info">Create meeting</span>
+                        </div>
+                        <div class="relat">
+                            <input class="all-width pad-left" ng-model="slot_hour.title">
+                            <i class="fa fa-caret-square-o-down input-caret"></i>
+                        </div>
+
+                        <div ng-repeat="alterSlot in slot_hour.alterSlots">
+                            <i class="time-icon font-big fa fa-clock-o"></i>
+                            <div class="slot-div">
+                                <input type="time" class="slot-span" ng-model="alterSlot.start">
+                                <span>-</span>
+                                <input type="time" class="slot-span" ng-model="alterSlot.end">
+                                <span  ng-if="!alterSlot.showCalendar" class="grey-color cursor" ng-click="showCalendarFun(alterSlot)">{{alterSlot.dateText}}</span>
+                                <i  ng-if="!alterSlot.showCalendar" class="fa fa-calendar grey-color"></i>
+
+                                <input type="date" ng-if="alterSlot.showCalendar" class="alter-input" ng-model="alterSlot.alterInput">
+                                <button ng-if="alterSlot.showCalendar" ng-click="alterOk(alterSlot)">Ok</button>
+                            </div>
+                        </div>
+
+                        <div class="grey-button">
+                            <i class="fa fa-plus form-icon font-middle"></i><span class="pad-left cursor" ng-click="addAlternate({slot_hour:slot_hour,day:twain[0].dayname})">Add alternate timeslot</span>
+                        </div>
+                        <div class="grey-button">
+                            <div class="div-check"><input type="checkbox" class="form-icon font-middle" id="check2"></div>
+                            <label for="check2" class="pad-left">Do not publish client name</label>
+                        </div>
+                        <div class="ok-reject">
+                            <div class="pull-right">
+                                <span class="margin-reject cursor" ng-click="hideForm(slot_hour)">Cancel</span>
+                                <span class="cursor" ng-click="createMeeting(slot_hour)">Ok</span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12  col-md-6" ng-if="twain.length !== 1">
+        <div class="day font-xxl margin-day">{{twain[1].dayname}}, {{twain[1].date}}</div>
+        <div class="slot-font font-middle">
+
+            <div ng-repeat="slot_hour in twain[1].hours">
+                <div class="float pad-time">{{slot_hour.hour}}</div>
+                <div class="cont-events">
+                    <div class="overflow-float" ng-repeat="meeting in current_meets({hourNum:slot_hour.num, day:twain[1].dayname })"
+                         ng-style="meetStyle(meeting)">
+                        <div ng-if="endMeeting({meeting:meeting,meetings:current_meets({hourNum:slot_hour.num, day:twain[1].dayname })})" class="end-event" ng-bind="transformDate(meeting.start)">
+                        </div>
+                        <div class="event">
+                            {{meeting.title}}
+                        </div>
+                        <hr class="hr-lock-white">
+                    </div>
+                    <div class="white-button" ng-class="{exist_events:current_meets({hourNum:slot_hour.num, day:twain[1].dayname }).length}" ng-click="click_Create({slot_hour:slot_hour,day:twain[1].dayname})">
+                        Create
+                    </div>
+                </div>
+                <br>
+
+                <div ng-if="slot_hour.selectedCreate">
+                    <div class="chevron-event">
+                        <i class="fa fa-chevron-circle-up font-big cursor" ng-click="hideForm(slot_hour)"></i>
+                    </div>
+                    <hr class="hr-chevr margin-event-hr">
+                    <div class="event-form">
+
+                        <div class="pad-bottom pad-top">
+                            <span class="white-info">Create meeting</span>
+                        </div>
+                        <div class="relat">
+                            <input class="all-width pad-left" ng-model="slot_hour.title">
+                            <i class="fa fa-caret-square-o-down input-caret"></i>
+                        </div>
+
+                        <div ng-repeat="alterSlot in slot_hour.alterSlots">
+                            <i class="time-icon font-big fa fa-clock-o"></i>
+                            <div class="slot-div">
+                                <input type="time" class="slot-span" ng-model="alterSlot.start">
+                                <span>-</span>
+                                <input type="time" class="slot-span" ng-model="alterSlot.end">
+                                <span  ng-if="!alterSlot.showCalendar" class="grey-color cursor" ng-click="showCalendarFun(alterSlot)">{{alterSlot.dateText}}</span>
+                                <i  ng-if="!alterSlot.showCalendar" class="fa fa-calendar grey-color"></i>
+
+                                <input type="date" ng-if="alterSlot.showCalendar" class="alter-input" ng-model="alterSlot.alterInput">
+                                <button ng-if="alterSlot.showCalendar" ng-click="alterOk(alterSlot)">Ok</button>
+                            </div>
+                        </div>
+
+                        <div class="grey-button">
+                            <i class="fa fa-plus form-icon font-middle"></i><span class="pad-left cursor" ng-click="addAlternate({slot_hour:slot_hour,day:twain[1].dayname})">Add alternate timeslot</span>
+                        </div>
+                        <div class="grey-button">
+                            <div class="div-check"><input type="checkbox" class="form-icon font-middle" id="check3"></div>
+                            <label for="check3" class="pad-left">Do not publish client name</label>
+                        </div>
+                        <div class="ok-reject">
+                            <div class="pull-right">
+                                <span class="margin-reject cursor" ng-click="hideForm(slot_hour)">Cancel</span>
+                                <span class="cursor" ng-click="createMeeting(slot_hour)">Ok</span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

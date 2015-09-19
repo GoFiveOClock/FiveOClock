@@ -37,12 +37,6 @@ define(['angular', 'jquery', 'cookies'],function(angular, $, cookies){
                     };
                 };
 
-                $scope.dontRemFun = function(){
-                  if($scope.dontRemember.value){
-                      cookies.set('test','test',{expires: 0})
-                  };
-                };
-
                 $scope.registration = function(){
                     email = $scope.email;
                     password = $scope.password;
@@ -50,6 +44,10 @@ define(['angular', 'jquery', 'cookies'],function(angular, $, cookies){
                     if (formCompleted) {
                         $http.post("http://localhost:3000/registration",{ user: email,password: password},{withCredentials:true}).then(function (data) {
                             email = email.toLowerCase();
+                            if($scope.dontRemember.value){
+                                var AuthSession = cookies.get('AuthSession');
+                                cookies.set('AuthSession',AuthSession,{expires: 0})
+                            };
                             window.location = "#landing_after_login";
                         }).catch(function (data) {
                             if (data.data.statusCode == 409) {
@@ -67,6 +65,10 @@ define(['angular', 'jquery', 'cookies'],function(angular, $, cookies){
                     if (formCompleted) {
                         email = email.toLowerCase();
                         $http.post("http://localhost:3000/login", {user: email, password: password}, {withCredentials: true}).then(function (data) {
+                            if($scope.dontRemember.value){
+                                var AuthSession = cookies.get('AuthSession');
+                                cookies.set('AuthSession',AuthSession,{expires: 0})
+                            };
                             window.location = "#landing_after_login";
                         }).catch(function (data) {
                             if (data.data.statusCode == 401) {

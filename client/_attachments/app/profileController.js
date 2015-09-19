@@ -1,11 +1,10 @@
-define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calendarSettings'], function (angular, $, _, cookies, serviceProviderFile, calendarSettingsFIle) {
+define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calendarSettings', 'settingsService'], function (angular, $, _, cookies, serviceProviderFile, calendarSettingsFIle, settingsServiceFile) {
     return angular.module('fiveOClock').controller('profileController',
-        function ($scope, $q, Profile, ServiceProviderInfo, CalendarSettings) {
+        function ($scope, $q, Profile, ServiceProviderInfo, CalendarSettings, settingsService) {
             var profileInfo, serviceProviderInfo, calendarSettings;
-            mapInit();
             formSettings_userInfo();
 
-            function formSettings_userInfo(){
+            function formSettings_userInfo() {
                 $scope.userName = cookies.get('user');
                 $scope.serviceProvider = {
                     value: "no"
@@ -20,6 +19,10 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calend
                     if (profileInfo) {
                         $scope.nameProfile = profileInfo.name;
                         $scope.phoneProfile = profileInfo.phone;
+                        createMap(profileInfo.location);
+                    }
+                    else {
+                        $scope.$apply(navigator.geolocation.getCurrentPosition(geoSuccess, geoError));
                     };
                     serviceProviderInfo = result.serviceProviderInfo;
                     if (serviceProviderInfo) {
@@ -29,48 +32,75 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calend
                     };
                     calendarSettings = result.calendarSettings;
                     if (calendarSettings) {
-                        for(var i = 0; i < calendarSettings.days.length; i++){
+                        for (var i = 0; i < calendarSettings.days.length; i++) {
                             $scope[calendarSettings.days[i]] = true;
                         };
-                        for(var i = 0; i < calendarSettings.hours.length; i++){
+                        for (var i = 0; i < calendarSettings.hours.length; i++) {
                             $scope[calendarSettings.hours[i]] = true;
+                        };
+                    }
+                    else {
+                        var defaultSettings = settingsService.defaultSettings;
+                        for (var i = 0; i < defaultSettings.days.length; i++) {
+                            $scope[defaultSettings.days[i]] = true;
+                        };
+                        for (var i = 0; i < defaultSettings.hours.length; i++) {
+                            $scope[defaultSettings.hours[i]] = true;
                         };
                     };
                 });
             };
 
-            function onSuccess(position) {
-                $scope.map.center = {
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude
-                };
-                $scope.markers.push({
-                    idKey: 1,
-                    coords: {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude
+            function createMap(coords) {
+                $scope.map = {
+                    center: {
+                        latitude: coords.latitude,
+                        longitude: coords.longitude
+                    },
+                    zoom: 15,
+                    markers: [
+                        {
+                            id: Date.now(),
+                            coords: {
+                                latitude: coords.latitude,
+                                longitude: coords.longitude
+                            }
+                        }
+                    ],
+                    events: {
+                        click: function (map, eventName, originalEventArgs) {
+                            var e = originalEventArgs[0];
+                            var lat = e.latLng.lat(), lon = e.latLng.lng();
+                            var marker = {
+                                id: Date.now(),
+                                coords: {
+                                    latitude: lat,
+                                    longitude: lon
+                                }
+                            };
+                            $scope.map.markers = [];
+                            $scope.map.markers.push(marker);
+                            $scope.$apply();
+                        }
                     }
-                });
-                $scope.$apply();
+                }
             };
 
-            function onError(error) {
+            function geoSuccess(position) {
+                createMap(position.coords);
+            };
+
+            function geoError(error) {
                 console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
             };
 
-            function mapInit(){
-                $scope.markers = [];
-                $scope.map = {
-                    center: { latitude: 36.132411, longitude: -80.290481 },
-                    zoom: 15
-                };
-                navigator.geolocation.getCurrentPosition(onSuccess, onError);
-            };
-
-            function save_Profile(){
+            function save_Profile() {
                 if (profileInfo) {
+                    var marker = $scope.map.markers[0];
                     profileInfo.name = $scope.nameProfile;
                     profileInfo.phone = $scope.phoneProfile;
+                    profileInfo.location.latitude = marker.coords.latitude;
+                    profileInfo.location.longitude = marker.coords.longitude;
                     Profile.put(profileInfo);
                 }
                 else {
@@ -82,13 +112,13 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calend
                         phone: phone,
                         userType: 'consumer',
                         type: 'profile',
-                        location: {longtitude: "...", latitude: "..."}
+                        location: {longitude: $scope.map.markers[0].coords.longitude, latitude: $scope.map.markers[0].coords.latitude}
                     });
                 };
             };
 
-            function save_ServiceProviderInfo(){
-                if ($scope.serviceProvider.value == "yes"){
+            function save_ServiceProviderInfo() {
+                if ($scope.serviceProvider.value == "yes") {
                     if (serviceProviderInfo) {
                         serviceProviderInfo.speciality = $scope.speciality;
                         serviceProviderInfo.additionalInfo = $scope.additionalInfo;
@@ -104,23 +134,23 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calend
                     };
                 };
 
-                if(serviceProviderInfo && $scope.serviceProvider.value == "no"){
+                if (serviceProviderInfo && $scope.serviceProvider.value == "no") {
                     ServiceProviderInfo.delete(serviceProviderInfo);
                 };
             };
 
-            function save_CalendarSettings(){
+            function save_CalendarSettings() {
                 var Hours = [], Days, scopeKeys, allDays;
-                allDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+                allDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
                 scopeKeys = _.keys($scope);
-                for(var i = 0; i < scopeKeys.length; i++){
-                    if(scopeKeys[i].indexOf('workingHour') !== -1){
+                for (var i = 0; i < scopeKeys.length; i++) {
+                    if (scopeKeys[i].indexOf('workingHour') !== -1) {
                         Hours.push(scopeKeys[i]);
                     };
                 };
-                Days =  _.intersection(allDays,scopeKeys);
+                Days = _.intersection(allDays, scopeKeys);
 
-                if(calendarSettings){
+                if (calendarSettings) {
                     calendarSettings.days = Days;
                     calendarSettings.hours = Hours;
                     CalendarSettings.put(calendarSettings);

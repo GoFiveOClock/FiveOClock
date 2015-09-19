@@ -131,6 +131,7 @@
 .white-button{
     float: left;
     color:lightslategrey ;
+    cursor: pointer;
 }
 .float{
     float: left;
@@ -169,7 +170,7 @@
 }
 .time-icon{
     float: left;
-    padding-top: 10px;
+    padding-top: 5px;
     padding-left: 0.7%;
 }
 .form-icon{
@@ -191,7 +192,6 @@
 
 .ok-reject{
     margin-right: 4%;
-    /*margin-bottom: 2%;*/
 }
 .margin-reject{
    margin-right: 10px;
@@ -255,8 +255,8 @@ margin-top: 10px;
 .pad-time{
     padding-right: 2%;
 }
-.exist-events{
-    margin-left: 2%;
+.exist_events{
+    margin-left: 7px;
 }
 .lock-time{
     float: left;
@@ -520,7 +520,23 @@ a{
 .cursor{
     cursor: pointer;
 }
-
+.angular-google-map-container {
+    width: 100%;
+    height: 200px;
+}
+.alter-input{
+    width: 120px;
+}
+input[type="time"]::-webkit-clear-button {
+    display: none;
+}
+input[type="date"]::-webkit-clear-button {
+    display: none;
+}
+input[type="time"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    display: none;
+}
 
 
 

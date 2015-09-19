@@ -10,16 +10,20 @@ require.config({
         'cookies': 'bower_components/cookies.min',
 		'pouchdb': 'bower_components/pouchdb/dist/pouchdb.min',
 		'bluebird': 'bower_components/bluebird/js/browser/bluebird.min',
+        'moment': 'bower_components/moment/min/moment.min',
         'native-pouchdb-storage': 'couch-orm/pouchdb-storage',
         'client-storage': 'couch-orm/angular-pouchdb-storage',
         'entity': 'couch-orm/entity',
         'user-storage': 'storages/user',
+        'settingsService': 'app/settingsService',
         'loginController': 'app/loginController',
         'landingController': 'app/landingController',
         'profileController': 'app/profileController',
+        'calendarController': 'app/calendarController',
         'profile': 'entities/profile',
         'serviceProviderInfo': 'entities/serviceProviderInfo',
-        'calendarSettings': 'entities/calendarSettings'
+        'calendarSettings': 'entities/calendarSettings',
+        'meeting': 'entities/meeting'
     },
     shim: {
         'angular': {
