@@ -47,17 +47,8 @@ app.all('/*', function (req, res, next) {
 app.post('/login', function (req, res) {
     var user = req.body.user;
     var password = req.body.password;
-
-    host.authAsync(user, password).then(function (body) {
-        var headers = body[1];
-        var auth = headers['set-cookie'][0];
-        var cookieObject = cookie.parse(auth);
-        res.cookie('AuthSession', cookieObject.AuthSession, {
-            expires: moment().add(1, 'years').toDate()
-        });
-        res.cookie('user', user, { expires: moment().add(1, 'years').toDate() });
-        res.end();
-    }).catch(function (err) {
+	
+    setCookies(host, user, password, res, req).catch(function (err) {
         res.status(500).send(err);
     });
 });

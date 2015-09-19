@@ -1,6 +1,9 @@
 define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calendarSettings', 'settingsService'], function (angular, $, _, cookies, serviceProviderFile, calendarSettingsFIle, settingsServiceFile) {
     return angular.module('fiveOClock').controller('profileController',
-        function ($scope, $q, Profile, ServiceProviderInfo, CalendarSettings, settingsService) {
+        function ($scope, $q, Profile, ServiceProviderInfo, CalendarSettings, settingsService, uiGmapGoogleMapApi) {
+            uiGmapGoogleMapApi.then(function(maps) {
+                console.log(maps);
+            });
             var profileInfo, serviceProviderInfo, calendarSettings;
             formSettings_userInfo();
 
@@ -22,7 +25,7 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calend
                         createMap(profileInfo.location);
                     }
                     else {
-                        $scope.$apply(navigator.geolocation.getCurrentPosition(geoSuccess, geoError));
+                        navigator.geolocation.getCurrentPosition(geoSuccess, geoError)
                     };
                     serviceProviderInfo = result.serviceProviderInfo;
                     if (serviceProviderInfo) {
@@ -88,6 +91,7 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calend
 
             function geoSuccess(position) {
                 createMap(position.coords);
+                $scope.$apply();
             };
 
             function geoError(error) {

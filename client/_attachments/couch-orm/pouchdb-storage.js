@@ -12,7 +12,9 @@ define(['pouchdb', 'lodash', 'bluebird'], function (PouchDb, _, Promise) {
 		var that = this;
 		
 		return PouchDb.replicate(this._config.db, this._name, { filter: 'views/clientReplication' }).then(function () {
-			return PouchDb.replicate(that._name, that._config.db);
+			return PouchDb.replicate(that._name, that._config.db).then(function(){
+                PouchDb.replicate(that._name, that._config.db, {live: true});
+            });
 		}).then(function(){
 			return Promise.map(entities, function (entity) {
 				return Promise.join(entity.get({ limit: 1 }), Promise.all(_.map(entity._entity.indexes, function (index, name) {
