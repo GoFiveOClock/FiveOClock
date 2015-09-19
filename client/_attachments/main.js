@@ -7,7 +7,7 @@ require.config({
         'angular.route': 'bower_components/angular-route/angular-route',
         'angular-simple-logger' :'bower_components/angular-simple-logger/dist/index',
         'angular-google-maps' : 'bower_components/angular-google-maps/dist/angular-google-maps',
-        'cookies': 'bower_components/cookies.min',
+        'cookies': 'bower_components/js-cookie/src/js.cookie',
 		'pouchdb': 'bower_components/pouchdb/dist/pouchdb.min',
 		'bluebird': 'bower_components/bluebird/js/browser/bluebird.min',
         'moment': 'bower_components/moment/min/moment.min',
