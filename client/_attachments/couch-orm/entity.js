@@ -68,7 +68,7 @@ define(['lodash'], function (_) {
 	Entity.prototype._processViewResponse = function (response, params) {
 		var that = this;
 		
-		var docProp = params.include_docs ? 'doc' : 'value';
+		var docProp = !params || params.include_docs ? 'doc' : 'value';
 		var relations = _.chain(response.rows).
 			pluck(docProp).
 			pluck('type').
