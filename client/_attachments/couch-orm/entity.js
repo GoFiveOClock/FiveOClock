@@ -94,7 +94,7 @@ define(['lodash'], function (_) {
 				.pluck(docProp)
 				.value();
 			return rows;
-		} else if (!params.group) {
+		} else if (!params || !params.group) {
 			return _.pluck(response.rows, docProp);
 		} else {
 			return response.rows;
