@@ -74,7 +74,7 @@ define(['lodash'], function (_) {
 			pluck('type').
 			uniq().
 			reject(function (doc) {
-				return doc == that._entity.type;
+				return !doc || doc == that._entity.type;
 			}).value();
 		if (relations && relations.length) {
 			var rows = _.chain(response.rows)
@@ -94,8 +94,10 @@ define(['lodash'], function (_) {
 				.pluck(docProp)
 				.value();
 			return rows;
-		} else {
+		} else if (!params.group) {
 			return _.pluck(response.rows, docProp);
+		} else {
+			return response.rows;
 		}
 	};
 
