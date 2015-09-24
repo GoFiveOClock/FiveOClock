@@ -17,7 +17,7 @@ define(['lodash'], function (_) {
 					result = { view: result };
 				}
 				return that._storage.queryView(result.view, result.params).then(function (response) {
-					return that._processViewResponse(response);
+					return that._processViewResponse(response, result.params);
 				});
 			}
 		});
@@ -28,7 +28,7 @@ define(['lodash'], function (_) {
 
 		if (_.isObject(param) || !param) {
 			return this._storage.queryView(this._entity.type, param).then(function (response) {
-				return that._processViewResponse(response);
+				return that._processViewResponse(response, param);
 			});
 		} else {
 			return this._storage.queryView(this._entity.type, {
@@ -37,7 +37,7 @@ define(['lodash'], function (_) {
 				skip: 0,
 				limit: 1
 			}).then(function (response) {
-				return that._processViewResponse(response);
+				return that._processViewResponse(response, param);
 			}).then(function (result) {
 				return result[0];
 			});
@@ -65,11 +65,12 @@ define(['lodash'], function (_) {
 		return this._storage.delete(id, rev);
 	}
 
-	Entity.prototype._processViewResponse = function (response) {
+	Entity.prototype._processViewResponse = function (response, params) {
 		var that = this;
-
+		
+		var docProp = params.include_docs ? 'doc' : 'value';
 		var relations = _.chain(response.rows).
-			pluck('doc').
+			pluck(docProp).
 			pluck('type').
 			uniq().
 			reject(function (doc) {
@@ -87,14 +88,14 @@ define(['lodash'], function (_) {
 						row.doc[relationProp] = _.chain(response.rows)
 							.filter(function (relationRow) {
 								return relationRow.doc.type == relation && relationRow.key == row.key;
-							}).pluck('doc').value();
+							}).pluck(docProp).value();
 					}
 				})
-				.pluck('doc')
+				.pluck(docProp)
 				.value();
 			return rows;
 		} else {
-			return _.pluck(response.rows, 'doc');
+			return _.pluck(response.rows, docProp);
 		}
 	};
 
