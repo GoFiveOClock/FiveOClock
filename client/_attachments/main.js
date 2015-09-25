@@ -15,6 +15,7 @@ require.config({
         'client-storage': 'couch-orm/angular-pouchdb-storage',
         'entity': 'couch-orm/entity',
         'user-storage': 'storages/user',
+        'common-storage': 'storages/common',
         'settingsService': 'app/settingsService',
         'loginController': 'app/loginController',
         'landingController': 'app/landingController',
@@ -22,14 +23,22 @@ require.config({
         'calendarController': 'app/calendarController',
         'profile': 'entities/profile',
         'serviceProviderInfo': 'entities/serviceProviderInfo',
+        'serviceProviderInfoCommon': 'entities/serviceProviderInfoCommon',
         'calendarSettings': 'entities/calendarSettings',
-        'meeting': 'entities/meeting'
+        'meeting': 'entities/meeting',
+        'angular-sanitize': 'bower_components/angular-sanitize/angular-sanitize',
+        'select': 'bower_components/ui-select/dist/select'
     },
     shim: {
         'angular': {
             exports: 'angular',
             deps: ['jquery']
         },
+
+        'bootstrap': {
+            deps: ['jquery']
+        },
+
         'angular.route': {
             deps: ['angular'],
             exports: 'angular'
@@ -41,14 +50,23 @@ require.config({
         'angular-google-maps': {
             deps: ['angular','lodash','angular-simple-logger'],
             exports: 'angular'
+        },
+        'angular-sanitize': {
+            deps: ['angular'],
+            exports: 'angular'
+        },
+        'select': {
+            deps: ['angular'],
+            exports: 'angular'
         }
+
 
     },
     deps: ['angular', 'angular.route']
 });
 
-require(['jquery', 'angular', 'lodash', 'cookies', 'client-storage','angular-google-maps'], function ($, angular, _, cookies, ClientStorage, angular_google_maps) {
-    angular.module('fiveOClock', ['ngRoute', 'angularCouch','uiGmapgoogle-maps']);
+require(['jquery', 'angular', 'lodash', 'cookies', 'client-storage','angular-google-maps','angular-sanitize', 'select'], function ($, angular, _, cookies, ClientStorage, angular_google_maps, angular_sanitize, select) {
+    angular.module('fiveOClock', ['ngRoute', 'angularCouch','uiGmapgoogle-maps','ngSanitize', 'ui.select']);
     $(function () {
         var authSession = cookies.get('AuthSession');
         if(!authSession){

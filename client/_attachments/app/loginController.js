@@ -46,7 +46,8 @@ define(['angular', 'jquery', 'cookies'],function(angular, $, cookies){
                             email = email.toLowerCase();
                             if($scope.dontRemember.value){
                                 var AuthSession = cookies.get('AuthSession');
-                                cookies.set('AuthSession',AuthSession,{expires: 0})
+                                cookies.set('AuthSession');
+                                cookies.set('AuthSession',AuthSession);
                             };
                             window.location = "#landing_after_login";
                         }).catch(function (data) {
@@ -67,7 +68,8 @@ define(['angular', 'jquery', 'cookies'],function(angular, $, cookies){
                         $http.post("http://localhost:3000/login", {user: email, password: password}, {withCredentials: true}).then(function (data) {
                             if($scope.dontRemember.value){
                                 var AuthSession = cookies.get('AuthSession');
-                                cookies.set('AuthSession',AuthSession,{expires: 0})
+                                cookies.set('AuthSession');
+                                cookies.set('AuthSession',AuthSession);
                             };
                             window.location = "#landing_after_login";
                         }).catch(function (data) {

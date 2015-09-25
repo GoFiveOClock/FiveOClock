@@ -1,10 +1,11 @@
-define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calendarSettings', 'settingsService'], function (angular, $, _, cookies, serviceProviderFile, calendarSettingsFIle, settingsServiceFile) {
+define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'serviceProviderInfoCommon', 'calendarSettings', 'settingsService'], function (angular, $, _, cookies, serviceProviderFile, serviceProviderInfoCommon, calendarSettingsFIle, settingsServiceFile) {
     return angular.module('fiveOClock').controller('profileController',
-        function ($scope, $q, Profile, ServiceProviderInfo, CalendarSettings, settingsService, uiGmapGoogleMapApi) {
-            uiGmapGoogleMapApi.then(function(maps) {
-                console.log(maps);
-            });
+        function ($scope, $q, Profile, ServiceProviderInfo, ServiceProviderInfoCommon, CalendarSettings, settingsService, uiGmapGoogleMapApi) {
+
+
+
             var profileInfo, serviceProviderInfo, calendarSettings;
+            $scope.Specialityes = [{key:""}];
             formSettings_userInfo();
 
             function formSettings_userInfo() {
@@ -12,13 +13,17 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calend
                 $scope.serviceProvider = {
                     value: "no"
                 };
+
                 var promises = {
-                    profile: Profile.get('profile'),
-                    serviceProviderInfo: ServiceProviderInfo.get('serviceProviderInfo'),
-                    calendarSettings: CalendarSettings.get('calendarSettings')
+                    profile: Profile.get(),
+                    serviceProviderInfo: ServiceProviderInfo.get(),
+                    calendarSettings: CalendarSettings.get(),
+                    maps: uiGmapGoogleMapApi
                 };
                 $q.all(promises).then(function (result) {
-                    profileInfo = result.profile;
+                    $scope.googleMaps = result.maps;
+
+                    profileInfo = result.profile[0];
                     if (profileInfo) {
                         $scope.nameProfile = profileInfo.name;
                         $scope.phoneProfile = profileInfo.phone;
@@ -27,13 +32,15 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calend
                     else {
                         navigator.geolocation.getCurrentPosition(geoSuccess, geoError)
                     };
-                    serviceProviderInfo = result.serviceProviderInfo;
+
+                    serviceProviderInfo = result.serviceProviderInfo[0];
                     if (serviceProviderInfo) {
                         $scope.serviceProvider.value = "yes";
                         $scope.speciality = serviceProviderInfo.speciality;
                         $scope.additionalInfo = serviceProviderInfo.additionalInfo;
                     };
-                    calendarSettings = result.calendarSettings;
+
+                    calendarSettings = result.calendarSettings[0];
                     if (calendarSettings) {
                         for (var i = 0; i < calendarSettings.days.length; i++) {
                             $scope[calendarSettings.days[i]] = true;
@@ -51,47 +58,65 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calend
                             $scope[defaultSettings.hours[i]] = true;
                         };
                     };
+
+                    if(serviceProviderInfo && serviceProviderInfo.speciality){
+                        ServiceProviderInfoCommon.specialities(serviceProviderInfo.speciality).then(function(res){
+                            if(res && res.length){
+                                $scope.Specialityes.push(res[0]);
+                                $scope.Specialityes.selected =  {key: $scope.speciality};
+                            };
+                        }).catch(function(err){
+                            console.log(err);
+                        });
+                    };
+
+                }).catch(function(err){
+                    console.log(err);
                 });
             };
 
-            function createMap(coords) {
-                $scope.map = {
-                    center: {
-                        latitude: coords.latitude,
-                        longitude: coords.longitude
-                    },
-                    zoom: 15,
-                    markers: [
-                        {
-                            id: Date.now(),
-                            coords: {
-                                latitude: coords.latitude,
-                                longitude: coords.longitude
-                            }
-                        }
-                    ],
-                    events: {
-                        click: function (map, eventName, originalEventArgs) {
-                            var e = originalEventArgs[0];
-                            var lat = e.latLng.lat(), lon = e.latLng.lng();
-                            var marker = {
-                                id: Date.now(),
-                                coords: {
-                                    latitude: lat,
-                                    longitude: lon
-                                }
+            function newMarker(coords, formatted_address){
+                return  {
+                    id: Date.now(),
+                    coords: {latitude: coords.latitude, longitude: coords.longitude},
+                    label: formatted_address
+                };
+            }
+
+            function newEvents(geocoder){
+               return {
+                    click: function (map, eventName, originalEventArgs) {
+                        var e = originalEventArgs[0];
+                        var coords = {latitude: e.latLng.lat(), longitude:e.latLng.lng()};
+                        geocoder.geocode({'location': {lat:coords.latitude, lng: coords.longitude}}, function (results, status) {
+                            if (results.length) {
+                                marker = newMarker(coords, results[0].formatted_address);
+                                $scope.map.markers = [];
+                                $scope.map.markers.push(marker);
+                                $scope.$apply();
                             };
-                            $scope.map.markers = [];
-                            $scope.map.markers.push(marker);
-                            $scope.$apply();
-                        }
+                        });
                     }
                 }
-            };
+            }
+
+            function createMap(coords) {
+                var geocoder = new $scope.googleMaps.Geocoder(), marker;
+                geocoder.geocode({'location': {lat: coords.latitude, lng: coords.longitude}}, function (results) {
+                    if (results.length) {
+                        $scope.map = {
+                            center: {latitude: coords.latitude,longitude: coords.longitude},
+                            zoom: 15,
+                            markers: [newMarker(coords, results[0].formatted_address)],
+                            events: newEvents(geocoder)
+                        };
+                    };
+                    $scope.$apply();
+                });
+            }
 
             function geoSuccess(position) {
                 createMap(position.coords);
-                $scope.$apply();
             };
 
             function geoError(error) {
@@ -105,18 +130,20 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calend
                     profileInfo.phone = $scope.phoneProfile;
                     profileInfo.location.latitude = marker.coords.latitude;
                     profileInfo.location.longitude = marker.coords.longitude;
+                    profileInfo.location.locationName = $scope.map.markers[0].label
                     Profile.put(profileInfo);
                 }
                 else {
                     var name = $scope.nameProfile;
                     var phone = $scope.phoneProfile;
-                    Profile.put({
-                        _id: 'profile',
+                    Profile.post({
                         name: name,
                         phone: phone,
                         userType: 'consumer',
                         type: 'profile',
-                        location: {longitude: $scope.map.markers[0].coords.longitude, latitude: $scope.map.markers[0].coords.latitude}
+                        location: {longitude: $scope.map.markers[0].coords.longitude, latitude: $scope.map.markers[0].coords.latitude, locationName:$scope.map.markers[0].label}
+                    }).then(function(profile){
+                        profileInfo = profile;
                     });
                 };
             };
@@ -124,16 +151,19 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calend
             function save_ServiceProviderInfo() {
                 if ($scope.serviceProvider.value == "yes") {
                     if (serviceProviderInfo) {
+                        serviceProviderInfo.userName = $scope.nameProfile;
                         serviceProviderInfo.speciality = $scope.speciality;
                         serviceProviderInfo.additionalInfo = $scope.additionalInfo;
                         ServiceProviderInfo.put(serviceProviderInfo);
                     }
                     else {
-                        ServiceProviderInfo.put({
-                            _id: 'serviceProviderInfo',
+                        ServiceProviderInfo.post({
+                            userName: $scope.nameProfile,
                             speciality: $scope.speciality,
                             additionalInfo: $scope.additionalInfo,
                             type: 'serviceProviderInfo'
+                        }).then(function(providerInfo){
+                            serviceProviderInfo = providerInfo;
                         });
                     };
                 };
@@ -144,15 +174,20 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calend
             };
 
             function save_CalendarSettings() {
-                var Hours = [], Days, scopeKeys, allDays;
-                allDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                var Hours = [], Days = [], scopeKeys, AllDays;
+                AllDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
                 scopeKeys = _.keys($scope);
                 for (var i = 0; i < scopeKeys.length; i++) {
-                    if (scopeKeys[i].indexOf('workingHour') !== -1) {
+                    if ((scopeKeys[i].indexOf('workingHour') !== -1)&&($scope[scopeKeys[i]] == true)) {
                         Hours.push(scopeKeys[i]);
                     };
                 };
-                Days = _.intersection(allDays, scopeKeys);
+
+                for (var i = 0; i < AllDays.length; i++) {
+                    if (($scope[AllDays[i]])&&($scope[AllDays[i]] == true)) {
+                        Days.push(AllDays[i]);
+                    };
+                };
 
                 if (calendarSettings) {
                     calendarSettings.days = Days;
@@ -162,6 +197,51 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'calend
                 else {
                     CalendarSettings.put({_id: 'calendarSettings', days: Days, hours: Hours});
                 };
+            };
+
+            $scope.specSelect = function (obj) {
+                if (obj.select.search && !obj.select.clickTriggeredSelect) {
+                    if (!obj.select.selected) {
+                        var newOne = { key: obj.select.search};
+                        $scope.Specialityes.push(newOne);
+                        obj.select.selected = newOne;
+                        $scope.speciality = newOne.key;
+                    }
+                }
+                else{
+                    $scope.speciality = obj.item.key;
+                }
+                obj.select.search = '';
+            };
+
+            $scope.propsFilter = function(select){
+
+               if(!select.search && select.searchEnabled){
+
+                   ServiceProviderInfoCommon.specialities().then(function(res){
+                       if(res && res.length){
+                           $scope.SpecialityesFilt = res;
+                       }
+                       else{
+                           $scope.SpecialityesFilt = [{key:""}];
+                       };
+                   });
+//                   $scope.SpecialityesFilt = $scope.Specialityes;
+//                   return;
+
+               }
+                else if(select.search && select.searchEnabled){
+                   var searchText = select.search.toLowerCase();
+
+                   ServiceProviderInfoCommon.specialities(searchText).then(function(res){
+                       if(res && res.length){
+                           $scope.SpecialityesFilt = res;
+                       }
+                       else{
+                           $scope.SpecialityesFilt = [{key:""}];
+                       };
+                   });
+               };
             };
 
             $scope.save = function () {

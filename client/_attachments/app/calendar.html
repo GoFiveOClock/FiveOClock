@@ -103,7 +103,7 @@
                 <div class="float pad-time">{{slot_hour.hour}}</div>
                 <div class="cont-events">
                     <div class="overflow-float" ng-repeat="meeting in current_meets({hourNum:slot_hour.num, day:twain[0].dayname })"
-                         ng-style="meetStyle(meeting)">
+                         ng-style="meetStyle({meeting:meeting,meetings:current_meets({hourNum:slot_hour.num, day:twain[0].dayname })})">
                         <div ng-if="endMeeting({meeting:meeting,meetings:current_meets({hourNum:slot_hour.num, day:twain[0].dayname })})" class="end-event" ng-bind="transformDate(meeting.start)">
                         </div>
                         <div class="event">
@@ -174,7 +174,7 @@
                 <div class="float pad-time">{{slot_hour.hour}}</div>
                 <div class="cont-events">
                     <div class="overflow-float" ng-repeat="meeting in current_meets({hourNum:slot_hour.num, day:twain[1].dayname })"
-                         ng-style="meetStyle(meeting)">
+                         ng-style="meetStyle({meeting:meeting,meetings:current_meets({hourNum:slot_hour.num, day:twain[0].dayname })})">
                         <div ng-if="endMeeting({meeting:meeting,meetings:current_meets({hourNum:slot_hour.num, day:twain[1].dayname })})" class="end-event" ng-bind="transformDate(meeting.start)">
                         </div>
                         <div class="event">

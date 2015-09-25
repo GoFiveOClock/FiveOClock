@@ -81,7 +81,7 @@ define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 
 
             $scope.click_Create = function(objDate){
                 var slot_hour = objDate.slot_hour;
-                slot_hour.selectedCreate = true;
+                slot_hour.selectedCreate = !slot_hour.selectedCreate;
                 slot_hour.alterSlots = [];
                 push_alterSlots(slot_hour,objDate);
             };
@@ -117,18 +117,18 @@ define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 
                 slot_hour.selectedCreate = false;
             };
 
-            $scope.meetStyle = function (meeting) {
-                var dur = moment(meeting.end).diff(moment(meeting.start), 'minutes');
+            $scope.meetStyle = function (objMeet) {
+//                var dur = moment(meeting.end).diff(moment(meeting.start), 'minutes');
                 var overall_cont = $("div.cont-events").width();
                 var create_but = $("div.white-button").width();
                 var margin_left = 8;
                 var events_cont = overall_cont - create_but - margin_left;
-                if(meeting.pseudo){
-                    return {"width": dur / 60 * events_cont, "text-align" : "center", "background-color" : "#F4F4F4"};
-                }
-                else{
-                    return {"width": dur / 60 * events_cont};
-                };
+//                if(meeting.pseudo){
+//                    return {"width": dur / 60 * events_cont, "text-align" : "center", "background-color" : "#F4F4F4"};
+//                }
+//                else{
+                    return {"width": events_cont/objMeet.meetings.length};
+//                };
             };
 
             $scope.endMeeting = function(objMeetings){

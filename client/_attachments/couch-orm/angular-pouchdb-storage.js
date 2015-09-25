@@ -4,7 +4,7 @@ define(['native-pouchdb-storage', 'angular'], function (NativeStorage, angular) 
 	var angularCouch = angular.module('angularCouch', []);
     angularCouch.factory('ClientStorage', ClientStorage);
 
-	function ClientStorage($timeout, $rootScope) {
+	function ClientStorage($timeout, $rootScope, $q) {
 		function AngularPouchDbStorage(config) {
 			this._storage = new NativeStorage(config);
 		}
@@ -30,10 +30,12 @@ define(['native-pouchdb-storage', 'angular'], function (NativeStorage, angular) 
 		};
 
 		function applyResult(result) {
+            var deferred = $q.defer();
             $timeout(function () {
+                deferred.resolve(result);
                 $rootScope.$apply();
             });
-            return result;
+            return deferred.promise;
         }
 
 		return AngularPouchDbStorage;

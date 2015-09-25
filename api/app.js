@@ -24,12 +24,14 @@ if ('development' === app.get('env')) {
 }
 
 var adminDB = 'fiveoclockadmin';
+var commDb = 'common';
 var couchDbHost = 'http://localhost:5984';
 var host = Promise.promisifyAll(nano(couchDbHost));
 var adminLogin = 'admin';
 var adminPassword = 'abc123';
 var appDb = 'fiveoclock';
 var userDbreplicationFilter = 'views/ownDbReplication';
+var commonReplicationFilter = 'views/commonReplication';
 
 app.all('/*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", couchDbHost);
@@ -69,6 +71,8 @@ function register(req, res, user, password) {
             return addOwnDb(authenticated, user, req, res);
         }).then(function () {
             return setupUserRole(authenticated, user);
+        }).then(function () {
+            return replicateCommon(authenticated, user);
         }).then(function () {
             return setCookies(host, user, password, res, req);
         }).catch(function (err) {
@@ -145,6 +149,11 @@ function addToAdminDb(authenticated, user, password) {
 function addOwnDb(authenticated, user) {
     var dbName = getDbName(user);
     return authenticated.db.replicateAsync(appDb, dbName, { create_target: true, filter:userDbreplicationFilter });
+}
+
+function replicateCommon(authenticated, user) {
+    var dbName = getDbName(user);
+    return authenticated.db.replicateAsync(dbName, commDb, { create_target: true, continuous: true, filter:commonReplicationFilter});
 }
 
 
