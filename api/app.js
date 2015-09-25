@@ -1,14 +1,9 @@
-/**
- * Module dependencies.
- */
-
 var express = require('express');
 var http = require('http');
-var path = require('path');
 var cookie = require('cookie');
 var moment = require('moment');
 var Promise = require("bluebird");
-var nano = require('nano')
+var nano = require('nano');
 
 var app = express();
 app.use(express.cookieParser('your secret here'));
@@ -24,7 +19,7 @@ app.use(express.session());
 app.use(app.router);
 
 // development only
-if ('development' == app.get('env')) {
+if ('development' === app.get('env')) {
     app.use(express.errorHandler());
 }
 
@@ -34,7 +29,7 @@ var host = Promise.promisifyAll(nano(couchDbHost));
 var adminLogin = 'admin';
 var adminPassword = 'abc123';
 var appDb = 'fiveoclock';
-var userDbreplicationFilter = 'views/ownDbReplication'
+var userDbreplicationFilter = 'views/ownDbReplication';
 
 app.all('/*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", couchDbHost);
@@ -88,14 +83,14 @@ function register(req, res, user, password) {
         }).catch(function (err) {
             return cleanup(authenticated, user).finally(function () {
                 return Promise.reject(err);
-            })
+            });
         });
     }).catch(function (err) {
         res.status(500).send(err);
     });
-};
+}
 
-function cleanup(authenticated, user, err) {
+function cleanup(authenticated, user) {
     return removeFromUsers(authenticated, user).finally(function () {
         return removeDb(authenticated, user);
     }).finally(function () {
@@ -134,11 +129,11 @@ function addToUsersDb(authenticated, user, password) {
         "roles": ['user'],
         "password": password
     });
-};
+}
 
 function checkAdminDB(authenticated) {
     return authenticated.requestAsync({ db: adminDB, method: 'HEAD' }).catch(function (err) {
-        if (err.statusCode == 404) {
+        if (err.statusCode === 404) {
             return authenticated.requestAsync({ db: adminDB, method: 'PUT' });
         }
         return Promise.reject(err);
@@ -154,12 +149,12 @@ function addToAdminDb(authenticated, user, password) {
         "type": "user",
         "password": password
     });
-};
+}
 
-function addOwnDb(authenticated, user, req, res) {
+function addOwnDb(authenticated, user) {
     var dbName = getDbName(user);
     return authenticated.db.replicateAsync(appDb, dbName, { create_target: true, filter:userDbreplicationFilter });
-};
+}
 
 
 function setupUserRole(authenticated, user) {
@@ -180,13 +175,13 @@ function setupUserRole(authenticated, user) {
         }
     });
     return prom;
-};
+}
 
 function getDbName(user) {
     return user.replace(/\./gi, '-').replace(/@/gi, '$');
 }
 
-function setCookies(host, user, password, res, req) {
+function setCookies(host, user, password, res) {
     return host.authAsync(user, password).then(function (body) {
         var headers = body[1];
         var auth = headers['set-cookie'][0];
@@ -198,7 +193,7 @@ function setCookies(host, user, password, res, req) {
         res.cookie('db', getDbName(user), { expires: moment().add(1, 'years').toDate() });
         res.end(user);
     });
-};
+}
 
 var server = http.createServer(app);
 
