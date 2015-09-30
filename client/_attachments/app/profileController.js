@@ -2,13 +2,11 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
     return angular.module('fiveOClock').controller('profileController',
         function ($scope, $q, Profile, ServiceProviderInfo, ServiceProviderInfoCommon, CalendarSettings, settingsService, uiGmapGoogleMapApi) {
 
-
-
             var profileInfo, serviceProviderInfo, calendarSettings;
-            $scope.Specialityes = [{key:""}];
-            formSettings_userInfo();
+            $scope.specialities = [{key:""}];
+            formSettingsUserInfo();
 
-            function formSettings_userInfo() {
+            function formSettingsUserInfo() {
                 $scope.userName = cookies.get('user');
                 $scope.serviceProvider = {
                     value: "no"
@@ -62,8 +60,8 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                     if(serviceProviderInfo && serviceProviderInfo.speciality){
                         ServiceProviderInfoCommon.specialities(serviceProviderInfo.speciality).then(function(res){
                             if(res && res.length){
-                                $scope.Specialityes.push(res[0]);
-                                $scope.Specialityes.selected =  {key: $scope.speciality};
+                                $scope.specialities.push(res[0]);
+                                $scope.specialities.selected =  {key: $scope.speciality};
                             };
                         }).catch(function(err){
                             console.log(err);
@@ -75,11 +73,11 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                 });
             };
 
-            function newMarker(coords, formatted_address){
+            function newMarker(coords, formattedAddress){
                 return  {
                     id: Date.now(),
                     coords: {latitude: coords.latitude, longitude: coords.longitude},
-                    label: formatted_address
+                    label: formattedAddress
                 };
             }
 
@@ -90,7 +88,7 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                         var coords = {latitude: e.latLng.lat(), longitude:e.latLng.lng()};
                         geocoder.geocode({'location': {lat:coords.latitude, lng: coords.longitude}}, function (results, status) {
                             if (results.length) {
-                                marker = newMarker(coords, results[0].formatted_address);
+                                var marker = newMarker(coords, results[0].formatted_address);
                                 $scope.map.markers = [];
                                 $scope.map.markers.push(marker);
                                 $scope.$apply();
@@ -123,7 +121,7 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                 console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
             };
 
-            function save_Profile() {
+            function saveProfile() {
                 if (profileInfo) {
                     var marker = $scope.map.markers[0];
                     profileInfo.name = $scope.nameProfile;
@@ -148,7 +146,7 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                 };
             };
 
-            function save_ServiceProviderInfo() {
+            function saveServiceProviderInfo() {
                 if ($scope.serviceProvider.value == "yes") {
                     if (serviceProviderInfo) {
                         serviceProviderInfo.userName = $scope.nameProfile;
@@ -173,29 +171,29 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                 };
             };
 
-            function save_CalendarSettings() {
-                var Hours = [], Days = [], scopeKeys, AllDays;
-                AllDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            function saveCalendarSettings() {
+                var hours = [], days = [], scopeKeys, allDays;
+                allDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
                 scopeKeys = _.keys($scope);
                 for (var i = 0; i < scopeKeys.length; i++) {
                     if ((scopeKeys[i].indexOf('workingHour') !== -1)&&($scope[scopeKeys[i]] == true)) {
-                        Hours.push(scopeKeys[i]);
+                        hours.push(scopeKeys[i]);
                     };
                 };
 
-                for (var i = 0; i < AllDays.length; i++) {
-                    if (($scope[AllDays[i]])&&($scope[AllDays[i]] == true)) {
-                        Days.push(AllDays[i]);
+                for (var i = 0; i < allDays.length; i++) {
+                    if (($scope[allDays[i]])&&($scope[allDays[i]] == true)) {
+                        days.push(allDays[i]);
                     };
                 };
 
                 if (calendarSettings) {
-                    calendarSettings.days = Days;
-                    calendarSettings.hours = Hours;
+                    calendarSettings.days = days;
+                    calendarSettings.hours = hours;
                     CalendarSettings.put(calendarSettings);
                 }
                 else {
-                    CalendarSettings.put({_id: 'calendarSettings', days: Days, hours: Hours});
+                    CalendarSettings.put({_id: 'calendarSettings', days: days, hours: hours});
                 };
             };
 
@@ -203,7 +201,7 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                 if (obj.select.search && !obj.select.clickTriggeredSelect) {
                     if (!obj.select.selected) {
                         var newOne = { key: obj.select.search};
-                        $scope.Specialityes.push(newOne);
+                        $scope.specialities.push(newOne);
                         obj.select.selected = newOne;
                         $scope.speciality = newOne.key;
                     }
@@ -220,13 +218,13 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
 
                    ServiceProviderInfoCommon.specialities().then(function(res){
                        if(res && res.length){
-                           $scope.SpecialityesFilt = res;
+                           $scope.specialitiesFilt = res;
                        }
                        else{
-                           $scope.SpecialityesFilt = [{key:""}];
+                           $scope.specialitiesFilt = [{key:""}];
                        };
                    });
-//                   $scope.SpecialityesFilt = $scope.Specialityes;
+//                   $scope.specialitiesFilt = $scope.specialities;
 //                   return;
 
                }
@@ -235,19 +233,19 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
 
                    ServiceProviderInfoCommon.specialities(searchText).then(function(res){
                        if(res && res.length){
-                           $scope.SpecialityesFilt = res;
+                           $scope.specialitiesFilt = res;
                        }
                        else{
-                           $scope.SpecialityesFilt = [{key:""}];
+                           $scope.specialitiesFilt = [{key:""}];
                        };
                    });
                };
             };
 
             $scope.save = function () {
-                save_Profile();
-                save_ServiceProviderInfo();
-                save_CalendarSettings();
+                saveProfile();
+                saveServiceProviderInfo();
+                saveCalendarSettings();
             };
         });
 });

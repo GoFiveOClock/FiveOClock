@@ -226,9 +226,9 @@
             </div>
             <div class="relat lab-hr gray">
 
-                <ui-select on-select="specSelect({select:$select,item:$item})" class="all-width pad-bottom font-big" reset-search-input="false" ng-model="Specialityes.selected" theme="select2" ng-disabled="disabled">
+                <ui-select on-select="specSelect({select:$select,item:$item})" class="all-width pad-bottom font-big" reset-search-input="false" ng-model="specialities.selected" theme="select2" ng-disabled="disabled">
                     <ui-select-match placeholder="Специализация">{{$select.selected.key}}</ui-select-match>
-                    <ui-select-choices repeat="spec in SpecialityesFilt | filter: propsFilter($select)">
+                    <ui-select-choices repeat="spec in specialitiesFilt | filter: propsFilter($select)">
                         <small>
                             {{spec.key}}
                         </small>

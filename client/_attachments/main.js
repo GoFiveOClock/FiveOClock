@@ -4,6 +4,8 @@ require.config({
         'lodash': 'bower_components/lodash/lodash.min',
         'jquery': 'bower_components/jquery/dist/jquery.min',
         'angular': 'bower_components/angular/angular',
+        'ui-bootstrap': 'bower_components/angular-bootstrap/ui-bootstrap',
+        'ui-bootstrap-tpls': 'bower_components/angular-bootstrap/ui-bootstrap-tpls',
         'angular.route': 'bower_components/angular-route/angular-route',
         'angular-simple-logger' :'bower_components/angular-simple-logger/dist/index',
         'angular-google-maps' : 'bower_components/angular-google-maps/dist/angular-google-maps',
@@ -17,10 +19,13 @@ require.config({
         'user-storage': 'storages/user',
         'common-storage': 'storages/common',
         'settingsService': 'app/settingsService',
+        'confirmationService': 'app/confirmationService',
         'loginController': 'app/loginController',
         'landingController': 'app/landingController',
         'profileController': 'app/profileController',
         'calendarController': 'app/calendarController',
+        'meetingCreate': 'app/meetingCreate',
+        'meetingRedact': 'app/meetingRedact',
         'profile': 'entities/profile',
         'serviceProviderInfo': 'entities/serviceProviderInfo',
         'serviceProviderInfoCommon': 'entities/serviceProviderInfoCommon',
@@ -38,6 +43,19 @@ require.config({
         'bootstrap': {
             deps: ['jquery']
         },
+
+
+
+        'ui-bootstrap-tpls': {
+            deps: ['jquery','angular'],
+            exports: 'angular'
+        },
+
+        'ui-bootstrap': {
+            deps: ['jquery','angular','ui-bootstrap-tpls'],
+            exports: 'angular'
+        },
+
 
         'angular.route': {
             deps: ['angular'],
@@ -65,8 +83,8 @@ require.config({
     deps: ['angular', 'angular.route']
 });
 
-require(['jquery', 'angular', 'lodash', 'cookies', 'client-storage','angular-google-maps','angular-sanitize', 'select'], function ($, angular, _, cookies, ClientStorage, angular_google_maps, angular_sanitize, select) {
-    angular.module('fiveOClock', ['ngRoute', 'angularCouch','uiGmapgoogle-maps','ngSanitize', 'ui.select']);
+require(['jquery', 'angular', 'ui-bootstrap', 'lodash', 'cookies', 'client-storage','angular-google-maps','angular-sanitize', 'select'], function ($, angular, uiBootstrap, _, cookies, ClientStorage, angularGoogleMaps, angularSanitize, select) {
+    angular.module('fiveOClock', ['ngRoute', 'angularCouch','uiGmapgoogle-maps','ngSanitize', 'ui.select', 'ui.bootstrap', 'ui.bootstrap.tpls']);
     $(function () {
         var authSession = cookies.get('AuthSession');
         if(!authSession){

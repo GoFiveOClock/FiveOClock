@@ -67,14 +67,14 @@
             <span>My calendar</span>
         </div>
         <div class="chevron">
-            <i ng-if="calSet_hide" class="fa fa-chevron-circle-down chevron-down cursor" ng-click="showSet()"></i>
-            <i ng-if="!calSet_hide" class="fa fa-chevron-circle-up chevron-down cursor" ng-click="hideSet()"></i>
+            <i ng-if="calSetHide" class="fa fa-chevron-circle-down chevron-down cursor" ng-click="showSet()"></i>
+            <i ng-if="!calSetHide" class="fa fa-chevron-circle-up chevron-down cursor" ng-click="hideSet()"></i>
         </div>
         <hr class="hr-chevr">
     </div>
 </div>
 
-<div ng-if="!calSet_hide" class="row drop-calendar slot-font font-middle">
+<div ng-if="!calSetHide" class="row drop-calendar slot-font font-middle">
     <select class="calendar font-big">
         <option value="My calendar">My calendar</option>
         <option value="My calendar">My calendar</option>
@@ -94,74 +94,53 @@
     </div>
 </div>
 
-<div class="row row-days" ng-repeat="twain in Days">
+<div class="row row-days" ng-repeat="twain in days">
     <div class="col-xs-12  col-md-6">
         <div class="day font-xxl margin-day">{{twain[0].dayname}}, {{twain[0].date}}</div>
         <div class="slot-font font-middle">
 
-            <div ng-repeat="slot_hour in twain[0].hours">
-                <div class="float pad-time">{{slot_hour.hour}}</div>
+            <div class="pad-bottom-px" ng-repeat="slotHour in twain[0].hours">
+                <div class="float pad-time">{{slotHour.hour}}</div>
                 <div class="cont-events">
-                    <div class="overflow-float" ng-repeat="meeting in current_meets({hourNum:slot_hour.num, day:twain[0].dayname })"
-                         ng-style="meetStyle({meeting:meeting,meetings:current_meets({hourNum:slot_hour.num, day:twain[0].dayname })})">
-                        <div ng-if="endMeeting({meeting:meeting,meetings:current_meets({hourNum:slot_hour.num, day:twain[0].dayname })})" class="end-event" ng-bind="transformDate(meeting.start)">
+                    <div class="overflow-float cursor"  ng-class="{currentEvent : meeting.chosen}" ng-click="setCurMeet({slotHour:slotHour,meeting:meeting})"
+                         ng-repeat="meeting in slotHour.meetings">
+                        <div ng-style="meetStyle(slotHour.meetings.length)">
+
+                            <div class="times-event">
+                                <div ng-if="startMeeting({meeting:meeting,meetings:slotHour.meetings})"
+                                     ng-bind="transformDate(meeting.start)">
+                                </div>
+                                <div ng-if="endMeeting({meeting:meeting,meetings:slotHour.meetings})"
+                                     class="end-event" ng-bind="transformDate(meeting.end)">
+                                </div>
+                            </div>
+
+                            <div ng-if="meeting.title" class="event">
+                                <span ng-bind="parseTitle(meeting.title)"></span>
+                            </div>
+                            <div ng-if="!meeting.title" class="lock-time">
+                                <i class="fa fa-lock"></i>
+                                <hr class="hr-lock">
+                            </div>
+
                         </div>
-                        <div class="event">
-                            {{meeting.title}}
-                        </div>
-                        <hr class="hr-lock-white">
+
                     </div>
-                    <div class="white-button" ng-class="{exist_events:current_meets({hourNum:slot_hour.num, day:twain[0].dayname }).length}" ng-click="click_Create({slot_hour:slot_hour,day:twain[0].dayname})">
+                    <div class="white-button"
+                         ng-class="{existEvents:slotHour.meetings.length}"
+                         ng-click="clickCreate({slotHour:slotHour,day:twain[0].dayname})">
                         Create
                     </div>
                 </div>
                 <br>
 
-                <div ng-if="slot_hour.selectedCreate">
-                    <div class="chevron-event">
-                        <i class="fa fa-chevron-circle-up font-big cursor" ng-click="hideForm(slot_hour)"></i>
-                    </div>
-                    <hr class="hr-chevr margin-event-hr">
-                    <div class="event-form">
-
-                        <div class="pad-bottom pad-top">
-                            <span class="white-info">Create meeting</span>
-                        </div>
-                        <div class="relat">
-                            <input class="all-width pad-left" ng-model="slot_hour.title">
-                            <i class="fa fa-caret-square-o-down input-caret"></i>
-                        </div>
-
-                        <div ng-repeat="alterSlot in slot_hour.alterSlots">
-                            <i class="time-icon font-big fa fa-clock-o"></i>
-                            <div class="slot-div">
-                                <input type="time" class="slot-span" ng-model="alterSlot.start">
-                                <span>-</span>
-                                <input type="time" class="slot-span" ng-model="alterSlot.end">
-                                <span  ng-if="!alterSlot.showCalendar" class="grey-color cursor" ng-click="showCalendarFun(alterSlot)">{{alterSlot.dateText}}</span>
-                                <i  ng-if="!alterSlot.showCalendar" class="fa fa-calendar grey-color"></i>
-
-                                <input type="date" ng-if="alterSlot.showCalendar" class="alter-input" ng-model="alterSlot.alterInput">
-                                <button ng-if="alterSlot.showCalendar" ng-click="alterOk(alterSlot)">Ok</button>
-                            </div>
-                        </div>
-
-                        <div class="grey-button">
-                            <i class="fa fa-plus form-icon font-middle"></i><span class="pad-left cursor" ng-click="addAlternate({slot_hour:slot_hour,day:twain[0].dayname})">Add alternate timeslot</span>
-                        </div>
-                        <div class="grey-button">
-                            <div class="div-check"><input type="checkbox" class="form-icon font-middle" id="check2"></div>
-                            <label for="check2" class="pad-left">Do not publish client name</label>
-                        </div>
-                        <div class="ok-reject">
-                            <div class="pull-right">
-                                <span class="margin-reject cursor" ng-click="hideForm(slot_hour)">Cancel</span>
-                                <span class="cursor" ng-click="createMeeting(slot_hour)">Ok</span>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                    </div>
+                <div ng-if="slotHour.chosenMeet" class="form-meet">
+                    <meeting-redact slothour="slotHour" day="twain[0]" days="days"></meeting-redact>
                 </div>
+                <div ng-if="slotHour.selectedCreate" class="form-meet">
+                    <meeting-create slothour="slotHour" day="twain[0]" days="days"></meeting-create>
+                </div>
+
             </div>
         </div>
     </div>
@@ -170,69 +149,42 @@
         <div class="day font-xxl margin-day">{{twain[1].dayname}}, {{twain[1].date}}</div>
         <div class="slot-font font-middle">
 
-            <div ng-repeat="slot_hour in twain[1].hours">
-                <div class="float pad-time">{{slot_hour.hour}}</div>
+            <div class="pad-bottom-px" ng-repeat="slotHour in twain[1].hours">
+                <div class="float pad-time">{{slotHour.hour}}</div>
                 <div class="cont-events">
-                    <div class="overflow-float" ng-repeat="meeting in current_meets({hourNum:slot_hour.num, day:twain[1].dayname })"
-                         ng-style="meetStyle({meeting:meeting,meetings:current_meets({hourNum:slot_hour.num, day:twain[0].dayname })})">
-                        <div ng-if="endMeeting({meeting:meeting,meetings:current_meets({hourNum:slot_hour.num, day:twain[1].dayname })})" class="end-event" ng-bind="transformDate(meeting.start)">
+                    <div class="overflow-float cursor" ng-class="{currentEvent : meeting.chosen}" ng-click="setCurMeet({slotHour:slotHour,meeting:meeting})" ng-repeat="meeting in slotHour.meetings"
+                         ng-style="meetStyle(slotHour.meetings.length)">
+
+                        <div class="times-event">
+                            <div ng-if="startMeeting({meeting:meeting,meetings:slotHour.meetings})"
+                                 ng-bind="transformDate(meeting.start)">
+                            </div>
+                            <div ng-if="endMeeting({meeting:meeting,meetings:slotHour.meetings})"
+                                 class="end-event" ng-bind="transformDate(meeting.end)">
+                            </div>
                         </div>
-                        <div class="event">
-                            {{meeting.title}}
+
+                        <div ng-if="meeting.title" class="event">
+                            <span ng-bind="parseTitle(meeting.title)"></span>
                         </div>
-                        <hr class="hr-lock-white">
+                        <div ng-if="!meeting.title" class="lock-time">
+                            <i class="fa fa-lock"></i>
+                            <hr class="hr-lock">
+                        </div>
                     </div>
-                    <div class="white-button" ng-class="{exist_events:current_meets({hourNum:slot_hour.num, day:twain[1].dayname }).length}" ng-click="click_Create({slot_hour:slot_hour,day:twain[1].dayname})">
+                    <div class="white-button" ng-class="{existEvents:slotHour.meetings.length}" ng-click="clickCreate({slotHour:slotHour,day:twain[1].dayname})">
                         Create
                     </div>
                 </div>
                 <br>
 
-                <div ng-if="slot_hour.selectedCreate">
-                    <div class="chevron-event">
-                        <i class="fa fa-chevron-circle-up font-big cursor" ng-click="hideForm(slot_hour)"></i>
-                    </div>
-                    <hr class="hr-chevr margin-event-hr">
-                    <div class="event-form">
-
-                        <div class="pad-bottom pad-top">
-                            <span class="white-info">Create meeting</span>
-                        </div>
-                        <div class="relat">
-                            <input class="all-width pad-left" ng-model="slot_hour.title">
-                            <i class="fa fa-caret-square-o-down input-caret"></i>
-                        </div>
-
-                        <div ng-repeat="alterSlot in slot_hour.alterSlots">
-                            <i class="time-icon font-big fa fa-clock-o"></i>
-                            <div class="slot-div">
-                                <input type="time" class="slot-span" ng-model="alterSlot.start">
-                                <span>-</span>
-                                <input type="time" class="slot-span" ng-model="alterSlot.end">
-                                <span  ng-if="!alterSlot.showCalendar" class="grey-color cursor" ng-click="showCalendarFun(alterSlot)">{{alterSlot.dateText}}</span>
-                                <i  ng-if="!alterSlot.showCalendar" class="fa fa-calendar grey-color"></i>
-
-                                <input type="date" ng-if="alterSlot.showCalendar" class="alter-input" ng-model="alterSlot.alterInput">
-                                <button ng-if="alterSlot.showCalendar" ng-click="alterOk(alterSlot)">Ok</button>
-                            </div>
-                        </div>
-
-                        <div class="grey-button">
-                            <i class="fa fa-plus form-icon font-middle"></i><span class="pad-left cursor" ng-click="addAlternate({slot_hour:slot_hour,day:twain[1].dayname})">Add alternate timeslot</span>
-                        </div>
-                        <div class="grey-button">
-                            <div class="div-check"><input type="checkbox" class="form-icon font-middle" id="check3"></div>
-                            <label for="check3" class="pad-left">Do not publish client name</label>
-                        </div>
-                        <div class="ok-reject">
-                            <div class="pull-right">
-                                <span class="margin-reject cursor" ng-click="hideForm(slot_hour)">Cancel</span>
-                                <span class="cursor" ng-click="createMeeting(slot_hour)">Ok</span>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                    </div>
+                <div ng-if="slotHour.chosenMeet" class="form-meet">
+                   <meeting-redact slothour="slotHour" day="twain[1]" days="days"></meeting-redact>
                 </div>
+                <div ng-if="slotHour.selectedCreate" class="form-meet">
+                    <meeting-create slothour="slotHour" day="twain[1]" days="days"></meeting-create>
+                </div>
+
             </div>
         </div>
     </div>

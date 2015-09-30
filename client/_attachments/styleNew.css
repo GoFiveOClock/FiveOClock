@@ -112,12 +112,15 @@
     color: red;
     border-color: black;
 }
-.end-event{
+.times-event{
     float: left;
     font-size: 7px;
     padding: 0 2% 0 2%;
 }
-.current-event{
+.end-event{
+    margin-top: -2px;
+}
+.currentEvent{
     background-color: hsla(0, 17%, 11%, 0.21);
 }
 .event-form{
@@ -147,7 +150,10 @@
     color: #F4F4F4;
 }
 .show-map{
-    padding: 0.5%;
+    font-size: 0.8em;
+}
+.form-meet{
+    margin-top: -9px;
 }
 .grey-button{
     padding-top: 1%;
@@ -167,6 +173,10 @@
 }
 .pad-bottom{
     padding-bottom: 1%;
+}
+
+.pad-bottom-px{
+    padding-bottom: 1px;
 }
 .time-icon{
     float: left;
@@ -222,11 +232,11 @@ margin-top: 10px;
     float: left;
     margin-left: 1%;
 }
+
 .form-input{
     position: relative;
     width: 93%;
-    margin-top: 1%;
-    padding: 2px;
+    margin-top: 5px
 }
 .icon-input{
     position: absolute;
@@ -255,11 +265,11 @@ margin-top: 10px;
 .pad-time{
     padding-right: 2%;
 }
-.exist_events{
+.existEvents{
     margin-left: 7px;
 }
 .lock-time{
-    float: left;
+    /*float: left;*/
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
@@ -537,6 +547,7 @@ input[type="time"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     display: none;
 }
+
 
 
 

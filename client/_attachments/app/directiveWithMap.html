@@ -1,0 +1,44 @@
+<div class="chevron-event">
+    <i class="fa fa-chevron-circle-up font-big cursor" ng-click="hideFormRed(slothour)"></i>
+</div>
+<hr class="hr-chevr margin-event-hr">
+<div class="event-form">
+    <div class="pad-bottom pad-top">
+        <span class="white-info">{{slothour.chosenMeet.title}}</span>
+        <i class="fa fa-map-marker pad-left"></i>
+        <u class="show-map cursor" ng-click="clickShowMap(slothour)">Показать карту</u>
+        <div ng-if="slothour.showMap">
+            <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" events="map.events">
+                <ui-gmap-marker ng-repeat="m in map.markers" coords="m.coords"  icon="m.icon"
+                                idkey="m.id"></ui-gmap-marker>
+            </ui-gmap-google-map>
+        </div>
+    </div>
+    <div class="grey-button">
+        <i class="fa fa-refresh form-icon font-middle"></i><span class="pad-left cursor" ng-click="clickMove(slothour)">Move to another timeslot</span>
+    </div>
+    <div ng-if="slothour.alterSlot">
+        <i class="time-icon font-big fa fa-clock-o"></i>
+        <div class="slot-div">
+            <input type="time" class="slot-span" ng-model="slothour.alterSlot.start">
+            <span>-</span>
+            <input type="time" class="slot-span" ng-model="slothour.alterSlot.end">
+            <span  ng-if="!slothour.alterSlot.showCalendar" class="grey-color cursor" ng-click="showCalendarFun(slothour.alterSlot)">{{slothour.alterSlot.dateText}}</span>
+            <i  ng-if="!slothour.alterSlot.showCalendar" class="fa fa-calendar grey-color"></i>
+
+            <input type="date" ng-if="slothour.alterSlot.showCalendar" class="alter-input" ng-model="slothour.alterSlot.alterInput">
+            <button ng-if="slothour.alterSlot.showCalendar" ng-click="alterOk(slothour.alterSlot)">Ok</button>
+        </div>
+    </div>
+    <div class="grey-button">
+        <div class="div-check"><input type="checkbox" class="form-icon font-middle" id="check8"></div>
+        <label for="check8" class="pad-left">Do not publish my name</label>
+    </div>
+    <div class="ok-reject">
+        <div class="pull-right">
+            <span class="margin-reject cursor" ng-click="hideFormRed(slothour)">Reject</span>
+            <span class="cursor" ng-click="saveMeeting(slothour)">Ok</span>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
