@@ -186,11 +186,9 @@ function setCookies(host, user, password, res) {
         var headers = body[1];
         var auth = headers['set-cookie'][0];
         var cookieObject = cookie.parse(auth);
-        res.cookie('AuthSession', cookieObject.AuthSession, {
-            expires: moment().add(1, 'years').toDate()
-        });
-        res.cookie('user', user, { expires: moment().add(1, 'years').toDate() });
-        res.cookie('db', getDbName(user), { expires: moment().add(1, 'years').toDate() });
+        res.cookie('AuthSession', cookieObject.AuthSession);
+        res.cookie('user', user);
+        res.cookie('db', getDbName(user));
         res.end(user);
     });
 }

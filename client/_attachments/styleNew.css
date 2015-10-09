@@ -217,16 +217,45 @@
 .margin-calendar{
 margin-top: 10px;
 }
+
+.cont-select{
+    position: absolute;
+    z-index: 5;
+    width: 100%;
+    padding: 1px;
+    background-color: white;
+    border: 1px solid grey;
+}
+
+.cont-select :not(:last-child){
+    border-bottom: 1px solid grey;
+}
+
+.item-select{
+    padding: 2px;
+}
+
+.currSelect{
+    background-color: #f5f5f5;
+}
+
 .span-invit{
     margin-left: 3%;
 }
 .pad-zero{
     padding: 0;
 }
+.non-working{
+    margin-top: 3px;
+}
 .div-check{
     float: left;
-    padding-top: 1.5px;
+    /*padding-top: 1.5px;*/
     margin-left: 1%;
+}
+
+.end_top{
+    margin-top: 9px;
 }
 .check-prof{
     float: left;

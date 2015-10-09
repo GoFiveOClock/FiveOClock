@@ -9,6 +9,7 @@ require.config({
         'angular.route': 'bower_components/angular-route/angular-route',
         'angular-simple-logger' :'bower_components/angular-simple-logger/dist/index',
         'angular-google-maps' : 'bower_components/angular-google-maps/dist/angular-google-maps',
+        'ng-infinite-scroll': 'bower_components/ngInfiniteScroll/build/ng-infinite-scroll',
         'cookies': 'bower_components/js-cookie/src/js.cookie',
 		'pouchdb': 'bower_components/pouchdb/dist/pouchdb.min',
 		'bluebird': 'bower_components/bluebird/js/browser/bluebird.min',
@@ -24,39 +25,29 @@ require.config({
         'landingController': 'app/landingController',
         'profileController': 'app/profileController',
         'calendarController': 'app/calendarController',
+        'searchController': 'app/searchController',
         'meetingCreate': 'app/meetingCreate',
         'meetingRedact': 'app/meetingRedact',
+        'newSelect': 'app/newSelect',
         'profile': 'entities/profile',
         'serviceProviderInfo': 'entities/serviceProviderInfo',
         'serviceProviderInfoCommon': 'entities/serviceProviderInfoCommon',
         'calendarSettings': 'entities/calendarSettings',
-        'meeting': 'entities/meeting',
-        'angular-sanitize': 'bower_components/angular-sanitize/angular-sanitize',
-        'select': 'bower_components/ui-select/dist/select'
+        'meeting': 'entities/meeting'
     },
     shim: {
         'angular': {
             exports: 'angular',
             deps: ['jquery']
         },
-
-        'bootstrap': {
-            deps: ['jquery']
-        },
-
-
-
         'ui-bootstrap-tpls': {
             deps: ['jquery','angular'],
             exports: 'angular'
         },
-
         'ui-bootstrap': {
             deps: ['jquery','angular','ui-bootstrap-tpls'],
             exports: 'angular'
         },
-
-
         'angular.route': {
             deps: ['angular'],
             exports: 'angular'
@@ -69,27 +60,17 @@ require.config({
             deps: ['angular','lodash','angular-simple-logger'],
             exports: 'angular'
         },
-        'angular-sanitize': {
-            deps: ['angular'],
-            exports: 'angular'
-        },
-        'select': {
-            deps: ['angular'],
+        'ng-infinite-scroll':{
+            deps: ['jquery','angular'],
             exports: 'angular'
         }
-
-
     },
     deps: ['angular', 'angular.route']
 });
 
-require(['jquery', 'angular', 'ui-bootstrap', 'lodash', 'cookies', 'client-storage','angular-google-maps','angular-sanitize', 'select'], function ($, angular, uiBootstrap, _, cookies, ClientStorage, angularGoogleMaps, angularSanitize, select) {
-    angular.module('fiveOClock', ['ngRoute', 'angularCouch','uiGmapgoogle-maps','ngSanitize', 'ui.select', 'ui.bootstrap', 'ui.bootstrap.tpls']);
+require(['jquery', 'angular', 'ui-bootstrap', 'lodash', 'cookies', 'client-storage','angular-google-maps', 'ng-infinite-scroll'], function ($, angular, uiBootstrap, _, cookies, ClientStorage, angularGoogleMaps) {
+    angular.module('fiveOClock', ['ngRoute', 'angularCouch','uiGmapgoogle-maps', 'ui.bootstrap', 'ui.bootstrap.tpls', 'infinite-scroll']);
     $(function () {
-        var authSession = cookies.get('AuthSession');
-        if(!authSession){
-            window.location = '#login';
-        }
         require(['app/app'], function () {
             angular.bootstrap('body', ['fiveOClock']);
         });

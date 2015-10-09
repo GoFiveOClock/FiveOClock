@@ -7,11 +7,8 @@
         <span class="white-info">Edit meeting</span>
     </div>
 
-
-
-
     <div>
-        <span ng-if="nameContact" class="pad-left">{{nameContact}}, {{phoneContact}}</span>
+        <span ng-if="searchText" ng-click="showInfoFun()" class="pad-left cursor">{{searchText}}, {{contactPhone}}</span>
     </div>
 
     <div class="chevron-event">
@@ -22,19 +19,16 @@
     <hr class="hr-chevr margin-event-hr">
 
     <div ng-if="showInfo" class="form-input">
-        <i ng-if="warningName" class="fa fa-exclamation-triangle icon-input-red"></i>
-        <i ng-if="validName" class="fa fa-check icon-input"></i>
-        <input class="all-width pad-left" placeholder="Name" ng-model="$parent.nameContact">
+        <i ng-if="!searchText" class="fa fa-exclamation-triangle icon-input-red"></i>
+        <i ng-if="searchText" class="fa fa-check icon-input"></i>
+        <new-select placeholder="placeholderSelect"></new-select>
+        <!--<input class="all-width pad-left" placeholder="Name" ng-model="$parent.searchText">-->
     </div>
     <div ng-if="showInfo" class="form-input">
-        <i ng-if="validPhone" class="fa fa-check icon-input"></i>
-        <i ng-if="warningPhone" class="fa fa-exclamation-triangle icon-input-red"></i>
-        <input class="all-width pad-left" placeholder="Contact phone" ng-model="$parent.phoneContact">
+        <i ng-if="contactPhone" class="fa fa-check icon-input"></i>
+        <i ng-if="!contactPhone" class="fa fa-exclamation-triangle icon-input-red"></i>
+        <input class="all-width pad-left" placeholder="Contact phone" ng-model="$parent.contactPhone">
     </div>
-
-
-
-
 
     <div class="grey-button">
         <i class="fa fa-refresh form-icon font-middle"></i><span class="pad-left cursor" ng-click="clickMove(slothour)">Move to another timeslot</span>
@@ -53,7 +47,7 @@
         </div>
     </div>
     <div class="grey-button">
-        <div class="div-check"><input type="checkbox" class="form-icon font-middle" id="check8"></div>
+        <div class="div-check"><input type="checkbox" ng-model="slothour.chosenMeet.hidden" class="form-icon font-middle" id="check8"></div>
         <label for="check8" class="pad-left cursor" ng-click="hideName(slothour)">Do not publish my name</label>
     </div>
     <div class="ok-reject">

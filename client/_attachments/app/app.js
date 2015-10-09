@@ -1,11 +1,11 @@
-define(['angular', 'jquery', 'loginController', 'landingController', 'profileController', 'calendarController', 'user-storage', 'common-storage', 'profile', 'serviceProviderInfo'],
-    function (angular, $, loginController, landingController, profileController, calendarController, userStorage, commonStorage, profile, serviceProviderInfo) {
+define(['angular', 'jquery', 'loginController', 'landingController', 'profileController', 'calendarController', 'searchController', 'user-storage', 'common-storage', 'profile', 'serviceProviderInfo'],
+    function (angular, $, loginController, landingController, profileController, calendarController, searchController, userStorage, commonStorage, profile, serviceProviderInfo) {
         angular.module('fiveOClock')
             .config(function ($routeProvider) {
                 var resolve = {
                     syncProfile: function (userStorage, Profile, commonStorage, ServiceProviderInfo) {
                         commonStorage.sync([ServiceProviderInfo]);
-                        return userStorage.sync([Profile]);
+                        return userStorage.sync([Profile])
                     }
                 };
                 $routeProvider.when('/login',
@@ -31,6 +31,12 @@ define(['angular', 'jquery', 'loginController', 'landingController', 'profileCon
                             controller: 'profileController',
                             resolve: resolve
                         })
+                    .when('/search',
+                    {
+                        templateUrl: 'app/advancedSearch.html',
+                        controller: 'searchController',
+                        resolve: resolve
+                    })
                     .otherwise({
                         redirectTo: '/login'
                     });

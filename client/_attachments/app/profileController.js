@@ -1,9 +1,13 @@
-define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'serviceProviderInfoCommon', 'calendarSettings', 'settingsService'], function (angular, $, _, cookies, serviceProviderFile, serviceProviderInfoCommon, calendarSettingsFIle, settingsServiceFile) {
+define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'serviceProviderInfoCommon', 'calendarSettings', 'settingsService', 'newSelect'], function (angular, $, _, cookies, serviceProviderFile, serviceProviderInfoCommon, calendarSettingsFIle, settingsServiceFile, newSelect) {
     return angular.module('fiveOClock').controller('profileController',
         function ($scope, $q, Profile, ServiceProviderInfo, ServiceProviderInfoCommon, CalendarSettings, settingsService, uiGmapGoogleMapApi) {
 
             var profileInfo, serviceProviderInfo, calendarSettings;
-            $scope.specialities = [{key:""}];
+            $scope.specialities = [
+                {key: ""}
+            ];
+            $scope.placeholderSelect = 'select speciality';
+
             formSettingsUserInfo();
 
             function formSettingsUserInfo() {
@@ -58,14 +62,7 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                     };
 
                     if(serviceProviderInfo && serviceProviderInfo.speciality){
-                        ServiceProviderInfoCommon.specialities(serviceProviderInfo.speciality).then(function(res){
-                            if(res && res.length){
-                                $scope.specialities.push(res[0]);
-                                $scope.specialities.selected =  {key: $scope.speciality};
-                            };
-                        }).catch(function(err){
-                            console.log(err);
-                        });
+                        $scope.searchText = serviceProviderInfo.speciality;
                     };
 
                 }).catch(function(err){
@@ -150,14 +147,14 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                 if ($scope.serviceProvider.value == "yes") {
                     if (serviceProviderInfo) {
                         serviceProviderInfo.userName = $scope.nameProfile;
-                        serviceProviderInfo.speciality = $scope.speciality;
+                        serviceProviderInfo.speciality = $scope.searchText;
                         serviceProviderInfo.additionalInfo = $scope.additionalInfo;
                         ServiceProviderInfo.put(serviceProviderInfo);
                     }
                     else {
                         ServiceProviderInfo.post({
                             userName: $scope.nameProfile,
-                            speciality: $scope.speciality,
+                            speciality: $scope.searchText,
                             additionalInfo: $scope.additionalInfo,
                             type: 'serviceProviderInfo'
                         }).then(function(providerInfo){
@@ -197,50 +194,45 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                 };
             };
 
-            $scope.specSelect = function (obj) {
-                if (obj.select.search && !obj.select.clickTriggeredSelect) {
-                    if (!obj.select.selected) {
-                        var newOne = { key: obj.select.search};
-                        $scope.specialities.push(newOne);
-                        obj.select.selected = newOne;
-                        $scope.speciality = newOne.key;
-                    }
-                }
-                else{
-                    $scope.speciality = obj.item.key;
-                }
-                obj.select.search = '';
+
+            $scope.getSelectValues = function () {
+                ServiceProviderInfoCommon.specialities().then(function(result){
+                    for (var i = 0; i < result.length; i++) {
+                        result[i] = {title:result[i].key};
+                    };
+                    $scope.listValues = result;
+                    $scope.AllValues = result;
+                    $scope.$apply();
+                });
+                $scope.showSelect = true;
             };
 
-            $scope.propsFilter = function(select){
-
-               if(!select.search && select.searchEnabled){
-
-                   ServiceProviderInfoCommon.specialities().then(function(res){
-                       if(res && res.length){
-                           $scope.specialitiesFilt = res;
-                       }
-                       else{
-                           $scope.specialitiesFilt = [{key:""}];
-                       };
-                   });
-//                   $scope.specialitiesFilt = $scope.specialities;
-//                   return;
-
-               }
-                else if(select.search && select.searchEnabled){
-                   var searchText = select.search.toLowerCase();
-
-                   ServiceProviderInfoCommon.specialities(searchText).then(function(res){
-                       if(res && res.length){
-                           $scope.specialitiesFilt = res;
-                       }
-                       else{
-                           $scope.specialitiesFilt = [{key:""}];
-                       };
-                   });
-               };
+            $scope.clickSelect = function(element){
+                $scope.searchText = element.title;
+                $scope.showSelect = false;
             };
+
+            $scope.hideSelectList = function(){
+                $scope.showSelect = false;
+                $('#inputSelect').blur();
+            };
+
+            $scope.filterSelect = function(){
+                var cloneAll = _.clone($scope.AllValues, true);
+                $scope.listValues = _.filter(cloneAll, function(spec) {
+                    return spec.title.indexOf($scope.searchText) !== -1;
+                });
+                if(!$scope.listValues.length){
+                    $scope.showSelect = false;
+                };
+            };
+
+            $(document).on('click', function(evt) {
+                if((evt.target.className.indexOf('item-select') == -1) && (evt.target.id !== "inputSelect")) {
+                    $scope.showSelect = false;
+                }
+                $scope.$apply();
+            });
 
             $scope.save = function () {
                 saveProfile();

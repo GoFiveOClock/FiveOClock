@@ -8,7 +8,7 @@
         <span class="white-info">Create meeting</span>
     </div>
     <div>
-        <span ng-if="nameContact" class="pad-left">{{nameContact}}, {{phoneContact}}</span>
+        <span ng-if="searchText" ng-click="showInfoFun()" class="pad-left cursor">{{searchText}}, {{contactPhone}}</span>
     </div>
 
     <div class="chevron-event">
@@ -19,14 +19,14 @@
     <hr class="hr-chevr margin-event-hr">
 
     <div ng-if="showInfo" class="form-input">
-        <i ng-if="warningName" class="fa fa-exclamation-triangle icon-input-red"></i>
-        <i ng-if="validName" class="fa fa-check icon-input"></i>
-        <input class="all-width pad-left" placeholder="Name" ng-model="$parent.nameContact">
+        <i ng-if="!searchText" class="fa fa-exclamation-triangle icon-input-red"></i>
+        <i ng-if="searchText" class="fa fa-check icon-input"></i>
+       <new-select placeholder="placeholderSelect"></new-select>
     </div>
     <div ng-if="showInfo" class="form-input">
-        <i ng-if="validPhone" class="fa fa-check icon-input"></i>
-        <i ng-if="warningPhone" class="fa fa-exclamation-triangle icon-input-red"></i>
-        <input class="all-width pad-left" placeholder="Contact phone" ng-model="$parent.phoneContact">
+        <i ng-if="contactPhone" class="fa fa-check icon-input"></i>
+        <i ng-if="!contactPhone" class="fa fa-exclamation-triangle icon-input-red"></i>
+        <input class="all-width pad-left" placeholder="Contact phone" ng-model="$parent.contactPhone">
     </div>
 
     <div ng-repeat="alterSlot in slothour.alterSlots">

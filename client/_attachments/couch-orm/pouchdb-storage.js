@@ -11,7 +11,14 @@ define(['pouchdb', 'lodash', 'bluebird'], function (PouchDb, _, Promise) {
 	PouchDbStorage.prototype.sync = function (entities) {
 		var that = this;
 		
-		return PouchDb.replicate(this._config.db, this._name, { filter: 'views/clientReplication' }).then(function () {
+		return PouchDb.replicate(this._config.db, this._name, { filter: 'views/clientReplication' }).then(function (result) {
+            if(result.errors.length){
+                for(var i = 0; i < result.errors.length; i++){
+                    if(result.errors[i].status == 401){
+                        window.location = '#login';
+                    };
+                };
+            };
 			return PouchDb.replicate(that._name, that._config.db).then(function(){
                 PouchDb.replicate(that._name, that._config.db, {live: true});
             });

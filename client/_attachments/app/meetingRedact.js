@@ -9,9 +9,9 @@ define(['angular', 'moment', 'lodash',  'confirmationService'], function (angula
             },
             controller: function ($scope, Meeting, ConfirmationService) {
                 var chosenMeet = $scope.slothour.chosenMeet;
-                var ind = chosenMeet.title.indexOf('|||');
-                $scope.nameContact = chosenMeet.title.substring(0,ind);
-                $scope.phoneContact = chosenMeet.title.substring(ind+3);
+                $scope.searchText = chosenMeet.title;
+                $scope.contactPhone = chosenMeet.contactPhone;
+                $scope.placeholderSelect = 'enter name';
 
                 function validationBase(slotHighestPriority, dayMeetings, meeting) {
                     var flag = true;
@@ -27,16 +27,32 @@ define(['angular', 'moment', 'lodash',  'confirmationService'], function (angula
                     }
                     return flag;
                 };
+
+                function filterWithCondition(day, newMeeting){
+                   return  _.filter(day.hours,function(hour){
+                        return (+moment(newMeeting.start).format("HH") == hour.num) ||
+                            ((hour.num > Number(moment(newMeeting.start).format("HH"))) &&
+                            ((hour.num < Number(moment(newMeeting.end).format("HH"))) ||
+                            ((hour.num == Number(moment(newMeeting.end).format("HH"))) &&
+                            Number(moment(newMeeting.end).format("mm")) !== 0 )))
+                    });
+                };
+
                 function pushInView(oldMeeting, newMeeting){
-                    for(var i=0; i<$scope.days.length; i++){
+                    for(var i=0; i < $scope.days.length; i++){
                         var rowTwoDays = $scope.days[i];
-                        for(var j=0; j<rowTwoDays.length; j++){
+                        for(var j=0; j < rowTwoDays.length; j++){
                             var day = rowTwoDays[j];
-                            if(day.date == moment(oldMeeting.start).format(" MMMM Do YYYY")){
-                                var objCurrHour = _.find(day.hours,function(hour){
-                                    return hour.num == Number(moment(oldMeeting.start).format("HH"));
+                            if(day.forLabel == moment(oldMeeting.start).format(" MMMM Do YYYY")){
+                                var massCurrHour = _.filter(day.hours,function(hour){
+//                                    return hour.num == Number(moment(oldMeeting.start).format("HH"));
+                                    return _.filter(hour.meetings,function(meeting){
+                                        return meeting == oldMeeting;
+                                    })
                                 });
-                                _.remove(objCurrHour.meetings,oldMeeting);
+                                for(var g=0; g < massCurrHour.length; g++){
+                                    _.remove(massCurrHour[g].meetings,oldMeeting);
+                                };
                             };
                         };
                     };
@@ -44,36 +60,36 @@ define(['angular', 'moment', 'lodash',  'confirmationService'], function (angula
                         var rowTwoDays = $scope.days[i];
                         for(var j=0; j<rowTwoDays.length; j++){
                             var day = rowTwoDays[j];
-                            if(day.date == moment(newMeeting.start).format(" MMMM Do YYYY")){
-                                var objCurrHour = _.find(day.hours,function(hour){
-                                    return hour.num == Number(moment(newMeeting.start).format("HH"));
-                                });
-                                objCurrHour.meetings.push(newMeeting);
-                                objCurrHour.meetings = _.sortBy(objCurrHour.meetings, function(meeting) {
-                                    return +moment(meeting.start).format('mm');
-                                });
-                                var a = 5;
+                            if(day.forLabel == moment(newMeeting.start).format(" MMMM Do YYYY")){
+                                var massCurrHour = filterWithCondition(day, newMeeting);
+                                for (var g = 0; g < massCurrHour.length; g++){
+                                    massCurrHour[g].meetings.push(newMeeting);
+                                    massCurrHour[g].meetings = _.sortBy(massCurrHour[g].meetings, function(meeting) {
+                                        return +moment(meeting.start).format('mm');
+                                    });
+                                };
                             };
                         };
                     };
                     $scope.slothour.chosenMeet = "";
                     $scope.$apply();
                 };
-                function validationForm() {
-                    var objError = {
-                        warningName: "",
-                        warningPhone: ""
-                    };
-                    if (!$scope.nameContact) {
-                        objError.warningName = true;
+
+                function fillingParameters(meeting, alterSlot){
+                    if(alterSlot){
+                        meeting.start = moment(alterSlot.start).format();
+                        meeting.end = moment(alterSlot.end).format();
                     }
-                    if (!$scope.phoneContact) {
-                        objError.warningPhone = true;
+                    else{
+                        meeting.start = moment(meeting.start).format();
+                        meeting.end = moment(meeting.end).format();
                     };
-                    if (!$scope.phoneContact || !$scope.nameContact) {
-                        return objError;
-                    };
+                    meeting.title = $scope.searchText;
+                    meeting.contactPhone = $scope.contactPhone;
+                    meeting.hidden = meeting.hideName?true:false;
+                    return meeting;
                 };
+
                 $scope.hideFormRed = function(slothour){
                     slothour.chosenMeet =  false;
                     for(var i = 0; i < slothour.meetings.length; i++){
@@ -89,9 +105,9 @@ define(['angular', 'moment', 'lodash',  'confirmationService'], function (angula
                         return;
                     };
                     slothour.alterSlot = {
-                        start: moment().day($scope.day.dayname).hour(slothour.num).minute(0).second(0).millisecond(0).toDate(),
-                        end:  moment().day($scope.day.dayname).hour(slothour.num + 1).minute(0).second(0).millisecond(0).toDate(),
-                        dateText: moment().day($scope.day.dayname).format("dddd, MMMM Do YYYY")
+                        start: moment(slothour.chosenMeet.start).toDate(),
+                        end:  moment(slothour.chosenMeet.end).toDate(),
+                        dateText: moment($scope.day.fulldate).format("dddd, MMMM Do YYYY")
                     };
                 }
                 $scope.showCalendarFun = function(alterSlot){
@@ -113,47 +129,30 @@ define(['angular', 'moment', 'lodash',  'confirmationService'], function (angula
                     alterSlot.end.setMonth(alterMonth);
                 };
                 $scope.saveMeeting = function(slothour){
-                    var formError = validationForm();
-                    if(formError){
-                        $scope.showInfo = true;
-                        $scope.warningName = formError.warningName;
-                        $scope.validName = !formError.warningName;
-                        $scope.warningPhone = formError.warningPhone;
-                        $scope.validPhone = !formError.warningPhone;
+                    if(!$scope.searchText || !$scope.contactPhone){
+                        ConfirmationService.confirm({message: "enter all the required information"});
                         return;
                     }
                     var meeting = _.clone(slothour.chosenMeet,true);
                     meeting.chosen = false;
                     if(!slothour.alterSlot){
-                        var title = $scope.nameContact + "|||" + $scope.phoneContact;
-                        if(meeting.hideName){
-                            title = "";
-                            meeting.hideName = "";
-                        };
-                        meeting.start = moment(meeting.start).format();
-                        meeting.end = moment(meeting.end).format();
-                        meeting.title = title;
+                        meeting = fillingParameters(meeting);
                         Meeting.put(meeting).then(function(newMeeting){
                             pushInView(slothour.chosenMeet, newMeeting);
                         });
+                        meeting.hideName = "";
                     }
                     else{
                         var dayMeetingsProm = Meeting.byDate({start: moment(slothour.alterSlot.start).startOf('day').format(), end: moment(slothour.alterSlot.start).endOf('day').format()});
                         dayMeetingsProm.then(function (result) {
                             var mayContinue = validationBase(slothour.alterSlot, result, meeting);
                             if (mayContinue) {
-                                var title = $scope.nameContact + "|||" + $scope.phoneContact;
-                                if(meeting.hideName){
-                                    title = "";
-                                    meeting.hideName = "";
-                                };
-                                meeting.start = moment(slothour.alterSlot.start).format();
-                                meeting.end = moment(slothour.alterSlot.end).format();
-                                meeting.title = title;
+                                meeting = fillingParameters(meeting, slothour.alterSlot);
                                 Meeting.put(meeting)
                                     .then(function (newMeeting) {
                                         pushInView(slothour.chosenMeet, newMeeting);
                                     });
+                                meeting.hideName = "";
                             }
                             else {
                                 ConfirmationService.confirm({message: "wrong time"});
@@ -168,15 +167,63 @@ define(['angular', 'moment', 'lodash',  'confirmationService'], function (angula
                     else if(flag == 'show'){
                         $scope.showInfo = true;
                     }
+                    else if(!flag){
+                        $scope.showInfo = !$scope.showInfo;
+                    };
                 };
                 $scope.deleteMeeting = function(slothour){
-                    _.remove(slothour.meetings,slothour.chosenMeet);
+                    for(var i = 0; i < $scope.day.hours.length; i++){
+                        var hour = $scope.day.hours[i];
+                        var meetings = hour.meetings;
+                        for(var j = 0; j < meetings.length; j++){
+                            if(meetings[j] == slothour.chosenMeet){
+                                _.remove(meetings,slothour.chosenMeet);
+                            };
+                        };
+                    };
                     Meeting.delete(slothour.chosenMeet);
                     slothour.chosenMeet = false;
                 };
                 $scope.hideName = function(slothour){
                     slothour.chosenMeet.hideName = true;
                 };
+
+                $scope.getSelectValues = function () {
+                    Meeting.get().then(function (result) {
+                        $scope.listValues = result;
+                        $scope.AllValues = result;
+                        $scope.$apply();
+                    });
+                    $scope.showSelect = true;
+                };
+
+                $scope.clickSelect = function(element){
+                    $scope.searchText = element.title;
+                    $scope.contactPhone = element.contactPhone;
+                    $scope.showSelect = false;
+                };
+
+                $scope.hideSelectList = function(){
+                    $scope.showSelect = false;
+                    $('#inputSelect').blur();
+                };
+
+                $scope.filterSelect = function(){
+                    var cloneAll = _.clone($scope.AllValues, true);
+                    $scope.listValues = _.filter(cloneAll, function(meeting) {
+                        return meeting.title.indexOf($scope.searchText) !== -1;
+                    });
+                    if(!$scope.listValues.length){
+                        $scope.showSelect = false;
+                    };
+                };
+
+                $(document).on('click', function(evt) {
+                    if((evt.target.className.indexOf('item-select') == -1) && (evt.target.id !== "inputSelect")) {
+                        $scope.showSelect = false;
+                    }
+                    $scope.$apply();
+                });
             }
         };
     });

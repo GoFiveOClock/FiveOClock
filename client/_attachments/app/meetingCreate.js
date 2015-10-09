@@ -1,4 +1,4 @@
-define(['angular', 'confirmationService', 'moment'], function (angular, confirmationService, moment) {
+define(['angular', 'jquery', 'confirmationService', 'moment', 'newSelect'], function (angular, $, confirmationService, moment, newSelect) {
     return angular.module('fiveOClock').directive('meetingCreate', function () {
         return {
             templateUrl: 'app/meetingCreate.html',
@@ -8,16 +8,22 @@ define(['angular', 'confirmationService', 'moment'], function (angular, confirma
                 days: '='
             },
             controller: function ($scope, Meeting, ConfirmationService) {
+                var currDayDate = $scope.day.fulldate;
                 $scope.showInfo = true;
+                $scope.placeholderSelect = 'enter name';
                 pushAlterSlots($scope.slothour,{day:$scope.day.dayname});
-                function validationBase(slotHighestPriority, dayMeetings) {
+                function validationBase(newMeeting, dayMeetings) {
                     var flag = true;
                     for (var i = 0; i < dayMeetings.length; i++) {
-                        if ((moment(dayMeetings[i].value.start).diff(moment(slotHighestPriority.start)) >= 0) && (moment(slotHighestPriority.end).diff(moment(dayMeetings[i].value.start)) > 0)) {
+                        if ((moment(dayMeetings[i].value.start).diff(moment(newMeeting.end)) < 0) && (moment(dayMeetings[i].value.start).diff(moment(newMeeting.start)) >= 0)) {
                             flag = false;
                             return flag;
                         };
-                        if ((moment(dayMeetings[i].value.end).diff(moment(slotHighestPriority.start)) > 0) && (moment(slotHighestPriority.end).diff(moment(dayMeetings[i].value.end)) >= 0)) {
+                        if ((moment(dayMeetings[i].value.end).diff(moment(newMeeting.start)) > 0) && (moment(dayMeetings[i].value.end).diff(moment(newMeeting.end)) <= 0)) {
+                            flag = false;
+                            return flag;
+                        };
+                        if ((moment(dayMeetings[i].value.start).diff(moment(newMeeting.start)) < 0) && (moment(dayMeetings[i].value.end).diff(moment(newMeeting.end)) > 0)) {
                             flag = false;
                             return flag;
                         };
@@ -26,9 +32,9 @@ define(['angular', 'confirmationService', 'moment'], function (angular, confirma
                 };
                 function pushAlterSlots(slothour,objDate){
                     slothour.alterSlots.push({
-                        start: moment().day(objDate.day).hour(slothour .num).minute(0).second(0).millisecond(0).toDate(),
-                        end:  moment().day(objDate.day).hour(slothour.num + 1).minute(0).second(0).millisecond(0).toDate(),
-                        dateText: moment().day(objDate.day).format("dddd, MMMM Do YYYY"),
+                        start: moment(currDayDate).hour(slothour .num).minute(0).second(0).millisecond(0).toDate(),
+                        end:  moment(currDayDate).hour(slothour.num + 1).minute(0).second(0).millisecond(0).toDate(),
+                        dateText: moment(currDayDate).format("dddd, MMMM Do YYYY"),
                         priority: slothour.alterSlots.length + 1
                     });
                 };
@@ -37,38 +43,27 @@ define(['angular', 'confirmationService', 'moment'], function (angular, confirma
                         var rowTwoDays = $scope.days[i];
                         for(var j=0; j<rowTwoDays.length; j++){
                             var day = rowTwoDays[j];
-                            if(day.date == moment(slotHighestPriority.start).format(" MMMM Do YYYY")){
-                                var objCurrHour = _.find(day.hours,function(hour){
-                                    return hour.num == Number(moment(slotHighestPriority.start).format("HH"));
+                            if(day.forLabel == moment(slotHighestPriority.start).format(" MMMM Do YYYY")){
+                                var massCurrHour = _.filter(day.hours,function(hour){
+                                    return ((hour.num == Number(moment(slotHighestPriority.start).format("HH"))) || ((hour.num > Number(moment(slotHighestPriority.start).format("HH"))) &&
+                                        ((hour.num < Number(moment(slotHighestPriority.end).format("HH"))) || ((hour.num == Number(moment(slotHighestPriority.end).format("HH")))&& (Number(moment(slotHighestPriority.end).format("mm")) !== 0 )))));
                                 });
-                                objCurrHour.meetings.push(newMeeting);
+                                for(var g=0; g<massCurrHour.length; g++){
+                                    massCurrHour[g].meetings.push(newMeeting);
+                                };
                             };
                         };
                     };
                     $scope.slothour.selectedCreate = false;
                     $scope.$apply();
                 };
-                function validationForm() {
-                    var objError = {
-                        warningName: "",
-                        warningPhone: ""
-                    };
-                    if (!$scope.nameContact) {
-                        objError.warningName = true;
-                    }
-                    if (!$scope.phoneContact) {
-                        objError.warningPhone = true;
-                    };
-                    if (!$scope.phoneContact || !$scope.nameContact) {
-                        return objError;
-                    };
-                };
+
                 $scope.hideFormCreate = function(slothour){
                     slothour.selectedCreate = false;
                 };
                 $scope.showCalendarFun = function(alterSlot){
                     alterSlot.showCalendar = true;
-                    alterSlot.alterInput = new Date(moment().day(alterSlot.dateText).hour(0).minute(0).second(0).millisecond(0));
+                    alterSlot.alterInput = new Date(moment(currDayDate).day(alterSlot.dateText).hour(0).minute(0).second(0).millisecond(0));
                 };
                 $scope.showInfoFun = function(flag){
                     if(flag == 'hide'){
@@ -77,6 +72,9 @@ define(['angular', 'confirmationService', 'moment'], function (angular, confirma
                     else if(flag == 'show'){
                         $scope.showInfo = true;
                     }
+                    else if(!flag){
+                        $scope.showInfo = !$scope.showInfo;
+                    };
                 };
                 $scope.alterOk = function(alterSlot){
                     alterSlot.showCalendar = false;
@@ -100,13 +98,8 @@ define(['angular', 'confirmationService', 'moment'], function (angular, confirma
                     var slotHighestPriority = _.find(slothour.alterSlots, function (slot) {
                         return slot.priority = 1;
                     });
-                    var formError = validationForm();
-                    if(formError){
-                        $scope.showInfo = true;
-                        $scope.warningName = formError.warningName;
-                        $scope.validName = !formError.warningName;
-                        $scope.warningPhone = formError.warningPhone;
-                        $scope.validPhone = !formError.warningPhone;
+                    if(!$scope.searchText || !$scope.contactPhone){
+                        ConfirmationService.confirm({message: "enter all the required information"});
                         return;
                     }
                     var dayMeetingsProm = Meeting.byDate({start: moment(slotHighestPriority.start).startOf('day').format(), end: moment(slotHighestPriority.start).endOf('day').format()});
@@ -114,11 +107,7 @@ define(['angular', 'confirmationService', 'moment'], function (angular, confirma
                         var mayContinue = validationBase(slotHighestPriority, result);
                         if (mayContinue) {
                             _.remove(slothour.alterSlots, slotHighestPriority);
-                            var title = $scope.nameContact + "|||" + $scope.phoneContact;
-                            if(slothour.hideName){
-                                title = "";
-                            };
-                            Meeting.post({start: moment(slotHighestPriority.start).format(), end: moment(slotHighestPriority.end).format(), title: title, alterSlots: slothour.alterSlots})
+                            Meeting.post({start: moment(slotHighestPriority.start).format(), end: moment(slotHighestPriority.end).format(), title: $scope.searchText, contactPhone:$scope.contactPhone, alterSlots: slothour.alterSlots, hidden: slothour.hideName? true:false})
                                 .then(function (newMeeting) {
                                     pushInView(slotHighestPriority, newMeeting);
                                 });
@@ -131,6 +120,43 @@ define(['angular', 'confirmationService', 'moment'], function (angular, confirma
                 $scope.hideName = function(slothour){
                     slothour.hideName = true;
                 };
+
+                $scope.getSelectValues = function () {
+                    Meeting.get().then(function (result) {
+                        $scope.listValues = result;
+                        $scope.AllValues = result;
+                        $scope.$apply();
+                    });
+                    $scope.showSelect = true;
+                };
+
+                $scope.clickSelect = function(element){
+                    $scope.searchText = element.title;
+                    $scope.contactPhone = element.contactPhone;
+                    $scope.showSelect = false;
+                };
+
+                $scope.hideSelectList = function(){
+                    $scope.showSelect = false;
+                    $('#inputSelect').blur();
+                };
+
+                $scope.filterSelect = function(){
+                    var cloneAll = _.clone($scope.AllValues, true);
+                    $scope.listValues = _.filter(cloneAll, function(meeting) {
+                        return meeting.title.indexOf($scope.searchText) !== -1;
+                    });
+                    if(!$scope.listValues.length){
+                        $scope.showSelect = false;
+                    };
+                };
+
+                $(document).on('click', function(evt) {
+                    if((evt.target.className.indexOf('item-select') == -1) && (evt.target.id !== "inputSelect")) {
+                        $scope.showSelect = false;
+                    }
+                    $scope.$apply();
+                });
             }
         };
     });

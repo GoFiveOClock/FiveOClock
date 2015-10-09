@@ -18,13 +18,11 @@
     "angular-bootstrap": "~0.13.4",
     "angular-google-maps": "~2.2.1",
     "angular-route": "~1.4.4",
-    "angular-sanitize": "~1.4.6",
-    "angular-select2": "~1.4.2",
     "bluebird": "~2.9.34",
     "jquery": "~2.1.4",
     "js-cookie": "~2.0.3",
     "moment": "~2.10.6",
-    "pouchdb": "~4.0.1",
-    "ui-select": "angular-ui-select#~0.12.1"
+    "ngInfiniteScroll": "1.0.0",
+    "pouchdb": "~4.0.1"
   }
 }
