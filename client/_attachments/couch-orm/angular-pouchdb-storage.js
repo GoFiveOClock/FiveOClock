@@ -30,12 +30,13 @@ define(['native-pouchdb-storage', 'angular'], function (NativeStorage, angular) 
 		};
 
 		function applyResult(result) {
-            var deferred = $q.defer();
+			var deferred = $q.defer();
             $timeout(function () {
                 deferred.resolve(result);
                 $rootScope.$apply();
+				deferred.resolve(result);
             });
-            return deferred.promise;
+			return deferred.promise;
         }
 
 		return AngularPouchDbStorage;

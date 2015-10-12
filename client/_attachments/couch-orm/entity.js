@@ -17,7 +17,7 @@ define(['lodash'], function (_) {
 					result = { view: result };
 				}
 				return that._storage.queryView(result.view, result.params).then(function (response) {
-                    return that._processViewResponse(response, result.params);
+					return that._processViewResponse(response, result.params);
 				});
 			}
 		});
@@ -67,14 +67,14 @@ define(['lodash'], function (_) {
 
 	Entity.prototype._processViewResponse = function (response, params) {
 		var that = this;
-
-        var docProp = !params || params.include_docs ? 'doc' : 'value';
+		
+		var docProp = !params || params.include_docs ? 'doc' : 'value';
 		var relations = _.chain(response.rows).
 			pluck(docProp).
 			pluck('type').
 			uniq().
 			reject(function (doc) {
-                return !doc || doc == that._entity.type;
+				return !doc || doc == that._entity.type;
 			}).value();
 		if (relations && relations.length) {
 			var rows = _.chain(response.rows)
@@ -94,10 +94,10 @@ define(['lodash'], function (_) {
 				.pluck(docProp)
 				.value();
 			return rows;
-        } else if (!params || !params.group) {
+		} else if (!params || !params.group) {
 			return _.pluck(response.rows, docProp);
         } else {
-            return response.rows;
+			return response.rows;
 		}
 	};
 
