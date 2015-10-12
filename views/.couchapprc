@@ -2,6 +2,8 @@
   "env": {
 	"default": {
 	  "db": "http://admin:abc123@localhost:5984/fiveoclock"
-	}
+	},"common": {
+		"db": "http://admin:abc123@localhost:5984/common"
+	 }
   }
 }

@@ -15,11 +15,14 @@
   ],
   "dependencies": {
     "angular": "~1.4.5",
-    "angular-cookies": "~1.4.5",
+    "angular-bootstrap": "~0.13.4",
+    "angular-google-maps": "~2.2.1",
     "angular-route": "~1.4.4",
     "bluebird": "~2.9.34",
     "jquery": "~2.1.4",
-    "lodash": "~3.10.1",
+    "js-cookie": "~2.0.3",
+    "moment": "~2.10.6",
+    "ngInfiniteScroll": "1.0.0",
     "pouchdb": "~4.0.1"
   }
 }

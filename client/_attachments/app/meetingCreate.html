@@ -1,0 +1,60 @@
+<div class="chevron-event">
+    <i class="fa fa-chevron-circle-up font-big cursor" ng-click="hideFormCreate(slothour)"></i>
+</div>
+<hr class="hr-chevr margin-event-hr">
+<div class="event-form">
+
+    <div class="pad-bottom pad-top">
+        <span class="white-info">Create meeting</span>
+    </div>
+    <div>
+        <span ng-if="searchText" ng-click="showInfoFun()" class="pad-left cursor">{{searchText}}, {{contactPhone}}</span>
+    </div>
+
+    <div class="chevron-event">
+        <i ng-if="showInfo" class="fa fa-chevron-circle-up big-font cursor" ng-click="showInfoFun('hide')"></i>
+        <i ng-if="!showInfo" class="fa fa-chevron-circle-down big-font cursor" ng-click="showInfoFun('show')"></i>
+    </div>
+
+    <hr class="hr-chevr margin-event-hr">
+
+    <div ng-if="showInfo" class="form-input">
+        <i ng-if="!searchText" class="fa fa-exclamation-triangle icon-input-red"></i>
+        <i ng-if="searchText" class="fa fa-check icon-input"></i>
+       <new-select placeholder="placeholderSelect"></new-select>
+    </div>
+    <div ng-if="showInfo" class="form-input">
+        <i ng-if="contactPhone" class="fa fa-check icon-input"></i>
+        <i ng-if="!contactPhone" class="fa fa-exclamation-triangle icon-input-red"></i>
+        <input class="all-width pad-left" placeholder="Contact phone" ng-model="$parent.contactPhone">
+    </div>
+
+    <div ng-repeat="alterSlot in slothour.alterSlots">
+        <i class="time-icon font-big fa fa-clock-o"></i>
+        <div class="slot-div">
+            <input type="time" class="slot-span" ng-model="alterSlot.start">
+            <span>-</span>
+            <input type="time" class="slot-span" ng-model="alterSlot.end">
+            <span  ng-if="!alterSlot.showCalendar" class="grey-color cursor" ng-click="showCalendarFun(alterSlot)">{{alterSlot.dateText}}</span>
+            <i  ng-if="!alterSlot.showCalendar" class="fa fa-calendar grey-color"></i>
+
+            <input type="date" ng-if="alterSlot.showCalendar" class="alter-input" ng-model="alterSlot.alterInput">
+            <button ng-if="alterSlot.showCalendar" ng-click="alterOk(alterSlot)">Ok</button>
+        </div>
+    </div>
+
+    <div class="grey-button">
+        <i class="fa fa-plus form-icon font-middle"></i><span class="pad-left cursor" ng-click="addAlternate({slothour:slothour,day:day.dayname})">Add alternate timeslot</span>
+    </div>
+    <div class="grey-button">
+        <div class="div-check"><input type="checkbox" class="form-icon font-middle" id="check2"></div>
+        <label for="check2" class="pad-left cursor" ng-click="hideName(slothour)">Do not publish client name</label>
+    </div>
+    <div class="ok-reject">
+        <div class="pull-right">
+            <span class="margin-reject cursor" ng-click="hideFormCreate(slothour)">Cancel</span>
+            <span class="cursor" ng-click="createMeeting(slothour)">Ok</span>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>

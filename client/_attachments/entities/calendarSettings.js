@@ -1,8 +1,8 @@
 define(['angular', 'entity', 'cookies'], function (angular, Entity, cookies) {
-    angular.module('fiveOClock').factory('Profile', function (userStorage) {
+    angular.module('fiveOClock').factory('CalendarSettings', function (userStorage) {
         var config = {
-            type: 'profile',
-            props: ['_id', 'name', 'phone']
+            type: 'calendarSettings',
+            props: ['_id','days','hours']
         };
 
         return new Entity(config, userStorage);

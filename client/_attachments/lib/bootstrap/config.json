@@ -382,8 +382,13 @@
   },
   "css": [
     "grid.less",
-    "responsive-utilities.less"
+    "forms.less",
+    "buttons.less",
+    "responsive-utilities.less",
+    "glyphicons.less",
+    "button-groups.less",
+    "modals.less"
   ],
   "js": [],
-  "customizerUrl": "http://getbootstrap.com/customize/?id=c1c36cfaed6daec9ed25"
+  "customizerUrl": "http://getbootstrap.com/customize/?id=f47ce924a243dc45b4aa"
 }

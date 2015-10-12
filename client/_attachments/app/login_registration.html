@@ -3,15 +3,18 @@
        <div ng-if="warningEmail" class="pad-bottom red">
            <span>wrong email</span>
        </div>
-       <input class="all-width advanced-drop font-big pad-left" ng-model="password" ng-style="stylePass()" placeholder=" Введите пароль">
-       <div ng-if="warningLogin" class="pad-bottom red">
+       <input class="all-width advanced-drop font-big pad-left" type="password" ng-model="password" ng-style="stylePass()" placeholder=" Введите пароль">
+       <div ng-if="wrongData" class="pad-bottom red">
            <span>wrong email or password</span>
        </div>
+        <div ng-if="warningRegistration" class="pad-bottom red">
+            <span>such a user already exist</span>
+        </div>
        <div class="grey-button">
            <div class="float-right">
                <u><span>Забыли пароль?</span></u>
            </div>
-           <div class="div-check"><input type="checkbox" class="form-icon font-middle" id="check2"></div>
+           <div class="div-check"><input type="checkbox" ng-model="dontRemember.value" class="form-icon font-middle" id="check2"></div>
            <label for="check2" class="pad-left">Не запоминать меня</label>
        </div>
        <div class="login-buttons slot-font font-middle">
