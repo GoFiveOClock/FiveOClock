@@ -5,7 +5,7 @@ define(['angular', 'jquery', 'cookies', 'newSelect'], function (angular, $, cook
             $scope.placeholderSpec = 'select speciality';
 
             $scope.getSelectValues = function () {
-                ServiceProviderInfoCommon.specialities().then(function(result){
+                ServiceProviderInfoCommon.specialities({ limit: 10 }).then(function(result){
                     for (var i = 0; i < result.length; i++) {
                         result[i] = {title:result[i].key};
                     };

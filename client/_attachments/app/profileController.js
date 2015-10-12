@@ -1,6 +1,6 @@
 define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'serviceProviderInfoCommon', 'calendarSettings', 'settingsService', 'newSelect'], function (angular, $, _, cookies, serviceProviderFile, serviceProviderInfoCommon, calendarSettingsFIle, settingsServiceFile, newSelect) {
     return angular.module('fiveOClock').controller('profileController',
-        function ($scope, $q, Profile, ServiceProviderInfo, ServiceProviderInfoCommon, CalendarSettings, settingsService, uiGmapGoogleMapApi) {
+        function ($scope, $q, ConsumerInfo, ServiceProviderInfo, ServiceProviderInfoCommon, CalendarSettings, settingsService, uiGmapGoogleMapApi) {
 
             var profileInfo, serviceProviderInfo, calendarSettings;
             $scope.specialities = [
@@ -17,7 +17,7 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                 };
 
                 var promises = {
-                    profile: Profile.get(),
+                    consumerInfo: ConsumerInfo.get(),
                     serviceProviderInfo: ServiceProviderInfo.get(),
                     calendarSettings: CalendarSettings.get(),
                     maps: uiGmapGoogleMapApi
@@ -25,7 +25,7 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                 $q.all(promises).then(function (result) {
                     $scope.googleMaps = result.maps;
 
-                    profileInfo = result.profile[0];
+                    profileInfo = result.consumerInfo[0];
                     if (profileInfo) {
                         $scope.nameProfile = profileInfo.name;
                         $scope.phoneProfile = profileInfo.phone;
@@ -118,7 +118,7 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                 console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
             };
 
-            function saveProfile() {
+            function saveConsumerInfo() {
                 if (profileInfo) {
                     var marker = $scope.map.markers[0];
                     profileInfo.name = $scope.nameProfile;
@@ -126,19 +126,19 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                     profileInfo.location.latitude = marker.coords.latitude;
                     profileInfo.location.longitude = marker.coords.longitude;
                     profileInfo.location.locationName = $scope.map.markers[0].label
-                    Profile.put(profileInfo);
+                    ConsumerInfo.put(profileInfo);
                 }
                 else {
                     var name = $scope.nameProfile;
                     var phone = $scope.phoneProfile;
-                    Profile.post({
+                    ConsumerInfo.post({
                         name: name,
                         phone: phone,
                         userType: 'consumer',
                         type: 'profile',
                         location: {longitude: $scope.map.markers[0].coords.longitude, latitude: $scope.map.markers[0].coords.latitude, locationName:$scope.map.markers[0].label}
-                    }).then(function(profile){
-                        profileInfo = profile;
+                    }).then(function(consumerInfo){
+                        profileInfo = consumerInfo;
                     });
                 };
             };
@@ -149,6 +149,11 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                         serviceProviderInfo.userName = $scope.nameProfile;
                         serviceProviderInfo.speciality = $scope.searchText;
                         serviceProviderInfo.additionalInfo = $scope.additionalInfo;
+                        serviceProviderInfo.phone = $scope.phoneProfile;
+                        var marker = $scope.map.markers[0];
+                        serviceProviderInfo.location.latitude = marker.coords.latitude;
+                        serviceProviderInfo.location.longitude = marker.coords.longitude;
+                        serviceProviderInfo.location.locationName = $scope.map.markers[0].label,
                         ServiceProviderInfo.put(serviceProviderInfo);
                     }
                     else {
@@ -156,7 +161,11 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                             userName: $scope.nameProfile,
                             speciality: $scope.searchText,
                             additionalInfo: $scope.additionalInfo,
-                            type: 'serviceProviderInfo'
+                            phone : $scope.phoneProfile,
+                            location : $scope.location,
+                            locationName : $scope.locationName,
+                            type: 'serviceProviderInfo',
+                            location: {longitude: $scope.map.markers[0].coords.longitude, latitude: $scope.map.markers[0].coords.latitude, locationName:$scope.map.markers[0].label}
                         }).then(function(providerInfo){
                             serviceProviderInfo = providerInfo;
                         });
@@ -196,7 +205,7 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
 
 
             $scope.getSelectValues = function () {
-                ServiceProviderInfoCommon.specialities().then(function(result){
+                ServiceProviderInfoCommon.specialities({ limit: 10 }).then(function(result){
                     for (var i = 0; i < result.length; i++) {
                         result[i] = {title:result[i].key};
                     };
@@ -235,7 +244,7 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
             });
 
             $scope.save = function () {
-                saveProfile();
+                saveConsumerInfo();
                 saveServiceProviderInfo();
                 saveCalendarSettings();
             };

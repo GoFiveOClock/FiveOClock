@@ -2,17 +2,18 @@ define(['angular', 'entity', 'cookies', 'common-storage'], function (angular, En
     angular.module('fiveOClock').factory('ServiceProviderInfoCommon', function (commonStorage) {
         var config = {
             type: 'serviceProviderInfo',
-            props: ['userName', 'speciality', 'additionalInfo'],
+            props: ['userName', 'speciality', 'additionalInfo', 'phone', 'location', 'locationName'],
             indexes: {
-                specialities: function(name) {
-                    name = name || "";
+                specialities: function(params) {
+                    var name = params.value || "";
                     return {
                         view: 'speciality',
                         params: {
                             startkey: name,
                             endkey: name + '\ufff0',
                             include_docs: false,
-                            group:true
+                            group:true,
+                            limit: params.limit
                         }
                     }
                 }

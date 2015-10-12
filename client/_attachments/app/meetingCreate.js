@@ -122,7 +122,7 @@ define(['angular', 'jquery', 'confirmationService', 'moment', 'newSelect'], func
                 };
 
                 $scope.getSelectValues = function () {
-                    Meeting.get().then(function (result) {
+                    Meeting.get({ limit: 10 }).then(function (result) {
                         $scope.listValues = result;
                         $scope.AllValues = result;
                         $scope.$apply();

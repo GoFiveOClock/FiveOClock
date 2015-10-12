@@ -29,7 +29,7 @@ require.config({
         'meetingCreate': 'app/meetingCreate',
         'meetingRedact': 'app/meetingRedact',
         'newSelect': 'app/newSelect',
-        'profile': 'entities/profile',
+        'consumerInfo': 'entities/consumerInfo',
         'serviceProviderInfo': 'entities/serviceProviderInfo',
         'serviceProviderInfoCommon': 'entities/serviceProviderInfoCommon',
         'calendarSettings': 'entities/calendarSettings',

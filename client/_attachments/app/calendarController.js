@@ -38,9 +38,12 @@ define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 
                     else{
                         var defaultDayObjects = getServiceSett(settingsService.defaultSettings);
                         var dateMeetRequest = getDateRequest(defaultDayObjects);
-                        return setDayHours({
-                            hours: ($scope.dontShowAll.hours)? settingsService.defaultSettings.hours:settingsService.fullSettings.hours,
-                            days: ($scope.dontShowAll.days)? defaultDayObjects:fullDayObjects
+                        var promDaysOfMeet = getDaysOfMeet(dateMeetRequest);
+                        return promDaysOfMeet.then(function(){
+                            return setDayHours({
+                                hours: ($scope.dontShowAll.hours)? settingsService.defaultSettings.hours:settingsService.fullSettings.hours,
+                                days: ($scope.dontShowAll.days)? defaultDayObjects:fullDayObjects
+                            });
                         });
                     };
                 });
@@ -217,7 +220,7 @@ define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 
             };
 
             function flatForScroll(res) {
-                if ($scope.calendarSettings && $scope.calendarSettings[0].days.length <= 2) {
+                if ($scope.calendarSettings.length && $scope.calendarSettings[0].days.length <= 2) {
                     if ($scope.days.length) {
                         var lastMass = _.last($scope.days);
                         var clonelastMass = _.clone(lastMass, true);
@@ -229,7 +232,7 @@ define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 
                         _.remove($scope.days, lastMass);
                     };
                 };
-                if($scope.calendarSettings && (($scope.calendarSettings[0].days.length == 3) || ($scope.calendarSettings[0].days.length == 4))){
+                if($scope.calendarSettings.length && (($scope.calendarSettings[0].days.length == 3) || ($scope.calendarSettings[0].days.length == 4))){
                     res = getSlicesPortion(res);
                 }
                 else{

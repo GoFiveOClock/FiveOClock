@@ -109,11 +109,13 @@ define(['angular', 'moment', 'lodash',  'confirmationService'], function (angula
                         end:  moment(slothour.chosenMeet.end).toDate(),
                         dateText: moment($scope.day.fulldate).format("dddd, MMMM Do YYYY")
                     };
-                }
+                };
+
                 $scope.showCalendarFun = function(alterSlot){
                     alterSlot.showCalendar = true;
                     alterSlot.alterInput = new Date(moment().day(alterSlot.dateText).hour(0).minute(0).second(0).millisecond(0));
                 };
+
                 $scope.alterOk = function(alterSlot){
                     alterSlot.showCalendar = false;
                     alterSlot.dateText = moment(alterSlot.alterInput).format("dddd, MMMM Do YYYY");
@@ -128,6 +130,7 @@ define(['angular', 'moment', 'lodash',  'confirmationService'], function (angula
                     alterSlot.end.setDate(alterDay);
                     alterSlot.end.setMonth(alterMonth);
                 };
+
                 $scope.saveMeeting = function(slothour){
                     if(!$scope.searchText || !$scope.contactPhone){
                         ConfirmationService.confirm({message: "enter all the required information"});
@@ -171,6 +174,7 @@ define(['angular', 'moment', 'lodash',  'confirmationService'], function (angula
                         $scope.showInfo = !$scope.showInfo;
                     };
                 };
+
                 $scope.deleteMeeting = function(slothour){
                     for(var i = 0; i < $scope.day.hours.length; i++){
                         var hour = $scope.day.hours[i];
@@ -184,12 +188,13 @@ define(['angular', 'moment', 'lodash',  'confirmationService'], function (angula
                     Meeting.delete(slothour.chosenMeet);
                     slothour.chosenMeet = false;
                 };
+
                 $scope.hideName = function(slothour){
                     slothour.chosenMeet.hideName = true;
                 };
 
                 $scope.getSelectValues = function () {
-                    Meeting.get().then(function (result) {
+                    Meeting.get({ limit: 10 }).then(function (result) {
                         $scope.listValues = result;
                         $scope.AllValues = result;
                         $scope.$apply();
