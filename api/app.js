@@ -24,12 +24,14 @@ if ('development' === app.get('env')) {
 }
 
 var adminDB = 'fiveoclockadmin';
+var commDb = 'common';
 var couchDbHost = 'http://localhost:5984';
 var host = Promise.promisifyAll(nano(couchDbHost));
 var adminLogin = 'admin';
 var adminPassword = 'abc123';
 var appDb = 'fiveoclock';
 var userDbreplicationFilter = 'views/ownDbReplication';
+var commonReplicationFilter = 'views/commonReplication';
 
 app.all('/*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", couchDbHost);
@@ -42,17 +44,8 @@ app.all('/*', function (req, res, next) {
 app.post('/login', function (req, res) {
     var user = req.body.user;
     var password = req.body.password;
-
-    host.authAsync(user, password).then(function (body) {
-        var headers = body[1];
-        var auth = headers['set-cookie'][0];
-        var cookieObject = cookie.parse(auth);
-        res.cookie('AuthSession', cookieObject.AuthSession, {
-            expires: moment().add(1, 'years').toDate()
-        });
-        res.cookie('user', user, { expires: moment().add(1, 'years').toDate() });
-        res.end();
-    }).catch(function (err) {
+	
+    setCookies(host, user, password, res, req).catch(function (err) {
         res.status(500).send(err);
     });
 });
@@ -78,6 +71,8 @@ function register(req, res, user, password) {
             return addOwnDb(authenticated, user, req, res);
         }).then(function () {
             return setupUserRole(authenticated, user);
+        }).then(function () {
+            return replicateCommon(authenticated, user);
         }).then(function () {
             return setCookies(host, user, password, res, req);
         }).catch(function (err) {
@@ -156,6 +151,11 @@ function addOwnDb(authenticated, user) {
     return authenticated.db.replicateAsync(appDb, dbName, { create_target: true, filter:userDbreplicationFilter });
 }
 
+function replicateCommon(authenticated, user) {
+    var dbName = getDbName(user);
+    return authenticated.db.replicateAsync(dbName, commDb, { create_target: true, continuous: true, filter:commonReplicationFilter});
+}
+
 
 function setupUserRole(authenticated, user) {
     var dbName = getDbName(user);
@@ -186,11 +186,9 @@ function setCookies(host, user, password, res) {
         var headers = body[1];
         var auth = headers['set-cookie'][0];
         var cookieObject = cookie.parse(auth);
-        res.cookie('AuthSession', cookieObject.AuthSession, {
-            expires: moment().add(1, 'years').toDate()
-        });
-        res.cookie('user', user, { expires: moment().add(1, 'years').toDate() });
-        res.cookie('db', getDbName(user), { expires: moment().add(1, 'years').toDate() });
+        res.cookie('AuthSession', cookieObject.AuthSession);
+        res.cookie('user', user);
+        res.cookie('db', getDbName(user));
         res.end(user);
     });
 }

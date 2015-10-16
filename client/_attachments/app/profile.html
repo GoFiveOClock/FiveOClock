@@ -2,11 +2,15 @@
     <i class="fa fa-search fa-2x visible-xs menu-elements"></i>
     <div class="visible-sm menu-elements">
         <i class="fa fa-search fa-2x menu-icons"></i>
-        <div class="menu-lables">Search</div>
+        <div class="menu-lables">
+            <a href="#search">Search</a>
+        </div>
     </div>
     <div class="visible-md menu-elements">
         <i class="fa fa-search fa-3x menu-icons"></i>
-        <div class="menu-lables">Search</div>
+        <div class="menu-lables">
+            <a href="#search">Search</a>
+        </div>
     </div>
 
     <i class="fa fa-weixin fa-2x visible-xs menu-elements"></i>
@@ -32,11 +36,15 @@
     <i class="fa fa-calendar fa-2x visible-xs menu-elements"></i>
     <div class="visible-sm menu-elements">
         <i class="fa fa-calendar fa-2x menu-icons"></i>
-        <div class="menu-lables">Calendar</div>
+        <div class="menu-lables">
+            <a href="#calendar">Calendar</a>
+        </div>
     </div>
     <div class="visible-md menu-elements">
         <i class="fa fa-calendar fa-3x menu-icons"></i>
-        <div class="menu-lables">Calendar</div>
+        <div class="menu-lables">
+            <a href="#calendar">Calendar</a>
+        </div>
     </div>
 
     <i class="fa fa-user fa-2x visible-xs menu-elements"></i>
@@ -58,179 +66,199 @@
         <div class="col-md-6">
             <i class="fa fa-user-secret prof-big-icon"></i>
             <div class="prof-name-cont">
-                <input class="prof-name" placeholder=" Полное имя">
-                <input class="prof-name" placeholder=" Контактный телефон">
+                <input class="prof-name" placeholder=" Полное имя" ng-model="nameProfile">
+                <input class="prof-name" placeholder=" Контактный телефон" ng-model="phoneProfile">
             </div>
         </div>
     </div>
     <div class="row">
+        <div class="col-sm-6 col-md-6 pad-bottom">
+            <span>Рабочие дни: </span>
+            <div class="row pad-bottom">
+                <div class="col-xs-4 col-md-4">
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="Monday" class="form-icon font-middle" id="check1"></div>
+                        <label for="check1" class="pad-left">Понедельник</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="Tuesday" class="form-icon font-middle" id="check2"></div>
+                        <label for="check2" class="pad-left">Вторник</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="Wednesday" class="form-icon font-middle" id="check3"></div>
+                        <label for="check3" class="pad-left">Среда</label>
+                    </div>
+                </div>
+                <div class="col-xs-4 col-md-4">
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="Thursday" class="form-icon font-middle" id="check4"></div>
+                        <label for="check4" class="pad-left">Четверг</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="Friday" class="form-icon font-middle" id="check5"></div>
+                        <label for="check5" class="pad-left">Пятница</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="Saturday" class="form-icon font-middle" id="check6"></div>
+                        <label for="check6" class="pad-left">Суббота</label>
+                    </div>
+                </div>
+                <div class="col-xs-4 col-md-4">
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="Sunday" class="form-icon font-middle" id="check7"></div>
+                        <label for="check7" class="pad-left">Воскресение</label>
+                    </div>
+                </div>
+            </div>
+            <span>Рабочие часы: </span>
+            <div class="row">
+                <div class="col-xs-4 col-md-4">
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour00" class="form-icon font-middle" id="check00"></div>
+                        <label for="check00" class="pad-left">00:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox"  ng-model="workingHour01" class="form-icon font-middle" id="check01"></div>
+                        <label for="check01" class="pad-left">01:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour02" class="form-icon font-middle" id="check02"></div>
+                        <label for="check02" class="pad-left">02:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour03" class="form-icon font-middle" id="check03"></div>
+                        <label for="check03" class="pad-left">03:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour04" class="form-icon font-middle" id="check04"></div>
+                        <label for="check04" class="pad-left">04:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour05" class="form-icon font-middle" id="check05"></div>
+                        <label for="check05" class="pad-left">05:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour06" class="form-icon font-middle" id="check06"></div>
+                        <label for="check06" class="pad-left">06:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour07" class="form-icon font-middle" id="check07"></div>
+                        <label for="check07" class="pad-left">07:00</label>
+                    </div>
+                </div>
+                <div class="col-xs-4 col-md-4">
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour08" class="form-icon font-middle" id="check08"></div>
+                        <label for="check08" class="pad-left">08:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour09" class="form-icon font-middle" id="check09"></div>
+                        <label for="check09" class="pad-left">09:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour10" class="form-icon font-middle" id="check10"></div>
+                        <label for="check10" class="pad-left">10:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour11" class="form-icon font-middle" id="check11"></div>
+                        <label for="check11" class="pad-left">11:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour12" class="form-icon font-middle" id="check12"></div>
+                        <label for="check12" class="pad-left">12:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour13" class="form-icon font-middle" id="check13"></div>
+                        <label for="check13" class="pad-left">13:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour14" class="form-icon font-middle" id="check14"></div>
+                        <label for="check14" class="pad-left">14:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour15" class="form-icon font-middle" id="check15"></div>
+                        <label for="check15" class="pad-left">15:00</label>
+                    </div>
+                </div>
+                <div class="col-xs-4 col-md-4">
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour16" class="form-icon font-middle" id="check16"></div>
+                        <label for="check16" class="pad-left">16:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour17" class="form-icon font-middle" id="check17"></div>
+                        <label for="check17" class="pad-left">17:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour18" class="form-icon font-middle" id="check18"></div>
+                        <label for="check18" class="pad-left">18:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour19" class="form-icon font-middle" id="check19"></div>
+                        <label for="check19" class="pad-left">19:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour20" class="form-icon font-middle" id="check20"></div>
+                        <label for="check20" class="pad-left">20:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour21" class="form-icon font-middle" id="check21"></div>
+                        <label for="check21" class="pad-left">21:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox"ng-model="workingHour22" class="form-icon font-middle" id="check22"></div>
+                        <label for="check22" class="pad-left">22:00</label>
+                    </div>
+                    <div class="pad-top">
+                        <div class="check-prof"><input type="checkbox" ng-model="workingHour23" class="form-icon font-middle" id="check23"></div>
+                        <label for="check23" class="pad-left">23:00</label>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-sm-6 col-md-6">
             <div class="pad-bottom">
                 <span>Цель использования приложения:</span>
             </div>
             <div class="radio-cont">
-                <input type="radio" id="rad1">
+                <input type="radio" id="rad1" name="destination" ng-model="serviceProvider.value" value= "no">
                 <label for="rad1">Пользоваться услугами</label>
             </div>
             <div class="radio-cont">
-                <input type="radio" id="rad2">
+                <input type="radio" id="rad2" name="destination" ng-model="serviceProvider.value" value= "yes">
                 <label for="rad2">Предоставлять услуги:</label>
             </div>
             <div class="relat lab-hr gray">
-                <input class="all-width advanced-drop font-big" value=" Специализация">
-                <i class="fa fa-caret-square-o-down big-caret input-caret"></i>
+
+                <ui-select on-select="specSelect({select:$select,item:$item})" class="all-width pad-bottom font-big" reset-search-input="false" ng-model="specialities.selected" theme="select2" ng-disabled="disabled">
+                    <ui-select-match placeholder="Специализация">{{$select.selected.key}}</ui-select-match>
+                    <ui-select-choices repeat="spec in specialitiesFilt | filter: propsFilter($select)">
+                        <small>
+                            {{spec.key}}
+                        </small>
+                    </ui-select-choices>
+                </ui-select>
+
             </div>
+
+            <div ng-if="true" class="pad-bottom">
+                <new-select placeholder="placeholderSelect"></new-select>
+            </div>
+
             <div class=" font-big">
-                <textarea placeholder=" Дополнительная информация" class="textarea-size"></textarea>
+                <textarea class="textarea-size pad-left" placeholder=" Дополнительная информация" ng-model="additionalInfo"></textarea>
             </div>
+
             <div class="pad-bottom">
                 <span>Место работы на карте: </span><br>
-                <img src="./mock-ups/additional_icons/expanded%20map.png">
+                <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" events="map.events">
+                    <ui-gmap-marker ng-repeat="m in map.markers" coords="m.coords"  icon="m.icon"
+                                    idkey="m.id"></ui-gmap-marker>
+                </ui-gmap-google-map>
             </div>
         </div>
-        <div class="col-sm-6 col-md-6 pad-left">
-            <span class="gray">Рабочие дни: </span>
-            <div class="row pad-bottom">
-                <div class="col-xs-4 col-md-4">
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check1"></div>
-                        <label for="check1" class="pad-left">Понедельник</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check2"></div>
-                        <label for="check2" class="pad-left">Вторник</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check3"></div>
-                        <label for="check3" class="pad-left">Среда</label>
-                    </div>
-                </div>
-                <div class="col-xs-4 col-md-4">
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check4"></div>
-                        <label for="check4" class="pad-left">Четверг</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check5"></div>
-                        <label for="check5" class="pad-left">Пятница</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check6"></div>
-                        <label for="check6" class="pad-left">Суббота</label>
-                    </div>
-                </div>
-                <div class="col-xs-4 col-md-4">
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check7"></div>
-                        <label for="check7" class="pad-left">Воскресение</label>
-                    </div>
-                </div>
-            </div>
-            <span class="gray">Рабочие часы: </span>
-            <div class="row">
-                <div class="col-xs-4 col-md-4">
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check00"></div>
-                        <label for="check1" class="pad-left">00:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check01"></div>
-                        <label for="check2" class="pad-left">01:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check02"></div>
-                        <label for="check3" class="pad-left">02:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check03"></div>
-                        <label for="check1" class="pad-left">03:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check04"></div>
-                        <label for="check2" class="pad-left">04:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check05"></div>
-                        <label for="check3" class="pad-left">05:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check06"></div>
-                        <label for="check2" class="pad-left">06:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check07"></div>
-                        <label for="check3" class="pad-left">07:00</label>
-                    </div>
-                </div>
-                <div class="col-xs-4 col-md-4">
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check08"></div>
-                        <label for="check1" class="pad-left">08:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check09"></div>
-                        <label for="check2" class="pad-left">09:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check10"></div>
-                        <label for="check3" class="pad-left">10:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check11"></div>
-                        <label for="check1" class="pad-left">11:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check12"></div>
-                        <label for="check2" class="pad-left">12:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check13"></div>
-                        <label for="check3" class="pad-left">13:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check14"></div>
-                        <label for="check2" class="pad-left">14:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check15"></div>
-                        <label for="check3" class="pad-left">15:00</label>
-                    </div>
-                </div>
-                <div class="col-xs-4 col-md-4">
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check16"></div>
-                        <label for="check1" class="pad-left">16:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check17"></div>
-                        <label for="check2" class="pad-left">17:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check18"></div>
-                        <label for="check3" class="pad-left">18:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check19"></div>
-                        <label for="check1" class="pad-left">19:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check20"></div>
-                        <label for="check2" class="pad-left">20:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check21"></div>
-                        <label for="check3" class="pad-left">21:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check22"></div>
-                        <label for="check2" class="pad-left">22:00</label>
-                    </div>
-                    <div class="grey-button">
-                        <div class="check-prof"><input type="checkbox" class="form-icon font-middle" id="check23"></div>
-                        <label for="check3" class="pad-left">23:00</label>
-                    </div>
-                </div>
-            </div>
+        <div class="pull-right">
+            <button class="btn btn-default" ng-click="save()">Сохранить</button>
         </div>
     </div>
 </div>
