@@ -8,7 +8,7 @@
         <span class="white-info">Create meeting</span>
     </div>
     <div>
-        <span ng-if="searchText" ng-click="showInfoFun()" class="pad-left cursor">{{searchText}}, {{contactPhone}}</span>
+        <span ng-if="selectText.value" ng-click="showInfoFun()" class="pad-left cursor">{{selectText.value}}, {{contactPhone}}</span>
     </div>
 
     <div class="chevron-event">
@@ -19,9 +19,9 @@
     <hr class="hr-chevr margin-event-hr">
 
     <div ng-if="showInfo" class="form-input">
-        <i ng-if="!searchText" class="fa fa-exclamation-triangle icon-input-red"></i>
-        <i ng-if="searchText" class="fa fa-check icon-input"></i>
-       <new-select placeholder="placeholderSelect"></new-select>
+        <i ng-if="!selectText.value" class="fa fa-exclamation-triangle icon-input-red"></i>
+        <i ng-if="selectText.value" class="fa fa-check icon-input"></i>       
+		<select-directive searchtext="selectText.value"  classdirective="classForSelect" ></select-directive>
     </div>
     <div ng-if="showInfo" class="form-input">
         <i ng-if="contactPhone" class="fa fa-check icon-input"></i>

@@ -1,5 +1,5 @@
 function(doc){
     if(doc.type == 'meeting'){
-        emit(doc.start, doc);
+        emit(doc.alterSlots[0].start, doc);
     }
 }

@@ -1,4 +1,4 @@
-define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 'settingsService', 'meeting', 'confirmationService', 'meetingCreate', 'meetingRedact'], function (angular, $, _, moment, cookies, calendarFile, settingsServiceFile, meetingFile, confirmationService, meetingCreate, meetingRedact) {
+define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 'settingsService', 'meeting', 'confirmationService', 'meetingCreate', 'meetingEdit'], function (angular, $, _, moment, cookies, calendarFile, settingsServiceFile, meetingFile, confirmationService, meetingCreate, meetingEdit) {
     return angular.module('fiveOClock').controller('calendarController',
         function ($scope, $q, $timeout, CalendarSettings, settingsService, Meeting, ConfirmationService) {
 
@@ -72,7 +72,12 @@ define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 
 
             function getDaysOfMeet(dateMeetRequest){
                 return Meeting.byDate({start:dateMeetRequest.start, end:dateMeetRequest.end}).then(function(result){
-                    $scope.meetings = _.pluck(result, 'value');
+					var meetings = _.pluck(result, 'value');
+					var ids = _.pluck(meetings, '_id');
+					return Meeting.get({"keys":ids});
+				}).then(function(result){
+					$scope.meetings = result;
+                    // $scope.meetings = _.pluck(result, 'value');
                     var massDaysAll = [];
                     for (var i = 0; i < $scope.meetings.length; i++) {
                         massDaysAll.push(
@@ -188,16 +193,16 @@ define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 
 
             function getHourMeetings(objDay){
                 var currentMeetings =  _.filter($scope.meetings, function(meeting) {
-                    return ((+moment(meeting.start).format("HH") == objDay.numHour) ||
-                        ((objDay.numHour > Number(moment(meeting.start).format("HH"))) &&
-                             ((objDay.numHour < Number(moment(meeting.end).format("HH"))) ||
-                                ((objDay.numHour == Number(moment(meeting.end).format("HH")))&&
-                                    Number(moment(meeting.end).format("mm")) !== 0 ))) )&&
-                        (moment(meeting.start).format(" MMMM Do YYYY") == objDay.day.format(" MMMM Do YYYY"));
+                    return ((+moment(meeting.alterSlots[0].start).format("HH") == objDay.numHour) ||
+                        ((objDay.numHour > Number(moment(meeting.alterSlots[0].start).format("HH"))) &&
+                             ((objDay.numHour < Number(moment(meeting.alterSlots[0].end).format("HH"))) ||
+                                ((objDay.numHour == Number(moment(meeting.alterSlots[0].end).format("HH")))&&
+                                    Number(moment(meeting.alterSlots[0].end).format("mm")) !== 0 ))) )&&
+                        (moment(meeting.alterSlots[0].start).format(" MMMM Do YYYY") == objDay.day.format(" MMMM Do YYYY"));
                 });
 
                 currentMeetings =  _.sortBy(currentMeetings, function(meeting) {
-                    return +moment(meeting.start).format('mm');
+                    return +moment(meeting.alterSlots[0].start).format('mm');
                 });
                 return currentMeetings;
             };

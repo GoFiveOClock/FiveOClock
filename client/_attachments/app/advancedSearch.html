@@ -1,49 +1,247 @@
+<div class="row row-menu">
+    <i class="fa fa-search fa-2x visible-xs menu-elements"></i>
+    <div class="visible-sm menu-elements">
+        <i class="fa fa-search fa-2x menu-icons"></i>
+        <div class="menu-lables">
+            <a href="#search">Search</a>
+        </div>
+    </div>
+    <div class="visible-md menu-elements">
+        <i class="fa fa-search fa-3x menu-icons"></i>
+        <div class="menu-lables">
+            <a href="#search">Search</a>
+        </div>
+    </div>
+
+    <i class="fa fa-weixin fa-2x visible-xs menu-elements"></i>
+    <div class="visible-sm menu-elements">
+        <i class="fa fa-weixin fa-2x menu-icons"></i>
+        <div class="menu-lables">Message</div>
+    </div>
+    <div class="visible-md menu-elements">
+        <i class="fa fa-weixin fa-3x menu-icons"></i>
+        <div class="menu-lables">Message</div>
+    </div>
+
+    <i class="fa fa-map-marker fa-2x visible-xs menu-elements"></i>
+    <div class="visible-sm menu-elements">
+        <i class="fa fa-map-marker fa-2x menu-icons"></i>
+        <div class="menu-lables">Map</div>
+    </div>
+    <div class="visible-md menu-elements">
+        <i class="fa fa-map-marker fa-3x menu-icons"></i>
+        <div class="menu-lables">Map</div>
+    </div>
+
+    <i class="fa fa-calendar fa-2x visible-xs menu-elements"></i>
+    <div class="visible-sm menu-elements">
+        <i class="fa fa-calendar fa-2x menu-icons"></i>
+        <div class="menu-lables">
+            <a href="#calendar">Calendar</a>
+        </div>
+    </div>
+    <div class="visible-md menu-elements">
+        <i class="fa fa-calendar fa-3x menu-icons"></i>
+        <div class="menu-lables">
+            <a href="#calendar">Calendar</a>
+        </div>
+    </div>
+
+    <i class="fa fa-user fa-2x visible-xs menu-elements"></i>
+    <div class="visible-sm menu-elements">
+        <i class="fa fa-user fa-2x menu-icons"></i>
+        <div class="menu-lables">
+            <a href="#profile">{{userName}}</a>
+        </div>
+    </div>
+    <div class="visible-md menu-elements">
+        <i class="fa fa-user fa-3x menu-icons"></i>
+        <div class="menu-lables">
+            <a href="#profile">{{userName}}</a>
+        </div>
+    </div>
+</div>
+
 <div class="pad-land">
-    <div class="row advanced-drop-cont visible-sm visible-xs">
+    <div class="row visible-xs">
         <div class="relat">
-            <div ng-if="true" class="pad-bottom">
-                <input class="all-width pad-left" placeholder="select city">
-            </div>
+            <select-directive searchtext="cityText.value"  classdirective="classCity" ></select-directive>
         </div>
         <div class="relat">
-            <div ng-if="true" class="pad-bottom">
-                <new-select placeholder="placeholderSpec"></new-select>
+            <select-directive searchtext="specText.value"  classdirective="classSpec" ></select-directive>
+        </div>
+        <div>
+            <span>Дополнительные параметры :</span>
+        </div>
+        <div class="chevron-extra">
+            <div class="chevron">
+                <i ng-if="showInfo" class="fa fa-chevron-circle-up big-font cursor" ng-click="showInfoFun('hide')"></i>
+                <i ng-if="!showInfo" class="fa fa-chevron-circle-down big-font cursor"
+                   ng-click="showInfoFun('show')"></i>
+            </div>
+            <hr class="hr-chevr ">
+        </div>
+        <div ng-if="showInfo" class="event-form form-extra-opt">
+            <input class="all-width" placeholder=" Уточняющие данные">
+            <div ng-repeat="alterSlot in alterSlots">
+                <i class="time-icon font-big fa fa-clock-o"></i>
+                <div class="slot-div">
+                    <input type="time" class="slot-span" ng-model="alterSlot.start">
+                    <span>-</span>
+                    <input type="time" class="slot-span" ng-model="alterSlot.end">
+                    <span ng-if="!alterSlot.showCalendar" class="grey-color cursor"
+                          ng-click="showCalendarFun(alterSlot)">{{alterSlot.dateText}}</span>
+                    <i ng-if="!alterSlot.showCalendar" class="fa fa-calendar grey-color"></i>
+                    <input type="date" ng-if="alterSlot.showCalendar" class="alter-input"
+                           ng-model="alterSlot.alterInput">
+                    <button ng-if="alterSlot.showCalendar" ng-click="alterOk(alterSlot)">Ok</button>
+                </div>
+            </div>
+            <div class="grey-button">
+                <i class="fa fa-plus form-icon font-middle"></i><span class="pad-left cursor" ng-click="addAlternate()">Добавить время приема</span>
+            </div>
+
+            <div class="ok-reject">
+                <div class="pull-right">
+                    <span>Искать</span>
+                </div>
+                <div class="clearfix"></div>
             </div>
         </div>
     </div>
 
-    <div class="row advanced-drop-cont visible-md">
+    <div class="row visible-sm">
         <div class="relat advanced-drop-big">
-            <div ng-if="true" class="pad-bottom">
-                <input class="all-width pad-left" placeholder="select city">
-            </div>
+            <select-directive searchtext="cityText.value"  classdirective="classCity" ></select-directive>
         </div>
         <div class="relat advanced-drop-big margin-five">
-            <div ng-if="true" class="pad-bottom">
-                <new-select placeholder="placeholderSpec"></new-select>
-            </div>
+            <select-directive searchtext="specText.value"  classdirective="classSpec" ></select-directive>
         </div>
-    </div>
-    <div>
-        <span>Дополнительные параметры :</span>
-    </div>
-    <div class="chevron-extra">
-        <div class="chevron">
-            <i class="fa fa-chevron-circle-up big-font"></i>
-        </div>
-        <hr class="hr-chevr ">
-    </div>
-    <div class="event-form form-extra-opt">
-        <input class="all-width" placeholder=" Уточняющие данные">
 
-        <div class="grey-button">
-            <i class="fa fa-plus form-icon"></i><span class="pad-left">Добавить время приема</span>
+        <div>
+            <span>Дополнительные параметры :</span>
         </div>
-        <div class="ok-reject">
-            <div class="pull-right">
-                <span>Искать</span>
+        <div class="chevron-extra">
+            <div class="chevron">
+                <i ng-if="showInfo" class="fa fa-chevron-circle-up big-font cursor" ng-click="showInfoFun('hide')"></i>
+                <i ng-if="!showInfo" class="fa fa-chevron-circle-down big-font cursor"
+                   ng-click="showInfoFun('show')"></i>
             </div>
-            <div class="clearfix"></div>
+            <hr class="hr-chevr ">
+        </div>
+        <div ng-if="showInfo" class="event-form form-extra-opt">
+            <input class="all-width" placeholder=" Уточняющие данные">
+            <div ng-repeat="alterSlot in alterSlots">
+                <i class="time-icon font-big fa fa-clock-o"></i>
+                <div class="slot-div">
+                    <input type="time" class="slot-span" ng-model="alterSlot.start">
+                    <span>-</span>
+                    <input type="time" class="slot-span" ng-model="alterSlot.end">
+                    <span ng-if="!alterSlot.showCalendar" class="grey-color cursor"
+                          ng-click="showCalendarFun(alterSlot)">{{alterSlot.dateText}}</span>
+                    <i ng-if="!alterSlot.showCalendar" class="fa fa-calendar grey-color"></i>
+
+                    <input type="date" ng-if="alterSlot.showCalendar" class="alter-input"
+                           ng-model="alterSlot.alterInput">
+                    <button ng-if="alterSlot.showCalendar" ng-click="alterOk(alterSlot)">Ok</button>
+                </div>
+            </div>
+            <div class="grey-button">
+                <i class="fa fa-plus form-icon font-middle"></i><span class="pad-left cursor" ng-click="addAlternate()">Добавить время приема</span>
+            </div>
+
+            <div class="ok-reject">
+                <div class="pull-right">
+                    <span>Искать</span>
+                </div>
+                <div class="clearfix"></div>
+            </div>
         </div>
     </div>
+
+    <div class="row visible-md">
+        <div class="col-md-4">
+			<span class="font-xxl">Параметры поиска</span>
+            <div class="relat pad-bottom">
+				<select-directive searchtext="cityText.value"  classdirective="classCity" ></select-directive>
+			</div>
+			<div class="relat">
+				<select-directive searchtext="specText.value"  classdirective="classSpec" ></select-directive>
+			</div>
+            <div>
+                <span>Дополнительные параметры :</span>
+            </div>
+            <div class="chevron-extra">
+                <div class="chevron">
+                    <i ng-if="showInfo" class="fa fa-chevron-circle-up big-font cursor"
+                       ng-click="showInfoFun('hide')"></i>
+                    <i ng-if="!showInfo" class="fa fa-chevron-circle-down big-font cursor"
+                       ng-click="showInfoFun('show')"></i>
+                </div>
+                <hr class="hr-chevr ">
+            </div>
+            <div ng-if="showInfo" class="event-form form-extra-opt">
+                <input class="all-width" placeholder=" Уточняющие данные">
+
+                <div ng-repeat="alterSlot in alterSlots">
+                    <i class="time-icon font-big fa fa-clock-o"></i>
+
+                    <div class="slot-div">
+                        <input type="time" class="slot-span" ng-model="alterSlot.start">
+                        <span>-</span>
+                        <input type="time" class="slot-span" ng-model="alterSlot.end">
+                    <span ng-if="!alterSlot.showCalendar" class="grey-color cursor"
+                          ng-click="showCalendarFun(alterSlot)">{{alterSlot.dateText}}</span>
+                        <i ng-if="!alterSlot.showCalendar" class="fa fa-calendar grey-color"></i>
+                        <input type="date" ng-if="alterSlot.showCalendar" class="alter-input"
+                               ng-model="alterSlot.alterInput">
+                        <button ng-if="alterSlot.showCalendar" ng-click="alterOk(alterSlot)">Ok</button>
+                    </div>
+                </div>
+                <div class="grey-button">
+                    <i class="fa fa-plus form-icon font-middle"></i><span class="pad-left cursor"
+                                                                          ng-click="addAlternate()">Добавить время приема</span>
+                </div>
+
+                <div class="ok-reject">
+                    <div class="pull-right">
+                        <span>Искать</span>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+		<div class="col-md-4">
+			
+			<div class="dialog-search">
+			   <span class="font-xxl">Результаты списком</span>
+               <div class="list-block">
+                   <span>Ранее посещенные:</span>
+               </div>
+                <div class="list-block">                    
+                </div>
+
+                <div class="list-block pad-top">
+                    <span>Ближайшие:</span>
+                    <i class="fa fa-caret-down"></i>
+                </div>
+                <div class="list-block">
+                    <div ng-repeat="provider in searchResult">
+                        <i class="fa fa-user icon-list"></i>
+                        <span>{{provider.userName}}, {{provider.phone}}</span>
+                    </div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="dialog-search">
+				<span class="font-xxl">Результаты на карте</span>
+				<ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" events="map.events">
+						<ui-gmap-marker ng-repeat="m in map.markers" coords="m.coords"  icon="m.icon"
+										idkey="m.id"></ui-gmap-marker>
+					</ui-gmap-google-map>
+			</div>
+		</div>
+    </div>
+
 </div>

@@ -23,6 +23,6 @@
     "js-cookie": "~2.0.3",
     "moment": "~2.10.6",
     "ngInfiniteScroll": "1.0.0",
-    "pouchdb": "~4.0.1"
+    "pouchdb": "~5.0.0"
   }
 }

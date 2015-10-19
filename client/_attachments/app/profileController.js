@@ -1,13 +1,11 @@
-define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'serviceProviderInfoCommon', 'calendarSettings', 'settingsService', 'newSelect'], function (angular, $, _, cookies, serviceProviderFile, serviceProviderInfoCommon, calendarSettingsFIle, settingsServiceFile, newSelect) {
+define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'serviceProviderInfoCommon', 'calendarSettings', 'settingsService', 'selectDirective'], function (angular, $, _, cookies, serviceProviderFile, serviceProviderInfoCommon, calendarSettingsFIle, settingsServiceFile, selectDirective) {
     return angular.module('fiveOClock').controller('profileController',
         function ($scope, $q, ConsumerInfo, ServiceProviderInfo, ServiceProviderInfoCommon, CalendarSettings, settingsService, uiGmapGoogleMapApi) {
 
-            var profileInfo, serviceProviderInfo, calendarSettings;
-            $scope.specialities = [
-                {key: ""}
-            ];
-            $scope.placeholderSelect = 'select speciality';
-
+            var profileInfo, serviceProviderInfo, calendarSettings;           
+            
+			$scope.selectText = {value:''};
+			$scope.classForSelect = 'speciality';
             formSettingsUserInfo();
 
             function formSettingsUserInfo() {
@@ -38,7 +36,7 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                     serviceProviderInfo = result.serviceProviderInfo[0];
                     if (serviceProviderInfo) {
                         $scope.serviceProvider.value = "yes";
-                        $scope.speciality = serviceProviderInfo.speciality;
+                        $scope.selectText.value = serviceProviderInfo.speciality;
                         $scope.additionalInfo = serviceProviderInfo.additionalInfo;
                     };
 
@@ -70,11 +68,12 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                 });
             };
 
-            function newMarker(coords, formattedAddress){
+            function newMarker(coords, formattedAddress, city){
                 return  {
                     id: Date.now(),
                     coords: {latitude: coords.latitude, longitude: coords.longitude},
-                    label: formattedAddress
+                    label: formattedAddress,
+					city:city
                 };
             }
 
@@ -85,7 +84,7 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                         var coords = {latitude: e.latLng.lat(), longitude:e.latLng.lng()};
                         geocoder.geocode({'location': {lat:coords.latitude, lng: coords.longitude}}, function (results, status) {
                             if (results.length) {
-                                var marker = newMarker(coords, results[0].formatted_address);
+                                var marker = newMarker(coords, results[0].formatted_address, (results[0].address_components.length>=4)?results[0].address_components[3].long_name:"");
                                 $scope.map.markers = [];
                                 $scope.map.markers.push(marker);
                                 $scope.$apply();
@@ -102,7 +101,7 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                         $scope.map = {
                             center: {latitude: coords.latitude,longitude: coords.longitude},
                             zoom: 15,
-                            markers: [newMarker(coords, results[0].formatted_address)],
+                            markers: [newMarker(coords, results[0].formatted_address, (results[0].address_components.length>=4)?results[0].address_components[3].long_name:"")],
                             events: newEvents(geocoder)
                         };
                     };
@@ -119,13 +118,14 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
             };
 
             function saveConsumerInfo() {
-                if (profileInfo) {
-                    var marker = $scope.map.markers[0];
+				var marker = $scope.map.markers[0];
+                if (profileInfo) {                    
                     profileInfo.name = $scope.nameProfile;
                     profileInfo.phone = $scope.phoneProfile;
                     profileInfo.location.latitude = marker.coords.latitude;
                     profileInfo.location.longitude = marker.coords.longitude;
-                    profileInfo.location.locationName = $scope.map.markers[0].label
+                    profileInfo.location.locationName = marker.label,
+					profileInfo.city = marker.city
                     ConsumerInfo.put(profileInfo);
                 }
                 else {
@@ -136,7 +136,8 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                         phone: phone,
                         userType: 'consumer',
                         type: 'profile',
-                        location: {longitude: $scope.map.markers[0].coords.longitude, latitude: $scope.map.markers[0].coords.latitude, locationName:$scope.map.markers[0].label}
+						city:marker.city,
+                        location: {longitude: marker.coords.longitude, latitude: marker.coords.latitude, locationName:marker.label}
                     }).then(function(consumerInfo){
                         profileInfo = consumerInfo;
                     });
@@ -145,27 +146,29 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
 
             function saveServiceProviderInfo() {
                 if ($scope.serviceProvider.value == "yes") {
+					var marker = $scope.map.markers[0];
                     if (serviceProviderInfo) {
                         serviceProviderInfo.userName = $scope.nameProfile;
-                        serviceProviderInfo.speciality = $scope.searchText;
+                        serviceProviderInfo.speciality = $scope.selectText.value;
                         serviceProviderInfo.additionalInfo = $scope.additionalInfo;
-                        serviceProviderInfo.phone = $scope.phoneProfile;
-                        var marker = $scope.map.markers[0];
+                        serviceProviderInfo.phone = $scope.phoneProfile;                        
                         serviceProviderInfo.location.latitude = marker.coords.latitude;
                         serviceProviderInfo.location.longitude = marker.coords.longitude;
-                        serviceProviderInfo.location.locationName = $scope.map.markers[0].label,
+                        serviceProviderInfo.location.locationName = marker.label,
+						serviceProviderInfo.city = marker.city,
                         ServiceProviderInfo.put(serviceProviderInfo);
                     }
                     else {
                         ServiceProviderInfo.post({
                             userName: $scope.nameProfile,
-                            speciality: $scope.searchText,
+                            speciality: $scope.selectText.value,
                             additionalInfo: $scope.additionalInfo,
                             phone : $scope.phoneProfile,
                             location : $scope.location,
                             locationName : $scope.locationName,
                             type: 'serviceProviderInfo',
-                            location: {longitude: $scope.map.markers[0].coords.longitude, latitude: $scope.map.markers[0].coords.latitude, locationName:$scope.map.markers[0].label}
+							city : marker.city,
+                            location: {longitude: marker.coords.longitude, latitude: marker.coords.latitude, locationName:marker.label}
                         }).then(function(providerInfo){
                             serviceProviderInfo = providerInfo;
                         });
@@ -202,46 +205,10 @@ define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'servic
                     CalendarSettings.put({_id: 'calendarSettings', days: days, hours: hours});
                 };
             };
-
-
-            $scope.getSelectValues = function () {
-                ServiceProviderInfoCommon.specialities({ limit: 10 }).then(function(result){
-                    for (var i = 0; i < result.length; i++) {
-                        result[i] = {title:result[i].key};
-                    };
-                    $scope.listValues = result;
-                    $scope.AllValues = result;
-                    $scope.$apply();
-                });
-                $scope.showSelect = true;
-            };
-
-            $scope.clickSelect = function(element){
-                $scope.searchText = element.title;
-                $scope.showSelect = false;
-            };
-
-            $scope.hideSelectList = function(){
-                $scope.showSelect = false;
-                $('#inputSelect').blur();
-            };
-
-            $scope.filterSelect = function(){
-                var cloneAll = _.clone($scope.AllValues, true);
-                $scope.listValues = _.filter(cloneAll, function(spec) {
-                    return spec.title.indexOf($scope.searchText) !== -1;
-                });
-                if(!$scope.listValues.length){
-                    $scope.showSelect = false;
-                };
-            };
-
-            $(document).on('click', function(evt) {
-                if((evt.target.className.indexOf('item-select') == -1) && (evt.target.id !== "inputSelect")) {
-                    $scope.showSelect = false;
-                }
-                $scope.$apply();
-            });
+			
+			$scope.$on("selectClickSubmit",function(event,data){                    
+					$scope.selectText.value = data.title;							
+			});			
 
             $scope.save = function () {
                 saveConsumerInfo();
