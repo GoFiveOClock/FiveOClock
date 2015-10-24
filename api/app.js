@@ -45,9 +45,17 @@ app.post('/login', function (req, res) {
     var user = req.body.user;
     var password = req.body.password;
 	
-    setCookies(host, user, password, res, req).catch(function (err) {
-        res.status(500).send(err);
-    });
+	host.authAsync(adminLogin, adminPassword).then(function (body) {
+		var headers = body[1];
+        var auth = headers['set-cookie'][0];
+        var authenticated = nano({ url: couchDbHost, cookie: auth });
+        Promise.promisifyAll(authenticated);
+        Promise.promisifyAll(authenticated.db);
+		return authenticate(authenticated, host, user, password, res, req).catch(function (err) {
+			res.status(500).send(err);
+		});
+	});
+    
 });
 
 app.post('/registration', function (req, res) {
@@ -72,9 +80,9 @@ function register(req, res, user, password) {
         }).then(function () {
             return setupUserRole(authenticated, user);
         }).then(function () {
-            return replicateCommon(authenticated, user);
-        }).then(function () {
-            return setCookies(host, user, password, res, req);
+            // return replicateCommon(authenticated, user);
+        // }).then(function () {
+            return authenticate(authenticated, host, user, password, res, req);
         }).catch(function (err) {
             return cleanup(authenticated, user).finally(function () {
                 return Promise.reject(err);
@@ -181,15 +189,17 @@ function getDbName(user) {
     return user.replace(/\./gi, '-').replace(/@/gi, '$');
 }
 
-function setCookies(host, user, password, res) {
-    return host.authAsync(user, password).then(function (body) {
-        var headers = body[1];
-        var auth = headers['set-cookie'][0];
-        var cookieObject = cookie.parse(auth);
-        res.cookie('AuthSession', cookieObject.AuthSession);
-        res.cookie('user', user);
-        res.cookie('db', getDbName(user));
-        res.end(user);
+function authenticate(authenticated, host, user, password, res) {
+	return replicateCommon(authenticated, user).then(function () {
+		return host.authAsync(user, password).then(function (body) {		
+			var headers = body[1];
+			var auth = headers['set-cookie'][0];
+			var cookieObject = cookie.parse(auth);
+			res.cookie('AuthSession', cookieObject.AuthSession);
+			res.cookie('user', user);
+			res.cookie('db', getDbName(user));
+			res.end(user);
+		});        
     });
 }
 

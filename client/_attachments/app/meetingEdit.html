@@ -24,9 +24,10 @@
 		<select-directive searchtext="selectText.value"  classdirective="classForSelect" ></select-directive>
     </div>
     <div ng-if="showInfo" class="form-input">
-        <i ng-if="contactPhone" class="fa fa-check icon-input"></i>
-        <i ng-if="!contactPhone" class="fa fa-exclamation-triangle icon-input-red"></i>
-        <input class="all-width pad-left" placeholder="Contact phone" ng-model="$parent.contactPhone">
+        <i ng-if="contactPhone && !wrongNumber"" class="fa fa-check icon-input"></i>
+        <i ng-if="!contactPhone || wrongNumber" class="fa fa-exclamation-triangle icon-input-red"></i>
+        <input class="all-width pad-left" placeholder="Contact phone" ng-model="$parent.contactPhone" ng-change="changePhone($parent.contactPhone)">
+		<span ng-if="wrongNumber" class="red">wrong phone, use only 0-9;();-  characters</span>
     </div>
 
     <div class="grey-button">
@@ -46,7 +47,7 @@
         </div>
     </div>
     <div class="grey-button">
-        <div class="div-check"><input type="checkbox" ng-model="slothour.chosenMeet.hidden" class="form-icon font-middle" id="check8"></div>
+        <div class="div-check"><input type="checkbox" ng-model="slothour.chosenMeet.visitors[0].hidden" class="form-icon font-middle" id="check8"></div>
         <label for="check8" class="pad-left cursor" ng-click="hideName(slothour)">Do not publish my name</label>
     </div>
     <div class="ok-reject">

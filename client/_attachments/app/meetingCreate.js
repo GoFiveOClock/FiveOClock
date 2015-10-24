@@ -5,7 +5,8 @@ define(['angular', 'jquery', 'confirmationService', 'moment', 'selectDirective',
             scope: {
                 slothour: '=',
                 day: '=',
-                days: '='
+                days: '=',
+				fivedaysweek: '='
             },
             controller: function ($scope, Meeting, ConfirmationService, Visitor) {
                 var currDayDate = $scope.day.fulldate;
@@ -39,24 +40,111 @@ define(['angular', 'jquery', 'confirmationService', 'moment', 'selectDirective',
                         priority: slothour.alterSlots.length + 1
                     });
                 };
+				
+				function getCalendarDays(cloneDays){
+					var calendarDays = [];
+					var firstDay = _.first(cloneDays);
+					var lastDay = _.last(cloneDays);									
+					if($scope.fivedaysweek){
+						lastDay.fulldate = moment(moment(lastDay.fulldate).toDate()).endOf('day').add(2, 'day').format();
+					};					
+					var quantityDays = moment(moment(lastDay.fulldate).toDate()).endOf('day').diff(moment(moment(firstDay.fulldate).toDate()).startOf('day'), 'day');
+					for (var i = 0; i < quantityDays; i++) {
+						var cloneFirst = _.clone(firstDay, true);
+						var currDay = moment(moment(cloneFirst.fulldate).toDate()).endOf('day').add(i, 'day');
+						calendarDays.push({dayname: currDay.format('dddd'), forLabel: currDay.format(' MMMM Do YYYY'), fulldate:currDay.format(), hours:[]});
+					};
+					return calendarDays;
+				};
+				
                 function pushInView(slotHighestPriority, newMeeting){
-                    for(var i=0; i<$scope.days.length; i++){
-                        var rowTwoDays = $scope.days[i];
-                        for(var j=0; j<rowTwoDays.length; j++){
-                            var day = rowTwoDays[j];
-                            if(day.forLabel == moment(slotHighestPriority.start).format(" MMMM Do YYYY")){
-                                var massCurrHour = _.filter(day.hours,function(hour){
-                                    return ((hour.num == Number(moment(slotHighestPriority.start).format("HH"))) || ((hour.num > Number(moment(slotHighestPriority.start).format("HH"))) &&
-                                        ((hour.num < Number(moment(slotHighestPriority.end).format("HH"))) || ((hour.num == Number(moment(slotHighestPriority.end).format("HH")))&& (Number(moment(slotHighestPriority.end).format("mm")) !== 0 )))));
-                                });
-                                for(var g=0; g<massCurrHour.length; g++){
-                                    massCurrHour[g].meetings.push(newMeeting);
-                                };
-                            };
-                        };
-                    };
-                    $scope.slothour.selectedCreate = false;
+					$scope.slothour.selectedCreate = false;
+					var cloneDays = _.flatten(_.clone($scope.days, true), true);
+					var calendarDays = getCalendarDays(cloneDays);
+					var dayInView = _.find(cloneDays,  function(day) {
+					  return day.forLabel == moment(slotHighestPriority.start).format(" MMMM Do YYYY");
+					});					
+					if(dayInView){
+						var meetingDay = dayInView;
+					}
+					else{
+						var meetingDay = _.find(calendarDays,  function(day) {
+						  return day.forLabel == moment(slotHighestPriority.start).format(" MMMM Do YYYY");
+						});
+					};					
+					var hoursShouldExist = findNecessaryHours(newMeeting);
+					var hoursExists = findNecessaryHours(newMeeting, meetingDay);					 
+					meetingDay = checkAddNecessaryHours(meetingDay, hoursShouldExist, hoursExists, newMeeting);
+					if(dayInView){
+						for (var i = 0; i < $scope.days.length; i++) {
+							var twins = $scope.days[i];
+							for (var j = 0; j < twins.length; j++) {
+								if(twins[j].forLabel == meetingDay.forLabel){
+									twins[j].hours = meetingDay.hours;
+								};
+							};
+						}; 	
+					}
+					else{
+						$scope.$emit('addDay', meetingDay);	
+					};	                 
                     $scope.$apply();
+                };				
+				
+				function createHourObj(hour){
+					var numHour = hour;										
+					if(numHour < 10){
+						textHour = '0' +hour + ':00';
+					}
+					else{
+						textHour = hour + ':00';
+					};  
+					return {hour: textHour, num:numHour, meetings: []};
+				};
+				
+				function checkAddNecessaryHours(day, hoursShouldExist, hoursExists, newMeeting){
+					for(var i=0; i < hoursShouldExist.length; i++){
+						var foundHour = _.find(hoursExists, function(hour) {
+						  return hour.num == hoursShouldExist[i].num;
+						});
+						if(!foundHour){
+							hoursShouldExist[i].meetings.push(newMeeting);							
+							day.hours.push(hoursShouldExist[i]);
+							day.hours = _.sortBy(day.hours, function(hour) {
+								return hour.num;
+							});							
+						}
+						else{
+							var dayHour = _.find(day.hours, function(hour) {
+							  return hour.num == hoursShouldExist[i].num;
+							});
+							dayHour.meetings.push(newMeeting);
+							dayHour.meetings = _.sortBy(dayHour.meetings, function(meeting) {
+								return +moment(meeting.alterSlots[0].start).format('mm');
+							});	
+						};												
+					};
+					return 	day;				
+				};
+				
+				function findNecessaryHours(newMeeting, day){
+					var dayHours;
+					if(day){
+						dayHours = day.hours;
+					}
+					else{
+						dayHours = [];
+						for (var i = 0; i < 24; i++) {
+							dayHours.push(createHourObj(i));
+						};
+					};
+                   return  _.filter(dayHours ,function(hour){
+                        return (+moment(newMeeting.alterSlots[0].start).format("HH") == hour.num) ||
+                            ((hour.num > Number(moment(newMeeting.alterSlots[0].start).format("HH"))) &&
+                            ((hour.num < Number(moment(newMeeting.alterSlots[0].end).format("HH"))) ||
+                            ((hour.num == Number(moment(newMeeting.alterSlots[0].end).format("HH"))) &&
+                            Number(moment(newMeeting.alterSlots[0].end).format("mm")) !== 0 )))
+                    });
                 };
 				
 				
@@ -87,11 +175,11 @@ define(['angular', 'jquery', 'confirmationService', 'moment', 'selectDirective',
                         return;
                     }
                     var alterDay = alterSlot.alterInput.getDate();
-                    var alterMonth = alterSlot.alterInput.getMonth();
-                    alterSlot.start.setDate(alterDay);
+                    var alterMonth = alterSlot.alterInput.getMonth();                    
                     alterSlot.start.setMonth(alterMonth);
-                    alterSlot.end.setDate(alterDay);
-                    alterSlot.end.setMonth(alterMonth);
+					alterSlot.start.setDate(alterDay);
+					alterSlot.end.setMonth(alterMonth);
+                    alterSlot.end.setDate(alterDay);                    
                 };
                 $scope.addAlternate = function(objDate){
                     var slothour = objDate.slothour;
@@ -101,7 +189,7 @@ define(['angular', 'jquery', 'confirmationService', 'moment', 'selectDirective',
                     var slotHighestPriority = _.find(slothour.alterSlots, function (slot) {
                         return slot.priority = 1;
                     });
-                    if(!$scope.selectText.value || !$scope.contactPhone){
+                    if(!$scope.selectText.value || !$scope.contactPhone || $scope.wrongNumber){
                         ConfirmationService.confirm({message: "enter all the required information"});
                         return;
                     }
@@ -127,13 +215,25 @@ define(['angular', 'jquery', 'confirmationService', 'moment', 'selectDirective',
                     slothour.hideName = true;
                 };
 				
+				$scope.changePhone = function(phone){
+					var arr = phone.split("");
+					var valid = RegExp(/^[0-9\)\(\s-]+$/);
+					$scope.wrongNumber = false;
+					for (var i = 0; i < arr.length; i++) {
+						if (!valid.test(arr[i])) {
+							$scope.wrongNumber = true;
+						}; 
+					};                                       
+				};
+				
 				$scope.$on("selectClickSubmit",function(event,data){
                     $scope.selectText.value = data.titleForClick; 
 					if(!data.titleForClick){
 						$scope.selectText.value = data.title;	
 					};	
 					if(data.contactPhone){
-						$scope.contactPhone = data.contactPhone;	
+						$scope.contactPhone = data.contactPhone;
+						$scope.wrongNumber	= false;					
 					};						
                 });				
             }
