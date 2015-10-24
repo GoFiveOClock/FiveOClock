@@ -1,11 +1,11 @@
-define(['angular', 'jquery', 'loginController', 'landingController', 'profileController', 'calendarController', 'searchController', 'user-storage', 'common-storage', 'consumerInfo', 'serviceProviderInfo'],
-    function (angular, $, loginController, landingController, profileController, calendarController, searchController, userStorage, commonStorage, consumerInfo, serviceProviderInfo) {
+define(['angular', 'jquery', 'loginController', 'landingController', 'profileController', 'calendarController', 'searchController', 'user-storage', 'common-storage', 'consumerInfo', 'serviceProviderInfo', 'meeting', 'visitor'],
+    function (angular, $, loginController, landingController, profileController, calendarController, searchController, userStorage, commonStorage, consumerInfo, serviceProviderInfo, meeting, visitor) {
         angular.module('fiveOClock')
             .config(function ($routeProvider) {
                 var resolve = {
-                    syncConsumerInfo: function (userStorage, ConsumerInfo, commonStorage, ServiceProviderInfo) {
+                    syncConsumerInfo: function (userStorage, ConsumerInfo, commonStorage, ServiceProviderInfo, Meeting, Visitor) {
                         commonStorage.sync([ServiceProviderInfo]);
-                        return userStorage.sync([ConsumerInfo])
+                        return userStorage.sync([ConsumerInfo, Meeting, Visitor])
                     }
                 };
                 $routeProvider.when('/login',

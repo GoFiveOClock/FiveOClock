@@ -1,4 +1,4 @@
-define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 'settingsService', 'meeting', 'confirmationService', 'meetingCreate', 'meetingRedact'], function (angular, $, _, moment, cookies, calendarFile, settingsServiceFile, meetingFile, confirmationService, meetingCreate, meetingRedact) {
+define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 'settingsService', 'meeting', 'confirmationService', 'meetingCreate', 'meetingEdit'], function (angular, $, _, moment, cookies, calendarFile, settingsServiceFile, meetingFile, confirmationService, meetingCreate, meetingEdit) {
     return angular.module('fiveOClock').controller('calendarController',
         function ($scope, $q, $timeout, CalendarSettings, settingsService, Meeting, ConfirmationService) {
 
@@ -15,7 +15,12 @@ define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 
                 var firstDay = _.first(DayObjects);
                 var lastDay = _.last(DayObjects);
                 var start = moment(moment(firstDay.fulldate).toDate()).startOf('day').format();
-                var end = moment(moment(lastDay.fulldate).toDate()).endOf('day').format();
+				if($scope.fiveDaysWeek){
+					var end = moment(moment(lastDay.fulldate).toDate()).endOf('day').add(2, 'day').format();
+				}
+				else{
+					var end = moment(moment(lastDay.fulldate).toDate()).endOf('day').format();
+				};                
                 return {start: start, end:end};
             };
 
@@ -25,37 +30,34 @@ define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 
                     var fullDayObjects = getServiceSett(settingsService.fullSettings);
                     if($scope.calendarSettings.length){
                         var workingDayObjects = setPortion($scope.calendarSettings);
-                        var dateMeetRequest = getDateRequest(workingDayObjects);
-                        var promDaysOfMeet = getDaysOfMeet(dateMeetRequest);
-                        return promDaysOfMeet.then(function(massDaysOfMeet){
-                            var workingAndMeetingsDays = unionDayFunk(workingDayObjects, massDaysOfMeet);
-                            return setDayHours({
-                                hours: ($scope.dontShowAll.hours)? $scope.calendarSettings[0].hours:settingsService.fullSettings.hours,
-                                days: ($scope.dontShowAll.days)? workingAndMeetingsDays:fullDayObjects
-                            });
-                        });
-                    }
-                    else{
-                        var defaultDayObjects = getServiceSett(settingsService.defaultSettings);
-                        var dateMeetRequest = getDateRequest(defaultDayObjects);
-                        var promDaysOfMeet = getDaysOfMeet(dateMeetRequest);
-                        return promDaysOfMeet.then(function(){
-                            return setDayHours({
-                                hours: ($scope.dontShowAll.hours)? settingsService.defaultSettings.hours:settingsService.fullSettings.hours,
-                                days: ($scope.dontShowAll.days)? defaultDayObjects:fullDayObjects
-                            });
-                        });
-                    };
+						var workingHours = $scope.calendarSettings[0].hours;						
+					}
+					else{
+						var workingDayObjects = getServiceSett(settingsService.defaultSettings);
+						var workingHours = settingsService.defaultSettings.hours;						
+						$scope.fiveDaysWeek = true;
+					};
+					var dateMeetRequest = getDateRequest(workingDayObjects);
+					var promDaysOfMeet = getMeetDaysAndMeets(dateMeetRequest);
+					return promDaysOfMeet.then(function(massDaysOfMeet){
+						var workingAndMeetingsDays = unionDayFunk(workingDayObjects, massDaysOfMeet);
+						return setDayHours({
+							hours: ($scope.dontShowAll.hours)? workingHours:settingsService.fullSettings.hours,
+							days: ($scope.dontShowAll.days)? workingAndMeetingsDays:fullDayObjects
+						});
+					});                   
                 });
             };
 
             function unionDayFunk(workingDayObjects, massDaysOfMeet){
-                var daysMustAdd = _.difference(massDaysOfMeet.days, $scope.calendarSettings[0].days);
-                if(daysMustAdd.length){
-                    for(var i = 0; i < daysMustAdd.length; i++){
-                        workingDayObjects.push({dayname: daysMustAdd[i], forLabel: currentWeek.day(daysMustAdd[i]).format(" MMMM Do YYYY"), fulldate: currentWeek.day(daysMustAdd[i]).format(), allMeetDays: massDaysOfMeet.daysHours});
-                    };
-                };
+                for(var i = 0; i < massDaysOfMeet.days.length; i++){
+					var dayFound = _.find(workingDayObjects, function(day) {
+					  return day.forLabel == massDaysOfMeet.days[i].forLabel;
+					});
+					if(!dayFound){						
+						workingDayObjects.push(massDaysOfMeet.days[i]);
+					};					
+				};
                 workingDayObjects =  _.sortBy(workingDayObjects, function(day) {
                     return moment(day.fulldate).format();
                 });
@@ -69,18 +71,31 @@ define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 
                 };
                 return mainMass;
             };
+			
+			function getMeetings(dateMeetRequest){
+				return Meeting.byDate({start:dateMeetRequest.start, end:dateMeetRequest.end}).then(function(result){
+					var meetings = _.pluck(result, 'value');
+					var ids = _.pluck(meetings, '_id');
+					return Meeting.get({"keys":ids}).then(function(result){
+						$scope.meetings = result;      
+					});
+				});
+			};
 
-            function getDaysOfMeet(dateMeetRequest){
-                return Meeting.byDate({start:dateMeetRequest.start, end:dateMeetRequest.end}).then(function(result){
-                    $scope.meetings = _.pluck(result, 'value');
+            function getMeetDaysAndMeets(dateMeetRequest){
+				var promMeetings = getMeetings(dateMeetRequest);
+                return promMeetings.then(function(result){					                   
                     var massDaysAll = [];
+					var meetDays = [];
                     for (var i = 0; i < $scope.meetings.length; i++) {
                         massDaysAll.push(
-                            {day: moment($scope.meetings[i].start).format("dddd"), hourStart:+moment($scope.meetings[i].start).format("HH") , hourEnd:+moment($scope.meetings[i].end).format("HH"), endMin:+moment($scope.meetings[i].end).format("mm")}
+                            {forLabel: moment($scope.meetings[i].alterSlots[0].start).format(" MMMM Do YYYY"), hourStart:+moment($scope.meetings[i].alterSlots[0].start).format("HH") , hourEnd:+moment($scope.meetings[i].alterSlots[0].end).format("HH"), endMin:+moment($scope.meetings[i].alterSlots[0].end).format("mm")}
                         );
-                    };
-                    var massDaysUniq = _.pluck(_.uniq(massDaysAll,'day'),'day');
-                    return {days:massDaysUniq, daysHours:massDaysAll};
+						meetDays.push(
+                            {dayname:moment($scope.meetings[i].alterSlots[0].start).format("dddd"), forLabel: moment($scope.meetings[i].alterSlots[0].start).format(" MMMM Do YYYY"), fulldate:moment($scope.meetings[i].alterSlots[0].start).format()}
+                        );
+                    };                    
+                    return {days:meetDays, daysHours:massDaysAll};
                 });
             };
 
@@ -124,80 +139,55 @@ define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 
                     $scope.days = [];
                 };
             });
-
-            function hoursMeetDays(day){
-                var meetingRows = _.filter(day.allMeetDays, function(dayObj) {
-                    return dayObj.day == day.dayname;
-                });
-                var hoursNum = [];
-                for(var j = 0; j < meetingRows.length; j++){
-                    hoursNum.push(meetingRows[j].hourStart);
-                    if(meetingRows[j].endMin !== 0){
-                        hoursNum.push(meetingRows[j].hourEnd);
-                    };
-                    var diff = meetingRows[j].hourEnd - meetingRows[j].hourStart;
-                    for(var g = 1; g < diff; g++){
-                        hoursNum.push(meetingRows[j].hourStart + g);
-                    };
-                };
-                hoursNum = _.uniq(hoursNum);
-                var hours = [];
-                for(var j = 0; j < hoursNum.length; j++){
-                    var textHour;
-                    if(hoursNum[j]<10){
-                        textHour = '0'+ hoursNum[j] + ':00';
-                    }
-                    else{
-                        textHour = hoursNum[j] + ':00';
-                    };
-                    var momentDay = moment(day.fulldate);
-                    var hourMeetings = getHourMeetings({day:momentDay.day(day.dayname), numHour: hoursNum[j]});
-                    hours.push({hour: textHour, num:hoursNum[j], meetings:hourMeetings});
-                };
-                return hours;
-            };
-
+            
             function setDayHours(settings){
                 var hours, days = [];
                 for(var i = 0; i < settings.days.length; i++){
-                    var day =  {dayname:settings.days[i].dayname, forLabel:settings.days[i].forLabel, fulldate:settings.days[i].fulldate, allMeetDays:settings.days[i].allMeetDays};
-                    if(!day.allMeetDays || !$scope.dontShowAll.hours){
-                        hours = _.clone(settings.hours, true);
-                        for(var j = 0; j < hours.length; j++){
-                            hours[j] = getHourObj(hours[j]);
-                            var momentDay = moment(day.fulldate);
-                            var hourMeetings = getHourMeetings({day:momentDay.day(day.dayname), numHour: hours[j].num});
-                            hours[j].meetings = hourMeetings;
-                        };
-                    }
-                    else{
-                        hours = hoursMeetDays(day);
-                    };
+                    var day =  {dayname:settings.days[i].dayname, forLabel:settings.days[i].forLabel, fulldate:settings.days[i].fulldate};                                         
+					hours = [];
+					for(var j = 0; j < 24; j++){
+						var hour = createHourObj(j+"");
+						var momentDay = moment(day.fulldate);
+						var hourMeetings = getHourMeetings({day:momentDay.day(day.dayname), numHour: hour.num});
+						hour.meetings = hourMeetings;
+						var hourExist = _.find(settings.hours, function(elem) {
+						  var textHour = elem.replace('workingHour','');
+						  return Number(textHour) == hour.num;
+						});
+						if(hourExist || hourMeetings.length || !$scope.dontShowAll.hours){
+							hours.push(hour);
+						};							
+					};			   
                     day.hours = hours;
                     days.push(day);
                 };
                 return days;
             };
 
-            function getHourObj(hour){
+            function createHourObj(hour){
                 var textHour = hour.replace('workingHour','');
                 var numHour = Number(textHour);
-                textHour = textHour + ':00';
+				if(numHour < 10){
+					textHour = '0' +textHour + ':00';
+				}
+				else{
+					textHour = textHour + ':00';
+				};                
                 return {hour: textHour,num:numHour};
             };
 
             function getHourMeetings(objDay){
                 var currentMeetings =  _.filter($scope.meetings, function(meeting) {
-                    return ((+moment(meeting.start).format("HH") == objDay.numHour) ||
-                        ((objDay.numHour > Number(moment(meeting.start).format("HH"))) &&
-                             ((objDay.numHour < Number(moment(meeting.end).format("HH"))) ||
-                                ((objDay.numHour == Number(moment(meeting.end).format("HH")))&&
-                                    Number(moment(meeting.end).format("mm")) !== 0 ))) )&&
-                        (moment(meeting.start).format(" MMMM Do YYYY") == objDay.day.format(" MMMM Do YYYY"));
+                    return ((+moment(meeting.alterSlots[0].start).format("HH") == objDay.numHour) ||
+                        ((objDay.numHour > Number(moment(meeting.alterSlots[0].start).format("HH"))) &&
+                             ((objDay.numHour < Number(moment(meeting.alterSlots[0].end).format("HH"))) ||
+                                ((objDay.numHour == Number(moment(meeting.alterSlots[0].end).format("HH")))&&
+                                    Number(moment(meeting.alterSlots[0].end).format("mm")) !== 0 ))) )&&
+                        (moment(meeting.alterSlots[0].start).format(" MMMM Do YYYY") == objDay.day.format(" MMMM Do YYYY"));
                 });
 
                 currentMeetings =  _.sortBy(currentMeetings, function(meeting) {
-                    return +moment(meeting.start).format('mm');
+                    return +moment(meeting.alterSlots[0].start).format('mm');
                 });
                 return currentMeetings;
             };
@@ -329,6 +319,7 @@ define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 
                 daysPromise.then(function(res){
                     var days = res;
                     $scope.days = _.chunk(days, 2);
+					$scope.$apply();
                 });
             };
             $scope.dontShowAllDays = function(){
@@ -336,8 +327,43 @@ define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 
                 daysPromise.then(function(res){
                     var days = res;
                     $scope.days = _.chunk(days, 2);
+					$scope.$apply();
                 });
             };
+			
+			$scope.$on("addDay",function(event,data){
+				var cloneDays = _.flatten(_.clone($scope.days, true), true);
+				cloneDays.push(data);
+				cloneDays = _.sortBy(cloneDays, function(day) {
+					return moment(day.fulldate).format();
+				});
+				for(var i=0; i < cloneDays.length; i++){
+					if(cloneDays[i].fulldate == data.fulldate){
+						var dayPosition = i+1;
+					};
+				};
+				if(dayPosition && (dayPosition)%2 == 0){
+					$scope.days.length = dayPosition/2;					
+					$scope.days[dayPosition/2-1].length = 1;
+					$scope.days[dayPosition/2-1].push(data);
+					cloneDays = _.chunk(cloneDays, 2);
+					for(var i=0; i < cloneDays.length; i++){
+						if(i >= (dayPosition/2)){
+							$scope.days.push(cloneDays[i])
+						};
+					};
+				};
+				if(dayPosition && (dayPosition)%2 !== 0){
+					$scope.days.length = (dayPosition-1)/2;
+					cloneDays = _.chunk(cloneDays, 2);
+					for(var i=0; i < cloneDays.length; i++){
+						if(i >= ((dayPosition-1)/2)){
+							$scope.days.push(cloneDays[i])
+						};
+					};
+				};
+				$scope.$apply();
+			});	
         });
 
 });

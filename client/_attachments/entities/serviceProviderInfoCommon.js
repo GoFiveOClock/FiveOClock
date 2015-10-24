@@ -2,18 +2,57 @@ define(['angular', 'entity', 'cookies', 'common-storage'], function (angular, En
     angular.module('fiveOClock').factory('ServiceProviderInfoCommon', function (commonStorage) {
         var config = {
             type: 'serviceProviderInfo',
-            props: ['userName', 'speciality', 'additionalInfo', 'phone', 'location', 'locationName'],
+            props: ['userName', 'speciality', 'additionalInfo', 'phone', 'location', 'locationName', 'city'],
             indexes: {
-                specialities: function(params) {
-                    var name = params.value || "";
+                specialities: function(parameters) {
+                    var spec = parameters.value || "";
                     return {
                         view: 'speciality',
                         params: {
-                            startkey: name,
-                            endkey: name + '\ufff0',
+                            startkey: spec,
+                            endkey: spec + '\ufff0',
                             include_docs: false,
                             group:true,
-                            limit: params.limit
+                            limit: parameters.limit
+                        }
+                    }
+                },
+				cities: function(parameters) {
+                    var spec = parameters.value || "";
+                    return {
+                        view: 'city',
+                        params: {
+                            startkey: spec,
+                            endkey: spec + '\ufff0',
+                            include_docs: false,
+                            group:true,
+                            limit: parameters.limit
+                        }
+                    }
+                },
+				byCities: function(parameters) {
+                    var spec = parameters.value || "";
+                    return {
+                        view: 'by-city',
+                        params: {
+                            startkey: spec,
+                            endkey: spec + '\ufff0',
+                            include_docs: false,
+                            group:true,
+                            limit: parameters.limit
+                        }
+                    }
+                },
+				bySpecialities: function(parameters) {
+                    var spec = parameters.value || "";
+                    return {
+                        view: 'by-speciality',
+                        params: {
+                            startkey: spec,
+                            endkey: spec + '\ufff0',
+                            include_docs: false,
+                            group:true,
+                            limit: parameters.limit
                         }
                     }
                 }

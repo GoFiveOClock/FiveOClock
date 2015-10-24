@@ -228,34 +228,22 @@
                 <input type="radio" id="rad2" name="destination" ng-model="serviceProvider.value" value= "yes">
                 <label for="rad2">Предоставлять услуги:</label>
             </div>
-            <div class="relat lab-hr gray">
+            <div ng-if="serviceProvider.value == 'yes'" class="relat lab-hr">  	
+				<select-directive searchtext="selectText.value"  classdirective="classForSelect" ></select-directive>
+			</div> 
+				
+			<div class="pad-top font-big">
+				<textarea ng-disabled="serviceProvider.value == 'no'" class="textarea-size pad-left" placeholder=" Дополнительная информация" ng-model="additionalInfo"></textarea>
+			</div>
 
-                <ui-select on-select="specSelect({select:$select,item:$item})" class="all-width pad-bottom font-big" reset-search-input="false" ng-model="specialities.selected" theme="select2" ng-disabled="disabled">
-                    <ui-select-match placeholder="Специализация">{{$select.selected.key}}</ui-select-match>
-                    <ui-select-choices repeat="spec in specialitiesFilt | filter: propsFilter($select)">
-                        <small>
-                            {{spec.key}}
-                        </small>
-                    </ui-select-choices>
-                </ui-select>
-
-            </div>
-
-            <div ng-if="true" class="pad-bottom">
-                <new-select placeholder="placeholderSelect"></new-select>
-            </div>
-
-            <div class=" font-big">
-                <textarea class="textarea-size pad-left" placeholder=" Дополнительная информация" ng-model="additionalInfo"></textarea>
-            </div>
-
-            <div class="pad-bottom">
-                <span>Место работы на карте: </span><br>
-                <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" events="map.events">
-                    <ui-gmap-marker ng-repeat="m in map.markers" coords="m.coords"  icon="m.icon"
-                                    idkey="m.id"></ui-gmap-marker>
-                </ui-gmap-google-map>
-            </div>
+			<div ng-if="serviceProvider.value == 'yes'" class="pad-bottom">
+				<span>Место работы на карте: </span><br>
+				<ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" events="map.events">
+					<ui-gmap-marker ng-repeat="m in map.markers" coords="m.coords"  icon="m.icon"
+									idkey="m.id"></ui-gmap-marker>
+				</ui-gmap-google-map>
+			</div>
+			
         </div>
         <div class="pull-right">
             <button class="btn btn-default" ng-click="save()">Сохранить</button>

@@ -27,13 +27,14 @@ require.config({
         'calendarController': 'app/calendarController',
         'searchController': 'app/searchController',
         'meetingCreate': 'app/meetingCreate',
-        'meetingRedact': 'app/meetingRedact',
-        'newSelect': 'app/newSelect',
+        'meetingEdit': 'app/meetingEdit',
+        'selectDirective': 'app/selectDirective',
         'consumerInfo': 'entities/consumerInfo',
         'serviceProviderInfo': 'entities/serviceProviderInfo',
         'serviceProviderInfoCommon': 'entities/serviceProviderInfoCommon',
         'calendarSettings': 'entities/calendarSettings',
-        'meeting': 'entities/meeting'
+        'meeting': 'entities/meeting',
+		'visitor': 'entities/visitor'
     },
     shim: {
         'angular': {

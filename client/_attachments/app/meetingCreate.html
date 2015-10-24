@@ -8,7 +8,7 @@
         <span class="white-info">Create meeting</span>
     </div>
     <div>
-        <span ng-if="searchText" ng-click="showInfoFun()" class="pad-left cursor">{{searchText}}, {{contactPhone}}</span>
+        <span ng-if="selectText.value" ng-click="showInfoFun()" class="pad-left cursor">{{selectText.value}}, {{contactPhone}}</span>
     </div>
 
     <div class="chevron-event">
@@ -19,14 +19,15 @@
     <hr class="hr-chevr margin-event-hr">
 
     <div ng-if="showInfo" class="form-input">
-        <i ng-if="!searchText" class="fa fa-exclamation-triangle icon-input-red"></i>
-        <i ng-if="searchText" class="fa fa-check icon-input"></i>
-       <new-select placeholder="placeholderSelect"></new-select>
+        <i ng-if="!selectText.value" class="fa fa-exclamation-triangle icon-input-red"></i>
+        <i ng-if="selectText.value" class="fa fa-check icon-input"></i>       
+		<select-directive searchtext="selectText.value"  classdirective="classForSelect" ></select-directive>
     </div>
     <div ng-if="showInfo" class="form-input">
-        <i ng-if="contactPhone" class="fa fa-check icon-input"></i>
-        <i ng-if="!contactPhone" class="fa fa-exclamation-triangle icon-input-red"></i>
-        <input class="all-width pad-left" placeholder="Contact phone" ng-model="$parent.contactPhone">
+        <i ng-if="contactPhone && !wrongNumber" class="fa fa-check icon-input"></i>
+        <i ng-if="!contactPhone || wrongNumber" class="fa fa-exclamation-triangle icon-input-red"></i>		
+        <input class="all-width pad-left" placeholder="Contact phone" ng-model="$parent.contactPhone" ng-change="changePhone($parent.contactPhone)">
+		<span ng-if="wrongNumber" class="red">wrong phone, use only 0-9;();-  characters</span>
     </div>
 
     <div ng-repeat="alterSlot in slothour.alterSlots">
@@ -43,7 +44,7 @@
         </div>
     </div>
 
-    <div class="grey-button">
+    <div ng-if="addSlots == true" class="grey-button">
         <i class="fa fa-plus form-icon font-middle"></i><span class="pad-left cursor" ng-click="addAlternate({slothour:slothour,day:day.dayname})">Add alternate timeslot</span>
     </div>
     <div class="grey-button">

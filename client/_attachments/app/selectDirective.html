@@ -1,0 +1,11 @@
+<div>
+    <form ng-submit="submitSelect()">
+        <input class="all-width pad-left forblur" placeholder="{{placeholder}}" ng-class="{classCity:classdirective == 'city', classSpec:classdirective == 'spec'}"               
+               ng-model="searchtext" ng-change="filterSelect({class:classdirective, model:searchtext})" ng-click="inputClick()">
+    </form>
+</div>
+<div class="cont-select" ng-if="showselect">
+    <div ng-repeat="value in sourcemass" class="item-select" ng-class="{currSelect:value.current}" ng-mouseover="setCurrentVal(value)" ng-mouseleave="clearCurrent(value)" ng-click="elementClick(value)">
+        {{value.title}}
+    </div>
+</div>
