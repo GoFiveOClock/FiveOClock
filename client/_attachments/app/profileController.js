@@ -1,8 +1,19 @@
-define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'serviceProviderInfoCommon', 'calendarSettings', 'settingsService', 'selectDirective'], function (angular, $, _, cookies, serviceProviderFile, serviceProviderInfoCommon, calendarSettingsFIle, settingsServiceFile, selectDirective) {
+define(['angular', 'jquery', 'lodash', 'cookies', 'serviceProviderInfo', 'serviceProviderInfoCommon', 'calendarSettings', 'settingsService', 'selectDirective', 'json!localization/en.json', 'json!localization/ru.json', 'json!localization/ukr.json'], function (angular, $, _, cookies, serviceProviderFile, serviceProviderInfoCommon, calendarSettingsFIle, settingsServiceFile, selectDirective, en, ru, ukr) {
     return angular.module('fiveOClock').controller('profileController',
         function ($scope, $q, ConsumerInfo, ServiceProviderInfo, ServiceProviderInfoCommon, CalendarSettings, settingsService, uiGmapGoogleMapApi) {
 
-            var profileInfo, serviceProviderInfo, calendarSettings;           
+            var profileInfo, serviceProviderInfo, calendarSettings;  
+
+			var lang = cookies.get('lang');
+			if(lang == 'en'){
+				$scope.localization = en;
+			}
+			else if(lang == 'ukr'){
+				$scope.localization = ukr;
+			}
+			else {
+				$scope.localization = ru;
+			};		
             
 			$scope.selectText = {value:''};
 			$scope.classForSelect = 'speciality';

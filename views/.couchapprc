@@ -4,6 +4,9 @@
 	  "db": "http://admin:abc123@localhost:5984/fiveoclock"
 	},"common": {
 		"db": "http://admin:abc123@localhost:5984/common"
-	 }
+	 },
+	 "smile": {
+	  "db": "https://admin:d13c45122602@fiveoclock.smileupps.com/fiveoclock"
+	}
   }
 }

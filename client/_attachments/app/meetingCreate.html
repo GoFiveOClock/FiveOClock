@@ -5,7 +5,7 @@
 <div class="event-form">
 
     <div class="pad-bottom pad-top">
-        <span class="white-info">Create meeting</span>
+        <span class="white-info">{{localization.createMeetingLab}}</span>
     </div>
     <div>
         <span ng-if="selectText.value" ng-click="showInfoFun()" class="pad-left cursor">{{selectText.value}}, {{contactPhone}}</span>
@@ -21,26 +21,47 @@
     <div ng-if="showInfo" class="form-input">
         <i ng-if="!selectText.value" class="fa fa-exclamation-triangle icon-input-red"></i>
         <i ng-if="selectText.value" class="fa fa-check icon-input"></i>       
-		<select-directive searchtext="selectText.value"  classdirective="classForSelect" ></select-directive>
+		<select-directive localization="localization" searchtext="selectText.value"  classdirective="classForSelect" ></select-directive>
     </div>
     <div ng-if="showInfo" class="form-input">
         <i ng-if="contactPhone && !wrongNumber" class="fa fa-check icon-input"></i>
         <i ng-if="!contactPhone || wrongNumber" class="fa fa-exclamation-triangle icon-input-red"></i>		
-        <input class="all-width pad-left" placeholder="Contact phone" ng-model="$parent.contactPhone" ng-change="changePhone($parent.contactPhone)">
-		<span ng-if="wrongNumber" class="red">wrong phone, use only 0-9;();-  characters</span>
+        <input class="all-width pad-left" placeholder= {{localization.contactPhone}} ng-model="$parent.contactPhone" ng-change="changePhone($parent.contactPhone)">
+		<span ng-if="wrongNumber" class="red">{{localization.warningPhone}}</span>
     </div>
 
     <div ng-repeat="alterSlot in slothour.alterSlots">
-        <i class="time-icon font-big fa fa-clock-o"></i>
+        <i class="time-icon font-big fa fa-clock-o hidden-xs"></i>
         <div class="slot-div">
-            <input type="time" class="slot-span" ng-model="alterSlot.start">
-            <span>-</span>
-            <input type="time" class="slot-span" ng-model="alterSlot.end">
-            <span  ng-if="!alterSlot.showCalendar" class="grey-color cursor" ng-click="showCalendarFun(alterSlot)">{{alterSlot.dateText}}</span>
-            <i  ng-if="!alterSlot.showCalendar" class="fa fa-calendar grey-color"></i>
+            <input type="time" class="input-time-meeting float" ng-model="alterSlot.start">
+            <span class="float split-time-sign">-</span>
+            <input type="time" class="input-end-meeting input-time-meeting float" ng-model="alterSlot.end">
+			<!-- <span>-</span>
+            <input type="text" class="input-time-meeting" input-mask="functionOption" > -->
+			
+			
+			<div ng-if="!alterSlot.showCalendar" class="float lab-date-md visible-sm visible-md">
+				<span class="label-full-date" ng-click="showCalendarFun(alterSlot)">{{alterSlot.dateText}}</span>
+			</div>
+			
+			<div ng-if="!alterSlot.showCalendar" class="float lab-date-xs visible-xs">
+				<span class="label-full-date" ng-click="showCalendarFun(alterSlot)">{{alterSlot.dateText}}</span>
+			</div>		
+            
+            <i  ng-if="!alterSlot.showCalendar" class="fa fa-calendar calendar-icon"></i>
 
-            <input type="date" ng-if="alterSlot.showCalendar" class="alter-input" ng-model="alterSlot.alterInput">
-            <button ng-if="alterSlot.showCalendar" ng-click="alterOk(alterSlot)">Ok</button>
+			<div ng-if="alterSlot.showCalendar" class="float visible-md visible-sm">
+				<input  type="date"  class="alter-input" ng-model="alterSlot.alterInput">
+				<button  ng-click="alterOk(alterSlot)">{{localization.ok}}</button>
+			</div>
+			
+			<div ng-if="alterSlot.showCalendar" class="float visible-xs ">
+				<input  type="date"  class="alter-input" ng-model="alterSlot.alterInput">
+				<button  ng-click="alterOk(alterSlot)">{{localization.ok}}</button>
+			</div>
+			
+			<div class="clearfix"></div>
+            
         </div>
     </div>
 
@@ -48,13 +69,16 @@
         <i class="fa fa-plus form-icon font-middle"></i><span class="pad-left cursor" ng-click="addAlternate({slothour:slothour,day:day.dayname})">Add alternate timeslot</span>
     </div>
     <div class="grey-button">
-        <div class="div-check"><input type="checkbox" class="form-icon font-middle" id="check2"></div>
-        <label for="check2" class="pad-left cursor" ng-click="hideName(slothour)">Do not publish client name</label>
+        <div class="div-check">
+			<input type="checkbox" class="form-icon font-middle" id="check2">
+		</div>		
+		<label for="check2" class="pad-left cursor visible-sm visible-md" ng-click="hideName(slothour)">{{localization.dontPublClient}}</label> 
+		<label for="check2" class="pad-left cursor dont-publ-xs visible-xs" ng-click="hideName(slothour)">{{localization.dontPublClient}}</label> 		
     </div>
     <div class="ok-reject">
         <div class="pull-right">
-            <span class="margin-reject cursor" ng-click="hideFormCreate(slothour)">Cancel</span>
-            <span class="cursor" ng-click="createMeeting(slothour)">Ok</span>
+            <span class="margin-reject cursor" ng-click="hideFormCreate(slothour)">{{localization.cancel}}</span>
+            <span class="cursor" ng-click="createMeeting(slothour)">{{localization.ok}}</span>
         </div>
         <div class="clearfix"></div>
     </div>

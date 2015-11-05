@@ -1,7 +1,7 @@
 define(['native-pouchdb-storage', 'angular'], function (NativeStorage, angular) {
 	'use strict';
 
-	var angularCouch = angular.module('angularCouch', []);
+	var angularCouch = angular.module('angularCouch');
     angularCouch.factory('ClientStorage', ClientStorage);
 
 	function ClientStorage($timeout, $rootScope, $q) {

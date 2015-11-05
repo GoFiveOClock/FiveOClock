@@ -25,16 +25,22 @@ if ('development' === app.get('env')) {
 
 var adminDB = 'fiveoclockadmin';
 var commDb = 'common';
+
 var couchDbHost = 'http://localhost:5984';
+var couchDbPublic = 'http://localhost:5984';
 var host = Promise.promisifyAll(nano(couchDbHost));
 var adminLogin = 'admin';
 var adminPassword = 'abc123';
+// var couchDbHost = 'https://fiveoclock.smileupps.com';
+// var host = Promise.promisifyAll(nano(couchDbHost));
+// var adminLogin = 'admin';
+// var adminPassword = 'd13c45122602';
 var appDb = 'fiveoclock';
 var userDbreplicationFilter = 'views/ownDbReplication';
 var commonReplicationFilter = 'views/commonReplication';
 
 app.all('/*', function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", couchDbHost);
+    res.header("Access-Control-Allow-Origin", couchDbPublic);
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Credentials', true);
     res.header("Access-Control-Allow-Headers", "X-Requested-With ,Content-Type");
@@ -51,10 +57,10 @@ app.post('/login', function (req, res) {
         var authenticated = nano({ url: couchDbHost, cookie: auth });
         Promise.promisifyAll(authenticated);
         Promise.promisifyAll(authenticated.db);
-		return authenticate(authenticated, host, user, password, res, req).catch(function (err) {
-			res.status(500).send(err);
-		});
-	});
+		return authenticate(authenticated, host, user, password, res, req);
+	}).catch(function (err) {
+		res.status(500).send(err);
+	});;
     
 });
 
@@ -198,13 +204,14 @@ function authenticate(authenticated, host, user, password, res) {
 			res.cookie('AuthSession', cookieObject.AuthSession);
 			res.cookie('user', user);
 			res.cookie('db', getDbName(user));
-			res.end(user);
+			res.send({user:user, auth: cookieObject.AuthSession, db: getDbName(user)});
 		});        
     });
 }
 
 var server = http.createServer(app);
 
+server.timeout = 300000;
 server.listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
 });

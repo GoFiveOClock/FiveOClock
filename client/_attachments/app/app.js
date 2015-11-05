@@ -4,7 +4,7 @@ define(['angular', 'jquery', 'loginController', 'landingController', 'profileCon
             .config(function ($routeProvider) {
                 var resolve = {
                     syncConsumerInfo: function (userStorage, ConsumerInfo, commonStorage, ServiceProviderInfo, Meeting, Visitor) {
-                        commonStorage.sync([ServiceProviderInfo]);
+                        // commonStorage.sync([ServiceProviderInfo]);
                         return userStorage.sync([ConsumerInfo, Meeting, Visitor])
                     }
                 };

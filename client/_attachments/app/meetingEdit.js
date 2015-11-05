@@ -1,4 +1,4 @@
-define(['angular', 'moment', 'lodash',  'confirmationService', 'selectDirective'], function (angular, moment, _, confirmationService, selectDirective) {
+define(['angular', 'moment', 'lodash',  'confirmationService', 'selectDirective', 'json!localization/en.json', 'json!localization/ru.json'], function (angular, moment, _, confirmationService, selectDirective, en, ru) {
     return angular.module('fiveOClock').directive('meetingEdit', function () {
         return {
             templateUrl: 'app/meetingEdit.html',
@@ -6,7 +6,8 @@ define(['angular', 'moment', 'lodash',  'confirmationService', 'selectDirective'
                 slothour: '=',
                 days: '=',
                 day: '=',
-				fivedaysweek: '='
+				fivedaysweek: '=',
+				localization: '='
             },
             controller: function ($scope, Meeting, ConfirmationService, Visitor) {
 				$scope.slothour.alterSlot = "";
@@ -140,25 +141,7 @@ define(['angular', 'moment', 'lodash',  'confirmationService', 'selectDirective'
 					}
 					else{
 						$scope.$emit('addDay', meetingDay);	
-					};	
-                    
-                    // for(var i=0; i<$scope.days.length; i++){
-                        // var rowTwoDays = $scope.days[i];
-                        // for(var j=0; j<rowTwoDays.length; j++){
-                            // var day = rowTwoDays[j];
-                            // if(day.forLabel == moment(newMeeting.alterSlots[0].start).format(" MMMM Do YYYY")){
-								// var hoursShouldExist = findNecessaryHours(newMeeting);
-								// var hoursExists = findNecessaryHours(newMeeting, day);
-								// hoursExists = checkAddNecessaryHours(day, hoursShouldExist, hoursExists);                                
-                                // for (var g = 0; g < hoursExists.length; g++){
-                                    // hoursExists[g].meetings.push(newMeeting);
-                                    // hoursExists[g].meetings = _.sortBy(hoursExists[g].meetings, function(meeting) {
-                                        // return +moment(meeting.alterSlots[0].start).format('mm');
-                                    // });
-                                // };
-                            // };
-                        // };
-                    // };                    
+					};	                                      
                     $scope.$apply();
                 };
 				
@@ -191,6 +174,16 @@ define(['angular', 'moment', 'lodash',  'confirmationService', 'selectDirective'
 				};			
 				 
 
+				 function fillingAlterSlot(alterSlot, dateText){
+					alterSlot.dateText = dateText;					
+                    var alterDay = alterSlot.alterInput.getDate();
+                    var alterMonth = alterSlot.alterInput.getMonth();
+                    alterSlot.start.setDate(alterDay);
+                    alterSlot.start.setMonth(alterMonth);
+                    alterSlot.end.setDate(alterDay);
+                    alterSlot.end.setMonth(alterMonth); 
+				 };
+				 
                 $scope.hideFormRed = function(slothour){
                     slothour.chosenMeet =  false;
                     for(var i = 0; i < slothour.meetings.length; i++){
@@ -201,6 +194,11 @@ define(['angular', 'moment', 'lodash',  'confirmationService', 'selectDirective'
                 };
 
                 $scope.clickMove = function(slothour){
+					var dateText = moment($scope.day.fulldate).format("dddd, MMMM Do YYYY");
+					if($scope.localization == ru){
+						moment.locale('ru');
+						dateText = moment($scope.day.fulldate).format("LLLL");
+					};
                     if(slothour.alterSlot){
                         slothour.alterSlot = "";
                         return;
@@ -208,8 +206,9 @@ define(['angular', 'moment', 'lodash',  'confirmationService', 'selectDirective'
                     slothour.alterSlot = {
                         start: moment(slothour.chosenMeet.alterSlots[0].start).toDate(),
                         end:  moment(slothour.chosenMeet.alterSlots[0].end).toDate(),
-                        dateText: moment($scope.day.fulldate).format("dddd, MMMM Do YYYY")
+                        dateText: dateText
                     };
+					moment.locale('en');
                 };
 
                 $scope.showCalendarFun = function(alterSlot){
@@ -219,17 +218,17 @@ define(['angular', 'moment', 'lodash',  'confirmationService', 'selectDirective'
 
                 $scope.alterOk = function(alterSlot){
                     alterSlot.showCalendar = false;
-                    alterSlot.dateText = moment(alterSlot.alterInput).format("dddd, MMMM Do YYYY");
+					var dateText = moment(alterSlot.alterInput).format("dddd, MMMM Do YYYY");
+					if($scope.localization == ru){
+						moment.locale('ru');
+						dateText = moment(alterSlot.alterInput).format("LLLL");
+					};                    
                     if(!alterSlot.alterInput){
                         console.log("wrong date!");
                         return;
-                    }
-                    var alterDay = alterSlot.alterInput.getDate();
-                    var alterMonth = alterSlot.alterInput.getMonth();
-                    alterSlot.start.setDate(alterDay);
-                    alterSlot.start.setMonth(alterMonth);
-                    alterSlot.end.setDate(alterDay);
-                    alterSlot.end.setMonth(alterMonth);
+                    };
+					fillingAlterSlot(alterSlot, dateText); 					
+					moment.locale('ru');
                 };
 
                 $scope.saveMeeting = function(slothour){

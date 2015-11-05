@@ -1,6 +1,18 @@
-define(['angular', 'jquery', 'cookies', 'moment', 'selectDirective'], function (angular, $, cookies, moment, selectDirective) {
+define(['angular', 'jquery', 'cookies', 'moment', 'selectDirective', 'json!localization/en.json', 'json!localization/ru.json', 'json!localization/ukr.json'],
+ function (angular, $, cookies, moment, selectDirective, en, ru, ukr) {
     return angular.module('fiveOClock').controller('searchController',
         function ($scope, ServiceProviderInfoCommon, $q, uiGmapGoogleMapApi) {
+			
+			var lang = cookies.get('lang');
+			if(lang == 'en'){
+				$scope.localization = en;
+			}
+			else if(lang == 'ukr'){
+				$scope.localization = ukr;
+			}
+			else {
+				$scope.localization = ru;
+			};
 			
 			$scope.showInfo = true;
 			$scope.alterSlots = [];	
@@ -22,7 +34,7 @@ define(['angular', 'jquery', 'cookies', 'moment', 'selectDirective'], function (
 							$scope.map = {
 								center: {latitude: coords.latitude,longitude: coords.longitude},
 								zoom: 13,
-								markers: [newMarker(coords, results[0].formatted_address, (results[0].address_components.length>=4)?results[0].address_components[3].long_name:"")]                            
+								markers: []                            
 							};
 						};
 						$scope.$apply();
@@ -77,13 +89,7 @@ define(['angular', 'jquery', 'cookies', 'moment', 'selectDirective'], function (
 				var centerLat = (markerMaxLat.coords.latitude + markerMinLat.coords.latitude)/2;
 				var centerLong = (markerMaxLong.coords.longitude + markerMinLong.coords.longitude)/2;
 				
-				$scope.map.center = {latitude: centerLat,longitude: centerLong};
-				// if(diffLat >= 0.0023){
-					// $scope.map.zoom = 12;
-				// };
-				// if(diffLat >= 0.0314|| diffLong >= 0.1266){
-					// $scope.map.zoom = 11;
-				// };
+				$scope.map.center = {latitude: centerLat,longitude: centerLong};				
 				
 			};
 			
@@ -105,41 +111,30 @@ define(['angular', 'jquery', 'cookies', 'moment', 'selectDirective'], function (
 					var marker = newMarker($scope.searchResult[i].location, $scope.searchResult[i].location.locationName, $scope.searchResult[i].city);
 					$scope.map.markers.push(marker);
 				};
-				setZoom();
+				if($scope.searchResult.length){
+					setZoom();
+				};				
 			};			
 			
 			function startSearch(){
 				$scope.searchResult = [];
-				var promises = {
-					cities:ServiceProviderInfoCommon.byCities({value:$scope.cityText.value, limit: 10 }),
-					specialities:ServiceProviderInfoCommon.bySpecialities({value:$scope.specText.value, limit: 10 })
+				if($scope.specText.value && $scope.cityText.value){
+					var promise = ServiceProviderInfoCommon.byCitiesAndSpecialities({value:{city:$scope.cityText.value, speciality:$scope.specText.value}, limit: 10 });					
+				}
+				else if($scope.specText.value){
+					var promise	= ServiceProviderInfoCommon.bySpecialities({value:$scope.specText.value, limit: 10 });					
+				}
+				else if($scope.cityText.value){
+					var promise	= ServiceProviderInfoCommon.byCities({value:$scope.cityText.value, limit: 10 });					
 				};
-				$q.all(promises).then(function(result){
-					var cityProviders = _.pluck(result.cities, 'value');
-					var specialityProviders = _.pluck(result.specialities, 'value');
-					if($scope.specText.value && $scope.cityText.value){
-						for (var i = 0; i < specialityProviders.length; i++) {
-							if($scope.cityText.value == specialityProviders[i].city){
-								$scope.searchResult.push(specialityProviders[i]);
-							};
-						}
-					}
-					else if($scope.specText.value){
-						for (var i = 0; i < cityProviders.length; i++) {
-							if($scope.specText.value == cityProviders[i].speciality){
-								$scope.searchResult.push(cityProviders[i]);
-							};
-						}
-					}
-					else if($scope.cityText.value){						
-						for (var i = 0; i < specialityProviders.length; i++) {
-							if($scope.cityText.value == specialityProviders[i].city){
-								$scope.searchResult.push(specialityProviders[i]);
-							};
-						}
-					};
-					insertMarkers();
-				});
+				if(promise){
+					promise.then(function(result){
+						for (var i = 0; i < result.length; i++) {						
+							$scope.searchResult.push(result[i]);						
+						};
+						insertMarkers();
+					});	
+				};							
 			};
 			
 			$scope.alterOk = function(alterSlot){

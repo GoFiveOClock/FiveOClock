@@ -1,8 +1,8 @@
-define(['angular', 'cookies', 'client-storage'], function (angular, cookies, clientStorage) {
-    angular.module('fiveOClock').factory('commonStorage', function (ClientStorage) {
+define(['angular', 'cookies', 'server-storage'], function (angular, cookies, serverStorage) {
+    angular.module('fiveOClock').factory('commonStorage', function (ServerStorage) {
         var dbName = 'common';
         var db = window.location.origin + '/' + dbName;
         
-        return new ClientStorage({ db: db, name: dbName, dDoc: 'views' });
+        return new ServerStorage({ db: db, name: dbName, dDoc: 'views' });
     });
 });

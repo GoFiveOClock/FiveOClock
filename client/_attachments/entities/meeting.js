@@ -6,7 +6,7 @@ define(['angular', 'entity', 'cookies'], function (angular, Entity, cookies) {
             indexes: {
                 byDate: function(parameters) {
                     return {
-                        view: 'by-date',
+                        view: 'meeting-by-date',
                         params: {
                             startkey: parameters.start,
                             endkey: parameters.end + '\ufff0',

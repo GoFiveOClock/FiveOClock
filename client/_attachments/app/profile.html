@@ -1,53 +1,50 @@
 <div class="row row-menu">
-    <i class="fa fa-search fa-2x visible-xs menu-elements"></i>
-    <div class="visible-sm menu-elements">
-        <i class="fa fa-search fa-2x menu-icons"></i>
-        <div class="menu-lables">
-            <a href="#search">Search</a>
-        </div>
-    </div>
-    <div class="visible-md menu-elements">
-        <i class="fa fa-search fa-3x menu-icons"></i>
-        <div class="menu-lables">
-            <a href="#search">Search</a>
-        </div>
-    </div>
+    <a href="#search"><i class="fa fa-search fa-2x visible-xs menu-elements"></i></a>
+	<div class="visible-sm menu-elements">
+		<i class="fa fa-search fa-2x menu-icons"></i>
+		<div class="menu-lables">
+			<a href="#search">{{localization.searchMenu}}</a>
+		</div>
+	</div>
+	<div class="visible-md menu-elements">
+		<i class="fa fa-search fa-3x menu-icons"></i>
+		<div class="menu-lables">
+			<a href="#search">{{localization.searchMenu}}</a>
+		</div>
+	</div>
+	<i class="fa fa-weixin fa-2x visible-xs menu-elements"></i>
+	<div class="visible-sm menu-elements">
+		<i class="fa fa-weixin fa-2x menu-icons"></i>
+		<div class="menu-lables">{{localization.messageMenu}}</div>
+	</div>
+	<div class="visible-md menu-elements">
+		<i class="fa fa-weixin fa-3x menu-icons"></i>
+		<div class="menu-lables">{{localization.messageMenu}}</div>
+	</div>
+	<i class="fa fa-map-marker fa-2x visible-xs menu-elements"></i>
+	<div class="visible-sm menu-elements">
+		<i class="fa fa-map-marker fa-2x menu-icons"></i>
+		<div class="menu-lables">{{localization.mapMenu}}</div>
+	</div>
+	<div class="visible-md menu-elements">
+		<i class="fa fa-map-marker fa-3x menu-icons"></i>
+		<div class="menu-lables">{{localization.mapMenu}}</div>
+	</div>
+	<a href="#calendar"><i class="fa fa-calendar fa-2x visible-xs menu-elements"></i></a>
+	<div class="visible-sm menu-elements">
+		<i class="fa fa-calendar fa-2x menu-icons"></i>
+		<div class="menu-lables">
+			<a href="#calendar">{{localization.calendarMenu}}</a>
+		</div>
+	</div>
+	<div class="visible-md menu-elements">
+		<i class="fa fa-calendar fa-3x menu-icons"></i>
+		<div class="menu-lables">
+			<a href="#calendar">{{localization.calendarMenu}}</a>
+		</div>
+	</div>
 
-    <i class="fa fa-weixin fa-2x visible-xs menu-elements"></i>
-    <div class="visible-sm menu-elements">
-        <i class="fa fa-weixin fa-2x menu-icons"></i>
-        <div class="menu-lables">Message</div>
-    </div>
-    <div class="visible-md menu-elements">
-        <i class="fa fa-weixin fa-3x menu-icons"></i>
-        <div class="menu-lables">Message</div>
-    </div>
-
-    <i class="fa fa-map-marker fa-2x visible-xs menu-elements"></i>
-    <div class="visible-sm menu-elements">
-        <i class="fa fa-map-marker fa-2x menu-icons"></i>
-        <div class="menu-lables">Map</div>
-    </div>
-    <div class="visible-md menu-elements">
-        <i class="fa fa-map-marker fa-3x menu-icons"></i>
-        <div class="menu-lables">Map</div>
-    </div>
-
-    <i class="fa fa-calendar fa-2x visible-xs menu-elements"></i>
-    <div class="visible-sm menu-elements">
-        <i class="fa fa-calendar fa-2x menu-icons"></i>
-        <div class="menu-lables">
-            <a href="#calendar">Calendar</a>
-        </div>
-    </div>
-    <div class="visible-md menu-elements">
-        <i class="fa fa-calendar fa-3x menu-icons"></i>
-        <div class="menu-lables">
-            <a href="#calendar">Calendar</a>
-        </div>
-    </div>
-
-    <i class="fa fa-user fa-2x visible-xs menu-elements"></i>
+    <a href="#profile"><i class="fa fa-user fa-2x visible-xs menu-elements"></i></a>
     <div class="visible-sm menu-elements">
         <i class="fa fa-user fa-2x menu-icons"></i>
         <div class="menu-lables">
@@ -66,51 +63,51 @@
         <div class="col-md-6">
             <i class="fa fa-user-secret prof-big-icon"></i>
             <div class="prof-name-cont">
-                <input class="prof-name" placeholder=" Полное имя" ng-model="nameProfile">
-                <input class="prof-name" placeholder=" Контактный телефон" ng-model="phoneProfile">
+                <input class="prof-name" placeholder= {{localization.fullName}} ng-model="nameProfile">
+                <input class="prof-name" placeholder= {{localization.contactPhone}} ng-model="phoneProfile">
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6 col-md-6 pad-bottom">
-            <span>Рабочие дни: </span>
+            <span>{{localization.workingDays}}</span>
             <div class="row pad-bottom">
                 <div class="col-xs-4 col-md-4">
                     <div class="pad-top">
                         <div class="check-prof"><input type="checkbox" ng-model="Monday" class="form-icon font-middle" id="check1"></div>
-                        <label for="check1" class="pad-left">Понедельник</label>
+                        <label for="check1" class="pad-left">{{localization.monday}}</label>
                     </div>
                     <div class="pad-top">
                         <div class="check-prof"><input type="checkbox" ng-model="Tuesday" class="form-icon font-middle" id="check2"></div>
-                        <label for="check2" class="pad-left">Вторник</label>
+                        <label for="check2" class="pad-left">{{localization.tuesday}}</label>
                     </div>
                     <div class="pad-top">
                         <div class="check-prof"><input type="checkbox" ng-model="Wednesday" class="form-icon font-middle" id="check3"></div>
-                        <label for="check3" class="pad-left">Среда</label>
+                        <label for="check3" class="pad-left">{{localization.wednesday}}</label>
                     </div>
                 </div>
                 <div class="col-xs-4 col-md-4">
                     <div class="pad-top">
                         <div class="check-prof"><input type="checkbox" ng-model="Thursday" class="form-icon font-middle" id="check4"></div>
-                        <label for="check4" class="pad-left">Четверг</label>
+                        <label for="check4" class="pad-left">{{localization.thursday}}</label>
                     </div>
                     <div class="pad-top">
                         <div class="check-prof"><input type="checkbox" ng-model="Friday" class="form-icon font-middle" id="check5"></div>
-                        <label for="check5" class="pad-left">Пятница</label>
+                        <label for="check5" class="pad-left">{{localization.friday}}</label>
                     </div>
                     <div class="pad-top">
                         <div class="check-prof"><input type="checkbox" ng-model="Saturday" class="form-icon font-middle" id="check6"></div>
-                        <label for="check6" class="pad-left">Суббота</label>
+                        <label for="check6" class="pad-left">{{localization.saturday}}</label>
                     </div>
                 </div>
                 <div class="col-xs-4 col-md-4">
                     <div class="pad-top">
                         <div class="check-prof"><input type="checkbox" ng-model="Sunday" class="form-icon font-middle" id="check7"></div>
-                        <label for="check7" class="pad-left">Воскресение</label>
+                        <label for="check7" class="pad-left">{{localization.sunday}}</label>
                     </div>
                 </div>
             </div>
-            <span>Рабочие часы: </span>
+            <span>{{localization.workingHours}}</span>
             <div class="row">
                 <div class="col-xs-4 col-md-4">
                     <div class="pad-top">
@@ -218,26 +215,26 @@
         </div>
         <div class="col-sm-6 col-md-6">
             <div class="pad-bottom">
-                <span>Цель использования приложения:</span>
+                <span>{{localization.purposeOfUseApp}}</span>
             </div>
             <div class="radio-cont">
                 <input type="radio" id="rad1" name="destination" ng-model="serviceProvider.value" value= "no">
-                <label for="rad1">Пользоваться услугами</label>
+                <label for="rad1">{{localization.useServices}}</label>
             </div>
             <div class="radio-cont">
                 <input type="radio" id="rad2" name="destination" ng-model="serviceProvider.value" value= "yes">
-                <label for="rad2">Предоставлять услуги:</label>
+                <label for="rad2">{{localization.provideServices}}</label>
             </div>
             <div ng-if="serviceProvider.value == 'yes'" class="relat lab-hr">  	
-				<select-directive searchtext="selectText.value"  classdirective="classForSelect" ></select-directive>
+				<select-directive localization="localization" searchtext="selectText.value"  classdirective="classForSelect" ></select-directive>
 			</div> 
 				
-			<div class="pad-top font-big">
-				<textarea ng-disabled="serviceProvider.value == 'no'" class="textarea-size pad-left" placeholder=" Дополнительная информация" ng-model="additionalInfo"></textarea>
+			<div ng-if="serviceProvider.value == 'yes'" class="pad-top font-big">
+				<textarea  class="textarea-size pad-left" placeholder= {{localization.additionalInformation}} ng-model="additionalInfo"></textarea>
 			</div>
 
 			<div ng-if="serviceProvider.value == 'yes'" class="pad-bottom">
-				<span>Место работы на карте: </span><br>
+				<span>{{localization.placeOnMap}}</span><br>
 				<ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" events="map.events">
 					<ui-gmap-marker ng-repeat="m in map.markers" coords="m.coords"  icon="m.icon"
 									idkey="m.id"></ui-gmap-marker>
@@ -246,7 +243,7 @@
 			
         </div>
         <div class="pull-right">
-            <button class="btn btn-default" ng-click="save()">Сохранить</button>
+            <button class="btn btn-default" ng-click="save()">{{localization.saveButton}}</button>
         </div>
     </div>
 </div>

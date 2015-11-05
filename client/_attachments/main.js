@@ -16,6 +16,7 @@ require.config({
         'moment': 'bower_components/moment/min/moment.min',
         'native-pouchdb-storage': 'couch-orm/pouchdb-storage',
         'client-storage': 'couch-orm/angular-pouchdb-storage',
+		'server-storage': 'couch-orm/angular-http-storage',
         'entity': 'couch-orm/entity',
         'user-storage': 'storages/user',
         'common-storage': 'storages/common',
@@ -34,7 +35,9 @@ require.config({
         'serviceProviderInfoCommon': 'entities/serviceProviderInfoCommon',
         'calendarSettings': 'entities/calendarSettings',
         'meeting': 'entities/meeting',
-		'visitor': 'entities/visitor'
+		'visitor': 'entities/visitor',
+		'json': 'plugins/json',
+		'text': 'plugins/text'
     },
     shim: {
         'angular': {
@@ -69,7 +72,8 @@ require.config({
     deps: ['angular', 'angular.route']
 });
 
-require(['jquery', 'angular', 'ui-bootstrap', 'lodash', 'cookies', 'client-storage','angular-google-maps', 'ng-infinite-scroll'], function ($, angular, uiBootstrap, _, cookies, ClientStorage, angularGoogleMaps) {
+require(['jquery', 'angular', 'ui-bootstrap', 'lodash', 'cookies', 'server-storage', 'client-storage', 'angular-google-maps', 'ng-infinite-scroll'], 
+function ($, angular, uiBootstrap, _, cookies, ServerStorage, ClientStorage, angularGoogleMaps, infiniteScroll) {
     angular.module('fiveOClock', ['ngRoute', 'angularCouch','uiGmapgoogle-maps', 'ui.bootstrap', 'ui.bootstrap.tpls', 'infinite-scroll']);
     $(function () {
         require(['app/app'], function () {

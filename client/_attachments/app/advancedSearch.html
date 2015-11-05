@@ -1,53 +1,50 @@
 <div class="row row-menu">
-    <i class="fa fa-search fa-2x visible-xs menu-elements"></i>
-    <div class="visible-sm menu-elements">
-        <i class="fa fa-search fa-2x menu-icons"></i>
-        <div class="menu-lables">
-            <a href="#search">Search</a>
-        </div>
-    </div>
-    <div class="visible-md menu-elements">
-        <i class="fa fa-search fa-3x menu-icons"></i>
-        <div class="menu-lables">
-            <a href="#search">Search</a>
-        </div>
-    </div>
+    <a href="#search"><i class="fa fa-search fa-2x visible-xs menu-elements"></i></a>
+	<div class="visible-sm menu-elements">
+		<i class="fa fa-search fa-2x menu-icons"></i>
+		<div class="menu-lables">
+			<a href="#search">{{localization.searchMenu}}</a>
+		</div>
+	</div>
+	<div class="visible-md menu-elements">
+		<i class="fa fa-search fa-3x menu-icons"></i>
+		<div class="menu-lables">
+			<a href="#search">{{localization.searchMenu}}</a>
+		</div>
+	</div>
+	<i class="fa fa-weixin fa-2x visible-xs menu-elements"></i>
+	<div class="visible-sm menu-elements">
+		<i class="fa fa-weixin fa-2x menu-icons"></i>
+		<div class="menu-lables">{{localization.messageMenu}}</div>
+	</div>
+	<div class="visible-md menu-elements">
+		<i class="fa fa-weixin fa-3x menu-icons"></i>
+		<div class="menu-lables">{{localization.messageMenu}}</div>
+	</div>
+	<i class="fa fa-map-marker fa-2x visible-xs menu-elements"></i>
+	<div class="visible-sm menu-elements">
+		<i class="fa fa-map-marker fa-2x menu-icons"></i>
+		<div class="menu-lables">{{localization.mapMenu}}</div>
+	</div>
+	<div class="visible-md menu-elements">
+		<i class="fa fa-map-marker fa-3x menu-icons"></i>
+		<div class="menu-lables">{{localization.mapMenu}}</div>
+	</div>
+	<a href="#calendar"><i class="fa fa-calendar fa-2x visible-xs menu-elements"></i></a>
+	<div class="visible-sm menu-elements">
+		<i class="fa fa-calendar fa-2x menu-icons"></i>
+		<div class="menu-lables">
+			<a href="#calendar">{{localization.calendarMenu}}</a>
+		</div>
+	</div>
+	<div class="visible-md menu-elements">
+		<i class="fa fa-calendar fa-3x menu-icons"></i>
+		<div class="menu-lables">
+			<a href="#calendar">{{localization.calendarMenu}}</a>
+		</div>
+	</div>
 
-    <i class="fa fa-weixin fa-2x visible-xs menu-elements"></i>
-    <div class="visible-sm menu-elements">
-        <i class="fa fa-weixin fa-2x menu-icons"></i>
-        <div class="menu-lables">Message</div>
-    </div>
-    <div class="visible-md menu-elements">
-        <i class="fa fa-weixin fa-3x menu-icons"></i>
-        <div class="menu-lables">Message</div>
-    </div>
-
-    <i class="fa fa-map-marker fa-2x visible-xs menu-elements"></i>
-    <div class="visible-sm menu-elements">
-        <i class="fa fa-map-marker fa-2x menu-icons"></i>
-        <div class="menu-lables">Map</div>
-    </div>
-    <div class="visible-md menu-elements">
-        <i class="fa fa-map-marker fa-3x menu-icons"></i>
-        <div class="menu-lables">Map</div>
-    </div>
-
-    <i class="fa fa-calendar fa-2x visible-xs menu-elements"></i>
-    <div class="visible-sm menu-elements">
-        <i class="fa fa-calendar fa-2x menu-icons"></i>
-        <div class="menu-lables">
-            <a href="#calendar">Calendar</a>
-        </div>
-    </div>
-    <div class="visible-md menu-elements">
-        <i class="fa fa-calendar fa-3x menu-icons"></i>
-        <div class="menu-lables">
-            <a href="#calendar">Calendar</a>
-        </div>
-    </div>
-
-    <i class="fa fa-user fa-2x visible-xs menu-elements"></i>
+    <a href="#profile"><i class="fa fa-user fa-2x visible-xs menu-elements"></i></a>
     <div class="visible-sm menu-elements">
         <i class="fa fa-user fa-2x menu-icons"></i>
         <div class="menu-lables">
@@ -65,13 +62,13 @@
 <div class="pad-land">
     <div class="row visible-xs">
         <div class="relat">
-            <select-directive searchtext="cityText.value"  classdirective="classCity" ></select-directive>
+            <select-directive localization="localization" searchtext="cityText.value"  classdirective="classCity" ></select-directive>
         </div>
         <div class="relat">
-            <select-directive searchtext="specText.value"  classdirective="classSpec" ></select-directive>
+            <select-directive localization="localization" searchtext="specText.value"  classdirective="classSpec" ></select-directive>
         </div>
         <div>
-            <span>Дополнительные параметры :</span>
+            <span>{{localization.additionalParams}}</span>
         </div>
         <div class="chevron-extra">
             <div class="chevron">
@@ -82,13 +79,13 @@
             <hr class="hr-chevr ">
         </div>
         <div ng-if="showInfo" class="event-form form-extra-opt">
-            <input class="all-width" placeholder=" Уточняющие данные">
+            <input class="all-width" placeholder= {{localization.clarifyingData}}>
             <div ng-repeat="alterSlot in alterSlots">
                 <i class="time-icon font-big fa fa-clock-o"></i>
                 <div class="slot-div">
-                    <input type="time" class="slot-span" ng-model="alterSlot.start">
+                    <input type="time" class="input-time-meeting" ng-model="alterSlot.start">
                     <span>-</span>
-                    <input type="time" class="slot-span" ng-model="alterSlot.end">
+                    <input type="time" class="input-time-meeting" ng-model="alterSlot.end">
                     <span ng-if="!alterSlot.showCalendar" class="grey-color cursor"
                           ng-click="showCalendarFun(alterSlot)">{{alterSlot.dateText}}</span>
                     <i ng-if="!alterSlot.showCalendar" class="fa fa-calendar grey-color"></i>
@@ -98,12 +95,12 @@
                 </div>
             </div>
             <div class="grey-button">
-                <i class="fa fa-plus form-icon font-middle"></i><span class="pad-left cursor" ng-click="addAlternate()">Добавить время приема</span>
+                <i class="fa fa-plus form-icon font-middle"></i><span class="pad-left cursor" ng-click="addAlternate()">{{localization.addReception}}</span>
             </div>
 
             <div class="ok-reject">
                 <div class="pull-right">
-                    <span>Искать</span>
+                    <span>{{localization.searchButton}}</span>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -112,14 +109,14 @@
 
     <div class="row visible-sm">
         <div class="relat advanced-drop-big">
-            <select-directive searchtext="cityText.value"  classdirective="classCity" ></select-directive>
+            <select-directive localization="localization" searchtext="cityText.value"  classdirective="classCity" ></select-directive>
         </div>
         <div class="relat advanced-drop-big margin-five">
-            <select-directive searchtext="specText.value"  classdirective="classSpec" ></select-directive>
+            <select-directive localization="localization" searchtext="specText.value"  classdirective="classSpec" ></select-directive>
         </div>
 
         <div>
-            <span>Дополнительные параметры :</span>
+            <span>{{localization.additionalParams}}</span>
         </div>
         <div class="chevron-extra">
             <div class="chevron">
@@ -130,13 +127,13 @@
             <hr class="hr-chevr ">
         </div>
         <div ng-if="showInfo" class="event-form form-extra-opt">
-            <input class="all-width" placeholder=" Уточняющие данные">
+            <input class="all-width" placeholder= {{localization.clarifyingData}}>
             <div ng-repeat="alterSlot in alterSlots">
                 <i class="time-icon font-big fa fa-clock-o"></i>
                 <div class="slot-div">
-                    <input type="time" class="slot-span" ng-model="alterSlot.start">
+                    <input type="time" class="input-time-meeting" ng-model="alterSlot.start">
                     <span>-</span>
-                    <input type="time" class="slot-span" ng-model="alterSlot.end">
+                    <input type="time" class="input-time-meeting" ng-model="alterSlot.end">
                     <span ng-if="!alterSlot.showCalendar" class="grey-color cursor"
                           ng-click="showCalendarFun(alterSlot)">{{alterSlot.dateText}}</span>
                     <i ng-if="!alterSlot.showCalendar" class="fa fa-calendar grey-color"></i>
@@ -147,12 +144,12 @@
                 </div>
             </div>
             <div class="grey-button">
-                <i class="fa fa-plus form-icon font-middle"></i><span class="pad-left cursor" ng-click="addAlternate()">Добавить время приема</span>
+                <i class="fa fa-plus form-icon font-middle"></i><span class="pad-left cursor" ng-click="addAlternate()">{{localization.addReception}}</span>
             </div>
 
             <div class="ok-reject">
                 <div class="pull-right">
-                    <span>Искать</span>
+                    <span>{{localization.searchButton}}</span>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -161,15 +158,15 @@
 
     <div class="row visible-md">
         <div class="col-md-4">
-			<span class="font-xxl">Параметры поиска</span>
+			<span class="font-xxl">{{localization.searchParams}}</span>
             <div class="relat pad-bottom">
-				<select-directive searchtext="cityText.value"  classdirective="classCity" ></select-directive>
+				<select-directive localization="localization" searchtext="cityText.value"  classdirective="classCity" ></select-directive>
 			</div>
 			<div class="relat">
-				<select-directive searchtext="specText.value"  classdirective="classSpec" ></select-directive>
+				<select-directive localization="localization" searchtext="specText.value"  classdirective="classSpec" ></select-directive>
 			</div>
             <div>
-                <span>Дополнительные параметры :</span>
+                <span>{{localization.additionalParams}}</span>
             </div>
             <div class="chevron-extra">
                 <div class="chevron">
@@ -181,15 +178,15 @@
                 <hr class="hr-chevr ">
             </div>
             <div ng-if="showInfo" class="event-form form-extra-opt">
-                <input class="all-width" placeholder=" Уточняющие данные">
+                <input class="all-width" placeholder= {{localization.clarifyingData}}>
 
                 <div ng-repeat="alterSlot in alterSlots">
                     <i class="time-icon font-big fa fa-clock-o"></i>
 
                     <div class="slot-div">
-                        <input type="time" class="slot-span" ng-model="alterSlot.start">
+                        <input type="time" class="input-time-meeting" ng-model="alterSlot.start">
                         <span>-</span>
-                        <input type="time" class="slot-span" ng-model="alterSlot.end">
+                        <input type="time" class="input-time-meeting" ng-model="alterSlot.end">
                     <span ng-if="!alterSlot.showCalendar" class="grey-color cursor"
                           ng-click="showCalendarFun(alterSlot)">{{alterSlot.dateText}}</span>
                         <i ng-if="!alterSlot.showCalendar" class="fa fa-calendar grey-color"></i>
@@ -200,12 +197,12 @@
                 </div>
                 <div class="grey-button">
                     <i class="fa fa-plus form-icon font-middle"></i><span class="pad-left cursor"
-                                                                          ng-click="addAlternate()">Добавить время приема</span>
+                                                                          ng-click="addAlternate()">{{localization.addReception}}</span>
                 </div>
 
                 <div class="ok-reject">
                     <div class="pull-right">
-                        <span>Искать</span>
+                        <span>{{localization.searchButton}}</span>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -214,15 +211,15 @@
 		<div class="col-md-4">
 			
 			<div class="dialog-search">
-			   <span class="font-xxl">Результаты списком</span>
+			   <span class="font-xxl">{{localization.resultsList}}</span>
                <div class="list-block">
-                   <span>Ранее посещенные:</span>
+                   <span>{{localization.previouslyVisited}}</span>
                </div>
                 <div class="list-block">                    
                 </div>
 
                 <div class="list-block pad-top">
-                    <span>Ближайшие:</span>
+                    <span>{{localization.nearest}}</span>
                     <i class="fa fa-caret-down"></i>
                 </div>
                 <div class="list-block">
@@ -235,7 +232,7 @@
 		</div>
 		<div class="col-md-4">
 			<div class="dialog-search">
-				<span class="font-xxl">Результаты на карте</span>
+				<span class="font-xxl">{{localization.resultsOnMap}}</span>
 				<ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" events="map.events">
 						<ui-gmap-marker ng-repeat="m in map.markers" coords="m.coords"  icon="m.icon"
 										idkey="m.id"></ui-gmap-marker>

@@ -1,6 +1,21 @@
-define(['angular', 'jquery', 'cookies'],function(angular, $, cookies){
+define(['angular', 'jquery', 'cookies', 'json!localization/en.json', 'json!localization/ru.json', 'json!localization/ukr.json', 'json!config.json'],
+	function(angular, $, cookies, en, ru, ukr, configFile){
         return angular.module('fiveOClock').controller('loginController',
             function ($scope, $rootScope, $http) {
+				var serverUrl = configFile.serverUrl;
+				
+				var lang = cookies.get('lang');
+				if(lang == 'en'){
+					$scope.localization = en;
+				}
+				else if(lang == 'ukr'){
+					$scope.localization = ukr;
+				}
+				else {
+					$scope.localization = ru;
+				};
+				
+				
                 var email, password;
                 $scope.dontRemember = {
                     value: false
@@ -41,14 +56,12 @@ define(['angular', 'jquery', 'cookies'],function(angular, $, cookies){
                     email = $scope.email;
                     password = $scope.password;
                     var formCompleted = validationClient(email, password);
-                    if (formCompleted) {
-                        $http.post("http://localhost:3000/registration",{ user: email,password: password},{withCredentials:true}).then(function (data) {
+                    if (formCompleted) {						
+                        $http.post(serverUrl + "/registration",{ user: email,password: password},{withCredentials:true}).then(function (data) {
                             email = email.toLowerCase();
-                            if($scope.dontRemember.value){
-                                var AuthSession = cookies.get('AuthSession');
-                                cookies.set('AuthSession');
-                                cookies.set('AuthSession',AuthSession);
-                            };
+							cookies.set('AuthSession', data.data.auth);
+							cookies.set('user', data.data.user);
+							cookies.set('db', data.data.db);
                             window.location = "#landing_after_login";
                         }).catch(function (data) {
                             if (data.data.statusCode == 409) {
@@ -64,18 +77,19 @@ define(['angular', 'jquery', 'cookies'],function(angular, $, cookies){
                     password = $scope.password;
                     var formCompleted = validationClient(email, password);
                     if (formCompleted) {
-                        email = email.toLowerCase();
-                        $http.post("http://localhost:3000/login", {user: email, password: password}, {withCredentials: true}).then(function (data) {
-                            if($scope.dontRemember.value){
+                        email = email.toLowerCase();                        
+						$http.post(serverUrl + "/login", {user: email, password: password}, {withCredentials: true}).then(function (data) {
+                            cookies.set('AuthSession', data.data.auth);
+							cookies.set('user', data.data.user);
+							cookies.set('db', data.data.db);
+							if($scope.dontRemember.value){
                                 var AuthSession = cookies.get('AuthSession');
                                 cookies.set('AuthSession');
                                 cookies.set('AuthSession',AuthSession);
                             };
                             window.location = "#landing_after_login";
-                        }).catch(function (data) {
-                            if (data.data.statusCode == 401) {
-                                $scope.wrongData = true;
-                            }
+                        }).catch(function (data) {                            
+							$scope.wrongData = true;                            
                         });
                         $scope.pressedButton = true;
                     };

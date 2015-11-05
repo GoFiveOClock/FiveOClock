@@ -20,9 +20,9 @@
     <div ng-if="slothour.alterSlot">
         <i class="time-icon font-big fa fa-clock-o"></i>
         <div class="slot-div">
-            <input type="time" class="slot-span" ng-model="slothour.alterSlot.start">
+            <input type="time" class="input-time-meeting" ng-model="slothour.alterSlot.start">
             <span>-</span>
-            <input type="time" class="slot-span" ng-model="slothour.alterSlot.end">
+            <input type="time" class="input-time-meeting" ng-model="slothour.alterSlot.end">
             <span  ng-if="!slothour.alterSlot.showCalendar" class="grey-color cursor" ng-click="showCalendarFun(slothour.alterSlot)">{{slothour.alterSlot.dateText}}</span>
             <i  ng-if="!slothour.alterSlot.showCalendar" class="fa fa-calendar grey-color"></i>
 
