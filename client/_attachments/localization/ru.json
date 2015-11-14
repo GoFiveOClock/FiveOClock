@@ -41,6 +41,7 @@
   "resultsOnMap": "Результаты на карте",
   "enterEmail": "  Введите свой e-mail",
   "enterPassword": " Введите пароль",
+  "wrongEmail": "неправильный e-mail!",
   "wrongEmailOrPassword": "неправильный e-mail или пароль!",
   "userAlreadyExist": "такой пользователь уже существует!",
   "forgotPassword": "Забыли пароль?",
@@ -52,7 +53,17 @@
   "fitness": "Фитнесс-тренера",
   "advancedSearch": "Расширенный поиск...",
   "barber": "Парикмахерскую",
-  
+  "restorePassword": "Восстановить пароль",
+  "onAddress": "На адресс",
+  "instructionsToRestore": " отправлено письмо с инструкциями по восстановлению доступа",
+  "linkIsOutdated": " Эта ссылка устарела!",
+  "passwordChanged": " Вы успешно изменили ваш пароль!",
+  "newPasswordIs": " Ваш новый пароль: ",
+  "follow": "Перейдите",
+  "thisLink": "по этой ссылке",
+  "toLogin": " чтобы залогиниться",
+  "tryAgain": " чтобы попробовать еще раз",
+  "somethingBroke": "Неизвестная ошибка!",
   
   
 

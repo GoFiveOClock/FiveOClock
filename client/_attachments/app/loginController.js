@@ -1,8 +1,8 @@
 define(['angular', 'jquery', 'cookies', 'json!localization/en.json', 'json!localization/ru.json', 'json!localization/ukr.json', 'json!config.json'],
-	function(angular, $, cookies, en, ru, ukr, configFile){
+	function(angular, $, cookies, en, ru, ukr, configFile, recoverPasswordFile){
         return angular.module('fiveOClock').controller('loginController',
             function ($scope, $rootScope, $http) {
-				var serverUrl = configFile.serverUrl;
+				var serverUrl = configFile.serverUrl;				
 				
 				var lang = cookies.get('lang');
 				if(lang == 'en'){
@@ -56,7 +56,8 @@ define(['angular', 'jquery', 'cookies', 'json!localization/en.json', 'json!local
                     email = $scope.email;
                     password = $scope.password;
                     var formCompleted = validationClient(email, password);
-                    if (formCompleted) {						
+                    if (formCompleted) {		
+						$scope.showAnimation = true;
                         $http.post(serverUrl + "/registration",{ user: email,password: password},{withCredentials:true}).then(function (data) {
                             email = email.toLowerCase();
 							cookies.set('AuthSession', data.data.auth);
@@ -67,6 +68,7 @@ define(['angular', 'jquery', 'cookies', 'json!localization/en.json', 'json!local
                             if (data.data.statusCode == 409) {
                                 $scope.warningRegistration = true;
                             };
+							$scope.showAnimation = false;
                         });
                         $scope.pressedButton = true;
                     };
@@ -77,7 +79,8 @@ define(['angular', 'jquery', 'cookies', 'json!localization/en.json', 'json!local
                     password = $scope.password;
                     var formCompleted = validationClient(email, password);
                     if (formCompleted) {
-                        email = email.toLowerCase();                        
+                        email = email.toLowerCase();  
+						$scope.showAnimation = true;
 						$http.post(serverUrl + "/login", {user: email, password: password}, {withCredentials: true}).then(function (data) {
                             cookies.set('AuthSession', data.data.auth);
 							cookies.set('user', data.data.user);
@@ -89,11 +92,20 @@ define(['angular', 'jquery', 'cookies', 'json!localization/en.json', 'json!local
                             };
                             window.location = "#landing_after_login";
                         }).catch(function (data) {                            
-							$scope.wrongData = true;                            
+							$scope.wrongData = true; 
+							$scope.showAnimation = false;
                         });
                         $scope.pressedButton = true;
                     };
                 };
+				
+				// $scope.clickForgotPassword = function(){
+					// RecoverPassword.confirm({message:"будем писать имейл"});
+				// }
+				
+				$scope.resetWarnings = function(){
+					resetWarnings();
+				};
 
                 $scope.styleEmail = function () {
                     if ($scope.warningEmail) {

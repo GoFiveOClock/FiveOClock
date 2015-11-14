@@ -42,6 +42,7 @@
   "resultsOnMap": "Results on map",
   "enterEmail": " Enter your e-mail",
   "enterPassword": " Enter password",
+  "wrongEmail": "wrong email!",
   "wrongEmailOrPassword": "wrong email or password!",
   "userAlreadyExist": "such a user already exist!",
   "forgotPassword": "Forgot password?",
@@ -53,6 +54,25 @@
   "fitness": "Fitness",
   "advancedSearch": "Advanced search",
   "barber": "Barber",
+  "restorePassword": "restore password",
+  "onAddress": "On address",
+  "instructionsToRestore": " we sent an email with instructions to restore access",
+  "linkIsOutdated": " This link is outdated!",
+  "passwordChanged": " You have successfully changed your password!",
+  "newPasswordIs": " Your new password is : ",
+  "follow": "Follow",
+  "thisLink": "this link",
+  "toLogin": " to login",
+  "tryAgain": " to try to do it once more",
+  "somethingBroke": "Something broke!",
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   

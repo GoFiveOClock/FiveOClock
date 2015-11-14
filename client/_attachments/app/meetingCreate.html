@@ -35,33 +35,14 @@
         <div class="slot-div">
             <input type="time" class="input-time-meeting float" ng-model="alterSlot.start">
             <span class="float split-time-sign">-</span>
-            <input type="time" class="input-end-meeting input-time-meeting float" ng-model="alterSlot.end">
-			<!-- <span>-</span>
-            <input type="text" class="input-time-meeting" input-mask="functionOption" > -->
-			
-			
-			<div ng-if="!alterSlot.showCalendar" class="float lab-date-md visible-sm visible-md">
-				<span class="label-full-date" ng-click="showCalendarFun(alterSlot)">{{alterSlot.dateText}}</span>
-			</div>
-			
-			<div ng-if="!alterSlot.showCalendar" class="float lab-date-xs visible-xs">
-				<span class="label-full-date" ng-click="showCalendarFun(alterSlot)">{{alterSlot.dateText}}</span>
-			</div>		
-            
-            <i  ng-if="!alterSlot.showCalendar" class="fa fa-calendar calendar-icon"></i>
-
-			<div ng-if="alterSlot.showCalendar" class="float visible-md visible-sm">
-				<input  type="date"  class="alter-input" ng-model="alterSlot.alterInput">
-				<button  ng-click="alterOk(alterSlot)">{{localization.ok}}</button>
-			</div>
-			
-			<div ng-if="alterSlot.showCalendar" class="float visible-xs ">
-				<input  type="date"  class="alter-input" ng-model="alterSlot.alterInput">
-				<button  ng-click="alterOk(alterSlot)">{{localization.ok}}</button>
-			</div>
-			
-			<div class="clearfix"></div>
-            
+            <input type="time" class="input-end-meeting input-time-meeting float" ng-model="alterSlot.end">					
+			<div class="float">
+				<input type="date" class="day-input" ng-model="alterSlot.day" ng-change="changeDay(alterSlot)">				
+			</div>						
+			<!-- <div class="float visible-xs ">
+				<input type="date" class="day-input" ng-model="alterSlot.day" ng-change="changeDay(alterSlot)">				
+			</div> -->			
+			<div class="clearfix"></div>            
         </div>
     </div>
 

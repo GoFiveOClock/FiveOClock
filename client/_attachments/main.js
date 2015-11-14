@@ -22,6 +22,8 @@ require.config({
         'common-storage': 'storages/common',
         'settingsService': 'app/settingsService',
         'confirmationService': 'app/confirmationService',
+		'recoverSuccessfulController': 'app/recoverSuccessful',
+		'recoverController': 'app/recoverController',
         'loginController': 'app/loginController',
         'landingController': 'app/landingController',
         'profileController': 'app/profileController',

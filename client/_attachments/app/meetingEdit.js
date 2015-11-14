@@ -174,10 +174,9 @@ define(['angular', 'moment', 'lodash',  'confirmationService', 'selectDirective'
 				};			
 				 
 
-				 function fillingAlterSlot(alterSlot, dateText){
-					alterSlot.dateText = dateText;					
-                    var alterDay = alterSlot.alterInput.getDate();
-                    var alterMonth = alterSlot.alterInput.getMonth();
+				 function fillingAlterSlot(alterSlot){									
+                    var alterDay = alterSlot.day.getDate();
+                    var alterMonth = alterSlot.day.getMonth();
                     alterSlot.start.setDate(alterDay);
                     alterSlot.start.setMonth(alterMonth);
                     alterSlot.end.setDate(alterDay);
@@ -193,12 +192,7 @@ define(['angular', 'moment', 'lodash',  'confirmationService', 'selectDirective'
                     };
                 };
 
-                $scope.clickMove = function(slothour){
-					var dateText = moment($scope.day.fulldate).format("dddd, MMMM Do YYYY");
-					if($scope.localization == ru){
-						moment.locale('ru');
-						dateText = moment($scope.day.fulldate).format("LLLL");
-					};
+                $scope.clickMove = function(slothour){					
                     if(slothour.alterSlot){
                         slothour.alterSlot = "";
                         return;
@@ -206,29 +200,12 @@ define(['angular', 'moment', 'lodash',  'confirmationService', 'selectDirective'
                     slothour.alterSlot = {
                         start: moment(slothour.chosenMeet.alterSlots[0].start).toDate(),
                         end:  moment(slothour.chosenMeet.alterSlots[0].end).toDate(),
-                        dateText: dateText
-                    };
-					moment.locale('en');
-                };
+                        day: moment(slothour.chosenMeet.alterSlots[0].start).toDate()
+                    };					
+                };                
 
-                $scope.showCalendarFun = function(alterSlot){
-                    alterSlot.showCalendar = true;
-                    alterSlot.alterInput = new Date(moment(alterSlot.start).hour(0).minute(0).second(0).millisecond(0));
-                };
-
-                $scope.alterOk = function(alterSlot){
-                    alterSlot.showCalendar = false;
-					var dateText = moment(alterSlot.alterInput).format("dddd, MMMM Do YYYY");
-					if($scope.localization == ru){
-						moment.locale('ru');
-						dateText = moment(alterSlot.alterInput).format("LLLL");
-					};                    
-                    if(!alterSlot.alterInput){
-                        console.log("wrong date!");
-                        return;
-                    };
-					fillingAlterSlot(alterSlot, dateText); 					
-					moment.locale('ru');
+                $scope.changeDay = function(alterSlot){                    
+					fillingAlterSlot(alterSlot); 						
                 };
 
                 $scope.saveMeeting = function(slothour){

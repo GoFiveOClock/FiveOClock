@@ -9,16 +9,7 @@ define(['angular', 'jquery', 'confirmationService', 'moment', 'selectDirective',
 				fivedaysweek: '=',
 				localization: '='
             },
-            controller: function ($scope, Meeting, ConfirmationService, Visitor) {		
-
-
-				$scope.functionOption = {
-					 mask: function () { 
-						return ["99:99"]; 
-					}
-				};
-
-			
+            controller: function ($scope, Meeting, ConfirmationService, Visitor) {				
                 var currDayDate = $scope.day.fulldate;
                 $scope.showInfo = true;
 				$scope.classForSelect = 'title';
@@ -42,19 +33,13 @@ define(['angular', 'jquery', 'confirmationService', 'moment', 'selectDirective',
                     }
                     return flag;
                 };
-                function pushAlterSlots(slothour,objDate){
-					var dateText = moment(currDayDate).format("dddd, MMMM Do YYYY");
-					if($scope.localization == ru){
-						moment.locale('ru');
-						dateText = moment(currDayDate).format("LLLL");
-					};
+                function pushAlterSlots(slothour,objDate){					
                     slothour.alterSlots.push({
                         start: moment(currDayDate).hour(slothour .num).minute(0).second(0).millisecond(0).toDate(),
                         end:  moment(currDayDate).hour(slothour.num + 1).minute(0).second(0).millisecond(0).toDate(),
-                        dateText: dateText,
+						day : moment(currDayDate).hour(0).minute(0).second(0).millisecond(0).toDate(),                        
                         priority: slothour.alterSlots.length + 1
-                    });
-					moment.locale('en');
+                    });					
                 };
 				
 				function getCalendarDays(cloneDays){
@@ -163,15 +148,9 @@ define(['angular', 'jquery', 'confirmationService', 'moment', 'selectDirective',
                     });
                 };
 				
-				function fillingAlterSlot(alterSlot, dateText){
-					alterSlot.showCalendar = false;
-                    alterSlot.dateText = dateText;
-                    if(!alterSlot.alterInput){
-                        console.log("wrong date!");
-                        return;
-                    }
-                    var alterDay = alterSlot.alterInput.getDate();
-                    var alterMonth = alterSlot.alterInput.getMonth();                    
+				function fillingAlterSlot(alterSlot){					
+                    var alterDay = alterSlot.day.getDate();
+                    var alterMonth = alterSlot.day.getMonth();                    
                     alterSlot.start.setMonth(alterMonth);
 					alterSlot.start.setDate(alterDay);
 					alterSlot.end.setMonth(alterMonth);
@@ -181,10 +160,7 @@ define(['angular', 'jquery', 'confirmationService', 'moment', 'selectDirective',
                 $scope.hideFormCreate = function(slothour){
                     slothour.selectedCreate = false;
                 };
-                $scope.showCalendarFun = function(alterSlot){
-                    alterSlot.showCalendar = true;
-                    alterSlot.alterInput = new Date(moment(alterSlot.start).hour(0).minute(0).second(0).millisecond(0));
-                };
+                
                 $scope.showInfoFun = function(flag){
                     if(flag == 'hide'){
                         $scope.showInfo = false;
@@ -197,14 +173,8 @@ define(['angular', 'jquery', 'confirmationService', 'moment', 'selectDirective',
                     };
                 };
 				
-                $scope.alterOk = function(alterSlot){
-					var dateText = moment(alterSlot.alterInput).format("dddd, MMMM Do YYYY");
-					if($scope.localization == ru){
-						moment.locale('ru');
-						dateText = moment(alterSlot.alterInput).format("LLLL");
-					};
-					fillingAlterSlot(alterSlot, dateText);                     
-                    moment.locale('en');
+                $scope.changeDay = function(alterSlot){					
+					fillingAlterSlot(alterSlot);                            
                 };
 				
                 $scope.addAlternate = function(objDate){

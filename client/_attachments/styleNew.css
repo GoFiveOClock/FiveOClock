@@ -234,7 +234,7 @@
 }
 
 .login-small{
-	margin-top: 200px;
+	margin-top: 60px;
 }
 
 .slot-div{
@@ -295,6 +295,7 @@ margin-top: 10px;
     float: left;
 	margin-top: -2px;
     margin-left: 1%;
+	margin-right: 2px;
 }
 
 .end_top{
@@ -515,7 +516,7 @@ margin-top: 10px;
 }
 .label-Iwant{
     padding: 25px;
-    font-size: 36px;
+    font-size: 30px;
     margin-top: 45px;
 }
 .padding-buttons{
@@ -552,6 +553,9 @@ margin-top: 10px;
 }
 .pad-land{
     padding: 15px;
+}
+.pad-recover{
+	padding: 15%;
 }
 .form-extra-opt{
     width: 98%;
@@ -614,8 +618,17 @@ a{
     width: 100%;
     height: 200px;
 }
-.alter-input{
+.hiddenSubmit{
+	background: none;
+    border: none;
+    width: 0px;
+}
+.day-input{
     width: 120px;
+	padding: 1px;
+}
+.signIn-button{
+	font-size: 20px
 }
 input[type="time"]::-webkit-clear-button {
     display: none;
@@ -691,4 +704,38 @@ input[type="time"]::-webkit-outer-spin-button {
 [type=radio]:checked ~ label ~ .content {
     z-index: 1;
     opacity: 1;
+}
+
+.cont-spinn{
+	height: 50px;
+	position:relative;
+	text-align: center;
+}
+.spinner {
+	width: 40px;
+	height: 40px;
+	background-color: #333;
+	position:absolute;
+	left: 46%; 
+	-webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+	animation: sk-rotateplane 1.2s infinite ease-in-out;
+}
+
+@-webkit-keyframes sk-rotateplane {
+  0% { -webkit-transform: perspective(120px) }
+  50% { -webkit-transform: perspective(120px) rotateY(180deg) }
+  100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+}
+
+@keyframes sk-rotateplane {
+  0% { 
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg) 
+  } 50% { 
+    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg) 
+  } 100% { 
+    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+  }
 }
