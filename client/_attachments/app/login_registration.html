@@ -1,28 +1,77 @@
-    <div class="login-cont">
-       <input class="all-width advanced-drop font-big pad-left" ng-model="email" ng-style="styleEmail()" placeholder=" Введите e-mail">
-       <div ng-if="warningEmail" class="pad-bottom red">
-           <span>wrong email</span>
-       </div>
-       <input class="all-width advanced-drop font-big pad-left" type="password" ng-model="password" ng-style="stylePass()" placeholder=" Введите пароль">
-       <div ng-if="wrongData" class="pad-bottom red">
-           <span>wrong email or password</span>
-       </div>
+<div class="login-cont login-big visible-md">  
+  <form role="form" ng-submit="login()">
+		<div class="cont-spinn">
+			<div ng-if="showAnimation" class="spinner"></div>
+		</div>
+		
+		<input ng-disabled ="showAnimation" class="all-width advanced-drop pad-left" ng-model="email" ng-change="resetWarnings()" ng-style="styleEmail()" placeholder= {{localization.enterEmail}}>
+		<div ng-if="warningEmail" class="pad-bottom red">
+           <span>{{localization.wrongEmail}}</span>
+		</div>
+		<input ng-disabled ="showAnimation" class="all-width advanced-drop pad-left" ng-change="resetWarnings()" type="password" ng-model="password" ng-style="stylePass()" placeholder= {{localization.enterPassword}}>
+		<div ng-if="wrongData" class="pad-bottom red">
+           <span>{{localization.wrongEmailOrPassword}}</span>
+		</div>
         <div ng-if="warningRegistration" class="pad-bottom red">
-            <span>such a user already exist</span>
+            <span>{{localization.userAlreadyExist}}</span>
         </div>
-       <div class="grey-button">
-           <div class="float-right">
-               <u><span>Забыли пароль?</span></u>
-           </div>
-           <div class="div-check"><input type="checkbox" ng-model="dontRemember.value" class="form-icon font-middle" id="check2"></div>
-           <label for="check2" class="pad-left">Не запоминать меня</label>
-       </div>
-       <div class="login-buttons slot-font font-middle">
+		<div class="row">			
+			<div class="float-right">
+				<u class="login-lable font-small cursor"><span ng-click="clickForgotPassword()"><a href="#recover">{{localization.forgotPassword}}</a></span></u>
+			</div>			
+			<div class="float">
+				<input type="checkbox" ng-model="dontRemember.value" id="check2">
+			</div>
+			<div>
+				<label for="check2" class="pad-left login-lable font-small">{{localization.dontRememberMe}}</label>
+			</div>			
+		</div>      
+        <div class="login-buttons slot-font font-middle">
            <div class="pull-right">
-               <span class="margin-reject cursor" ng-click="login()">Войти</span>
-               <span class="cursor" ng-click="registration()">Зарегистрироваться</span>
+				<button class="hiddenSubmit" type="submit"></button>
+				<span class="margin-reject cursor signIn-button" ng-click="login()">{{localization.signIn}}</span>			   
+				<span class="cursor" ng-click="registration()">{{localization.signUp}}</span>
            </div>
            <div class="clearfix"></div>
-       </div>
+        </div>	   
+   </form>
+</div>   
+	
+	<div class="login-cont login-small visible-xs visible-sm">
+		<form role="form" ng-submit="login()">
+			<div class="cont-spinn">
+				<div ng-if="showAnimation" class="spinner"></div>
+			</div>
+			<input ng-disabled ="showAnimation" class="all-width advanced-drop pad-left" ng-change="resetWarnings()" ng-model="email" ng-style="styleEmail()" placeholder= {{localization.enterEmail}}>
+			<div ng-if="warningEmail" class="pad-bottom red">
+				<span>{{localization.wrongEmail}}</span>
+			</div>
+			<input ng-disabled ="showAnimation" class="all-width advanced-drop pad-left" ng-change="resetWarnings()" type="password" ng-model="password" ng-style="stylePass()" placeholder= {{localization.enterPassword}}>
+			<div ng-if="wrongData" class="pad-bottom red">
+				<span>{{localization.wrongEmailOrPassword}}</span>
+			</div>
+			<div ng-if="warningRegistration" class="pad-bottom red">
+				<span>{{localization.userAlreadyExist}}</span>
+			</div>
+			<div class="row">			
+				<div class="float-right">
+					<u class="login-lable font-small cursor"><span ng-click="clickForgotPassword()">{{localization.forgotPassword}}</span></u>
+				</div>			
+				<div class="float">
+					<input type="checkbox" ng-model="dontRemember.value" id="check2">
+				</div>
+				<div>
+					<label for="check2" class="pad-left login-lable font-small">{{localization.dontRememberMe}}</label>
+				</div>			
+			</div>      
+			<div class="login-buttons slot-font font-middle">
+			   <div class="pull-right">
+					<button class="hiddenSubmit" type="submit"></button>
+					<span class="margin-reject cursor signIn-button" ng-click="login()">{{localization.signIn}}</span>
+					<span class="cursor" ng-click="registration()">{{localization.signUp}}</span>
+			   </div>
+			   <div class="clearfix"></div>
+			</div>			
+		</form>
    </div>
 

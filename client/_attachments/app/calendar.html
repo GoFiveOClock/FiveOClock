@@ -5,78 +5,59 @@
 </style>
 <div infinite-scroll="pagingFunction()">
     <div class="row row-menu">
-        <i class="fa fa-search fa-2x visible-xs menu-elements"></i>
-
+        <a href="#search"><i class="fa fa-search fa-2x visible-xs menu-elements"></i></a>
         <div class="visible-sm menu-elements">
             <i class="fa fa-search fa-2x menu-icons"></i>
-
             <div class="menu-lables">
-                <a href="#search">Search</a>
+                <a href="#search">{{localization.searchMenu}}</a>
             </div>
         </div>
         <div class="visible-md menu-elements">
             <i class="fa fa-search fa-3x menu-icons"></i>
-
             <div class="menu-lables">
-                <a href="#search">Search</a>
+                <a href="#search">{{localization.searchMenu}}</a>
             </div>
         </div>
-
         <i class="fa fa-weixin fa-2x visible-xs menu-elements"></i>
-
         <div class="visible-sm menu-elements">
             <i class="fa fa-weixin fa-2x menu-icons"></i>
-
-            <div class="menu-lables">Message</div>
+            <div class="menu-lables">{{localization.messageMenu}}</div>
         </div>
         <div class="visible-md menu-elements">
             <i class="fa fa-weixin fa-3x menu-icons"></i>
-
-            <div class="menu-lables">Message</div>
+            <div class="menu-lables">{{localization.messageMenu}}</div>
         </div>
-
         <i class="fa fa-map-marker fa-2x visible-xs menu-elements"></i>
-
         <div class="visible-sm menu-elements">
             <i class="fa fa-map-marker fa-2x menu-icons"></i>
-
-            <div class="menu-lables">Map</div>
+            <div class="menu-lables">{{localization.mapMenu}}</div>
         </div>
         <div class="visible-md menu-elements">
             <i class="fa fa-map-marker fa-3x menu-icons"></i>
-
-            <div class="menu-lables">Map</div>
+            <div class="menu-lables">{{localization.mapMenu}}</div>
         </div>
-
-        <i class="fa fa-calendar fa-2x visible-xs menu-elements"></i>
-
+        <a href="#calendar"><i class="fa fa-calendar fa-2x visible-xs menu-elements"></i></a>
         <div class="visible-sm menu-elements">
             <i class="fa fa-calendar fa-2x menu-icons"></i>
-
             <div class="menu-lables">
-                <a href="#calendar">Calendar</a>
+                <a href="#calendar">{{localization.calendarMenu}}</a>
             </div>
         </div>
         <div class="visible-md menu-elements">
             <i class="fa fa-calendar fa-3x menu-icons"></i>
-
             <div class="menu-lables">
-                <a href="#calendar">Calendar</a>
+                <a href="#calendar">{{localization.calendarMenu}}</a>
             </div>
         </div>
-
-        <i class="fa fa-user fa-2x visible-xs menu-elements"></i>
-
+        <a href="#profile"><i class="fa fa-user fa-2x visible-xs menu-elements"></i></a>
         <div class="visible-sm menu-elements">
             <i class="fa fa-user fa-2x menu-icons"></i>
-
             <div class="menu-lables">
                 <a href="#profile">{{userName}}</a>
             </div>
         </div>
         <div class="visible-md menu-elements">
             <i class="fa fa-user fa-3x menu-icons"></i>
-
             <div class="menu-lables">
                 <a href="#profile">{{userName}}</a>
             </div>
@@ -86,10 +67,10 @@
     <div class="row row-header">
         <div class="col-md-11 col-sm-11 col-xs-11 lab-hr">
             <div class="calendar font-big visible-sm visible-md">
-                <span>My calendar</span>
+                <span>{{localization.myCalendar}}</span>
             </div>
             <div class="calendar font-middle visible-xs">
-                <span>My calendar</span>
+                <span>{{localization.myCalendar}}</span>
             </div>
             <div class="chevron">
                 <i ng-if="calSetHide" class="fa fa-chevron-circle-down chevron-down cursor" ng-click="showSet()"></i>
@@ -101,10 +82,10 @@
 
     <div ng-if="!calSetHide" class="row drop-calendar slot-font font-middle">
         <select class="calendar font-big">
-            <option value="My calendar">My calendar</option>
-            <option value="My calendar">My calendar</option>
-            <option value="My calendar">My calendar</option>
-            <option value="My calendar">My calendar</option>
+            <option value="My calendar">{{localization.myCalendar}}</option>
+            <option value="My calendar">{{localization.myCalendar}}</option>
+            <option value="My calendar">{{localization.myCalendar}}</option>
+            <option value="My calendar">{{localization.myCalendar}}</option>
         </select>
 
         <div class="pad-top">
@@ -113,18 +94,18 @@
         <div class="grey-button">
             <div class="div-check"><input type="checkbox" class="form-icon" ng-model="dontShowAll.hours"
                                           ng-click="dontShowAllHours()" id="check4"></div>
-            <label for="check4" class="pad-left cursor non-working">Do not show non-working hours</label>
+            <label for="check4" class="pad-left cursor non-working">{{localization.allHours}}</label>
         </div>
         <div class="grey-button">
             <div class="div-check"><input type="checkbox" class="form-icon" ng-model="dontShowAll.days"
                                           ng-click="dontShowAllDays()" id="check1"></div>
-            <label for="check1" class="pad-left cursor non-working">Do not show non-working days</label>
+            <label for="check1" class="pad-left cursor non-working">{{localization.allDays}}</label>
         </div>
     </div>
     <div>
         <div class="row row-days" ng-repeat="twain in days">
             <div class="col-xs-12  col-md-6" ng-repeat="day in twain">
-                <div class="day font-xxl margin-day">{{day.dayname}}, {{day.forLabel}}</div>
+                <div class="day font-xxl margin-day" ng-bind="setDayLabel(day)"></div>
                 <div class="slot-font font-middle">
                     <div class="pad-bottom-px" ng-repeat="slotHour in day.hours">
                         <div class="float pad-time">{{slotHour.hour}}</div>
@@ -150,16 +131,16 @@
                             <div class="white-button"
                                  ng-class="{existEvents:slotHour.meetings.length}"
                                  ng-click="clickCreate({slotHour:slotHour,day:day.dayname})">
-                                Create
+                                {{localization.createButton}}
                             </div>
                         </div>
                         <br>
 
                         <div ng-if="slotHour.chosenMeet" class="form-meet">
-                            <meeting-edit fivedaysweek="fiveDaysWeek" slothour="slotHour" day="day" days="days"></meeting-edit>
+                            <meeting-edit localization="localization" fivedaysweek="fiveDaysWeek" slothour="slotHour" day="day" days="days"></meeting-edit>
                         </div>
                         <div ng-if="slotHour.selectedCreate" class="form-meet">
-                            <meeting-create fivedaysweek="fiveDaysWeek" slothour="slotHour" day="day" days="days"></meeting-create>
+                            <meeting-create localization="localization" fivedaysweek="fiveDaysWeek" slothour="slotHour" day="day" days="days"></meeting-create>
                         </div>
                     </div>
                 </div>

@@ -4,6 +4,16 @@ var cookie = require('cookie');
 var moment = require('moment');
 var Promise = require("bluebird");
 var nano = require('nano');
+var homeEmail = 'gofiveoclock@gmail.com';
+var homeEmailPassword = 'gc-xa1be';
+var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: homeEmail,
+        pass: homeEmailPassword
+    }
+});
 
 var app = express();
 app.use(express.cookieParser('your secret here'));
@@ -25,20 +35,96 @@ if ('development' === app.get('env')) {
 
 var adminDB = 'fiveoclockadmin';
 var commDb = 'common';
+
 var couchDbHost = 'http://localhost:5984';
+var couchDbPublic = 'http://localhost:5984';
 var host = Promise.promisifyAll(nano(couchDbHost));
 var adminLogin = 'admin';
 var adminPassword = 'abc123';
+// var couchDbHost = 'https://fiveoclock.smileupps.com';
+// var host = Promise.promisifyAll(nano(couchDbHost));
+// var adminLogin = 'admin';
+// var adminPassword = 'd13c45122602';
 var appDb = 'fiveoclock';
 var userDbreplicationFilter = 'views/ownDbReplication';
 var commonReplicationFilter = 'views/commonReplication';
 
 app.all('/*', function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", couchDbHost);
+    res.header("Access-Control-Allow-Origin", couchDbPublic);
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Credentials', true);
     res.header("Access-Control-Allow-Headers", "X-Requested-With ,Content-Type");
     next();
+});
+
+app.post('/sendEmail', function (req, res) {
+	var authenticated;
+	host.authAsync(adminLogin, adminPassword).then(function (body) {	   
+		var headers = body[1];
+		var auth = headers['set-cookie'][0];
+		authenticated = nano({ url: couchDbHost, cookie: auth });		
+	}).then(function(){				
+		var buf  = require('crypto').randomBytes(8);
+		var path = buf.toString('hex');			
+		var fiveoclockadmin = authenticated.use(adminDB);
+		Promise.promisifyAll(fiveoclockadmin);
+		fiveoclockadmin.insertAsync({"date": new Date(), "id": path, "email": req.body.email}, path);			
+		transporter.sendMail({
+			from: homeEmail,
+			to: req.body.email,
+			subject: 'Recover password',
+			text: "Путь : http://localhost:" + app.get('port') + "/recoverPassword?path=" + path
+		});
+		return res.send();
+	});		
+})
+
+app.all('/recoverPassword', function (req, res, next) {	
+	var fiveoclockadmin, authenticated, userEmail, recoverObj;
+	var newPassword = require('crypto').randomBytes(2);	
+	newPassword = newPassword.toString('hex');
+	host.authAsync(adminLogin, adminPassword).then(function (body) {	   
+		var headers = body[1];
+		var auth = headers['set-cookie'][0];
+		return nano({ url: couchDbHost, cookie: auth });				
+	}).then(function(result){
+		authenticated = Promise.promisifyAll(result);;
+		fiveoclockadmin = authenticated.use(adminDB)		
+		Promise.promisifyAll(fiveoclockadmin);
+		return fiveoclockadmin.getAsync(req.query.path);
+	}).then(function(result){
+		if(result && result.length){
+			var doc = result[0];
+			var diff = moment().diff(moment(doc.date), 'minute');
+			if(diff > 100){	
+				return Promise.reject({expired: true});					
+			}
+			else{
+				userEmail = doc.email;
+				recoverObj = doc.id;
+				return editUserAdminDb(authenticated, userEmail, newPassword);				
+			};					
+		}
+		else{
+			return Promise.reject();
+		};	
+	}).then(function(){	
+		return editUserUsersDb(authenticated, userEmail, newPassword);
+	}).then(function(){	
+		return removeFromAdminDb(authenticated, recoverObj);
+	}).then(function(){
+		res.cookie('newPass', newPassword, {expires: moment().add(5, 'minutes').toDate()});
+		res.redirect(couchDbHost + '/fiveoclock/_design/client/index.html#/recoverSuccessful');	
+		
+		res.send();
+	}).catch(function(err){	
+		if(err.expired){			
+			res.redirect(couchDbHost + '/fiveoclock/_design/client/index.html#/recoverExpired');
+		}
+		else{
+			res.redirect(couchDbHost + '/fiveoclock/_design/client/index.html#/defaultIssue');
+		}
+	}); 
 });
 
 app.post('/login', function (req, res) {
@@ -51,10 +137,10 @@ app.post('/login', function (req, res) {
         var authenticated = nano({ url: couchDbHost, cookie: auth });
         Promise.promisifyAll(authenticated);
         Promise.promisifyAll(authenticated.db);
-		return authenticate(authenticated, host, user, password, res, req).catch(function (err) {
-			res.status(500).send(err);
-		});
-	});
+		return authenticate(authenticated, host, user, password, res, req);
+	}).catch(function (err) {
+		res.status(500).send(err);
+	});;
     
 });
 
@@ -104,9 +190,26 @@ function cleanup(authenticated, user) {
 function removeFromAdminDb(authenticated, user) {
     var fiveoclockadmin = authenticated.use(adminDB);
     Promise.promisifyAll(fiveoclockadmin);
-    fiveoclockadmin.getAsync(user).then(function (doc) {
+    return fiveoclockadmin.getAsync(user).then(function (doc) {
         return fiveoclockadmin.destroyAsync(doc[0]._id, doc[0]._rev);
     });
+}
+
+
+function editUserAdminDb(authenticated, user, password) {
+    var fiveoclockadmin = authenticated.use(adminDB);
+    Promise.promisifyAll(fiveoclockadmin);
+    return fiveoclockadmin.getAsync(user).then(function (doc) {
+        return fiveoclockadmin.insertAsync({"_id":doc[0]._id, "_rev":doc[0]._rev, "password":password, "name": user, "type": "user"});
+    });
+}
+
+function editUserUsersDb(authenticated, user, password) {
+    var users = authenticated.use('_users');
+    Promise.promisifyAll(users);
+	return users.getAsync("org.couchdb.user:" + user).then(function (doc) {
+        return users.insertAsync({"_id":doc[0]._id, "_rev": doc[0]._rev, "password": password, "roles": ['user'], "name": user, "type": "user"});
+    });    
 }
 
 function removeDb(authenticated, user) {
@@ -198,13 +301,14 @@ function authenticate(authenticated, host, user, password, res) {
 			res.cookie('AuthSession', cookieObject.AuthSession);
 			res.cookie('user', user);
 			res.cookie('db', getDbName(user));
-			res.end(user);
+			res.send({user:user, auth: cookieObject.AuthSession, db: getDbName(user)});
 		});        
     });
 }
 
 var server = http.createServer(app);
 
+server.timeout = 300000;
 server.listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
 });

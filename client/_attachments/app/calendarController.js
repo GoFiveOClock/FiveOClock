@@ -1,7 +1,32 @@
-define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 'settingsService', 'meeting', 'confirmationService', 'meetingCreate', 'meetingEdit'], function (angular, $, _, moment, cookies, calendarFile, settingsServiceFile, meetingFile, confirmationService, meetingCreate, meetingEdit) {
+define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 'settingsService', 'meeting', 'meetingCreate', 'meetingEdit', 'json!localization/en.json', 'json!localization/ru.json', 'json!localization/ukr.json'], function (angular, $, _, moment, cookies, calendarFile, settingsServiceFile, meetingFile, meetingCreate, meetingEdit, en, ru, ukr) {
     return angular.module('fiveOClock').controller('calendarController',
-        function ($scope, $q, $timeout, CalendarSettings, settingsService, Meeting, ConfirmationService) {
+        function ($scope, $q, $timeout, CalendarSettings, settingsService, Meeting) {
 
+		
+			var lang = cookies.get('lang');
+			if(lang == 'en'){
+				$scope.localization = en;
+			}
+			else if(lang == 'ukr'){
+				$scope.localization = ukr;
+			}
+			else {
+				$scope.localization = ru;
+			};
+			
+			moment.locale('ru', {
+				months : "января_февраля_марта_апреля_мая_июня_июля_августа_сентября_октября_ноября_декабря".split("_"),				
+				weekdays : "Воскресенье_Понедельник_Вторник_Среда_Четверг_Пятница_Суббота".split("_"),				
+				longDateFormat : {LL : "D MMMM YYYY", LLLL : "dddd, D MMMM YYYY"}										
+			});
+			moment.locale('ukr', {
+				months : "січня_лютого_березня_квітня_травня_червня_липня_серпня_вересня_жовтня_листопада_грудня".split("_"),				
+				weekdays : "Неділя_Понеділок_Вівторок_Середа_Четвер_П'ятниця_Субота".split("_"),				
+				longDateFormat : {LL : "D MMMM YYYY", LLLL : "dddd, D MMMM YYYY"}										
+			});
+			
+			moment.locale('en');
+			
             var currentWeek, portion = 7;
             $scope.dontShowAll = {
                 hours:true,
@@ -364,6 +389,23 @@ define(['angular', 'jquery', 'lodash', 'moment', 'cookies', 'calendarSettings', 
 				};
 				$scope.$apply();
 			});	
+			
+			$scope.setDayLabel = function(day){
+				var dayname = day.dayname;
+				var forLabel = day.forLabel;
+				if($scope.localization == ru){
+					moment.locale('ru');
+					dayname = moment(day.fulldate).format("dddd");					
+					forLabel= moment(day.fulldate).format("LL");					
+				};
+				if($scope.localization == ukr){
+					moment.locale('ukr');
+					dayname = moment(day.fulldate).format("dddd");					
+					forLabel= moment(day.fulldate).format("LL");					
+				};
+				moment.locale('en');				
+				return dayname + ", " + forLabel;
+			};
         });
 
 });

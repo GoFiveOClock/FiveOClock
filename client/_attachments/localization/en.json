@@ -1,45 +1,104 @@
 {
-  "navContacts": "Contacts",
-  "navSchedule": "Schedule",
-  "navSettings": "Settings",
-  "logout": "logout",
-  "register": "register",
-  "settingsDays": "Days",
-  "settingsHours": "Hours",
-  "settingsAccept": "accept",
-  "getContacts":"get contacts(Gmail)",
-  "pNewContact": "get contacts...",
-  "labelPhones": "Phones:",
-  "labelEmails": "Emails:",
-  "pNewPhone": "add new phone...",
-  "pNewEmail": "add new email...",
-  "btnMeetings": "meetings",
-  "btnShowWorkingDays": "click to show working days",
-  "btnShowAllDays": "click to show all days",
-  "btnShowWorkingHours": "click to show working hours",
-  "btnShowAllHours": "click to show all hours",
-  "labMeetings": "meetings",
-  "publicPage":"Public page",
-  "confirmEdit":"Confirm",
-  "cancelEdit":"Cancel",
-  "priority":"priority",
-  "username":"Username",
-  "headerSessions":"Sessions",
-  "sessionAdd":"add",
-  "placeAdd":"add message...",
+  "searchMenu": "Search",
+  "messageMenu": "Message",
+  "mapMenu": "Map",
+  "calendarMenu": "Calendar",
+  "myCalendar": "My calendar",
+  "allHours" : "Do not show non-working hours",
+  "allDays" : "Do not show non-working days",
+  "createButton": "Create",
+  "createMeetingLab": "Create meeting",
+  "contactPhone": "Contact phone",
+  "placEnterName": "Enter name",
+  "placEnterSpeciality": "Enter speciality",
+  "placEnterCity": "Enter city",
+  "warningPhone": "wrong phone, use only 0-9;();-  characters",
+  "dontPublClient": "Do not publish client name",
+  "cancel": "Cancel",
+  "ok": "Ok",
+  "editMeetingLab": "Edit meeting",
+  "confServAllRequired": "enter all the required information",
+  "confServWrongTime": "wrong time",
+  "move": "Move to another timeslot",
+  "dontPublMe": "Do not publish my name",
+  "reject": "reject",
+  "fullName": "Full name",
+  "workingDays": "Working days: ",
+  "workingHours": "Working hours: ",
+  "purposeOfUseApp": "The purpose of use of the application",
+  "useServices": "Use services:",
+  "provideServices": "Provide services:",
+  "additionalInformation": "Additional information",
+  "placeOnMap": "Place on the map:",
+  "saveButton": "Save",
+  "searchParams": "Search parameters",
+  "additionalParams": "Additional parameters: ",
+  "clarifyingData": " Clarifying data",  
+  "addReception": "Add reception",
+  "searchButton": "Search",
+  "resultsList": "Results list",
+  "previouslyVisited": "Previously visited:",
+  "nearest": "Nearest:",
+  "resultsOnMap": "Results on map",
+  "enterEmail": " Enter your e-mail",
+  "enterPassword": " Enter password",
+  "wrongEmail": "wrong email!",
+  "wrongEmailOrPassword": "wrong email or password!",
+  "userAlreadyExist": "such a user already exist!",
+  "forgotPassword": "Forgot password?",
+  "dontRememberMe": "Dont remember me",
+  "signIn": "Sign in",
+  "signUp": "Sign up",
+  "iWantFind": "I want to find :",
+  "manicurist": "Manicurist",
+  "fitness": "Fitness",
+  "advancedSearch": "Advanced search",
+  "barber": "Barber",
+  "restorePassword": "restore password",
+  "onAddress": "On address",
+  "instructionsToRestore": " we sent an email with instructions to restore access",
+  "linkIsOutdated": " This link is outdated!",
+  "passwordChanged": " You have successfully changed your password!",
+  "newPasswordIs": " Your new password is : ",
+  "follow": "Follow",
+  "thisLink": "this link",
+  "toLogin": " to login",
+  "tryAgain": " to try to do it once more",
+  "somethingBroke": "Something broke!",
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
-  "messagerHeader":"Messager",
-  "messagerSend":"send",
-  "servise-AUS":"Are you sure?",
-  "serviseWrongTime":"Wrong time",
-  "serviseTE":"This time employed",
 
-
-  "monday": "monday",
-  "tuesday": "tuesday",
-  "wednesday": "wednesday",
-  "thursday": "thursday",
-  "friday": "friday",
-  "saturday": "saturday",
-  "sunday": "sunday"
+  "monday": "Monday",
+  "tuesday": "Tuesday",
+  "wednesday": "Wednesday",
+  "thursday": "Thursday",
+  "friday": "Friday",
+  "saturday": "Saturday",
+  "sunday": "Sunday"
 }

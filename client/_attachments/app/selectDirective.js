@@ -4,18 +4,19 @@ define(['angular', 'moment', 'lodash'], function (angular, moment, _) {
             templateUrl: 'app/selectDirective.html',
             scope: {                
 				classdirective: "=",
-				searchtext: "="				
+				searchtext: "="	,
+				localization: "="					
             },
             controller: function ($scope, Visitor, ServiceProviderInfoCommon) {
 				
 				if($scope.classdirective == 'title'){
-					$scope.placeholder = 'Enter name';
+					$scope.placeholder = $scope.localization.placEnterName;
 				}
 				else if($scope.classdirective == 'speciality'){
-					$scope.placeholder = 'Enter speciality';
+					$scope.placeholder = $scope.localization.placEnterSpeciality;
 				}
 				else if($scope.classdirective == 'city'){
-					$scope.placeholder = 'Enter city';
+					$scope.placeholder = $scope.localization.placEnterCity;
 				};
 				
 				function meetingsByTitle(){					
@@ -45,8 +46,7 @@ define(['angular', 'moment', 'lodash'], function (angular, moment, _) {
 						}
 						else{
 							$scope.showselect = false;
-						};						
-						$scope.$apply();						
+						};											
 					});    
 				};
 				
@@ -61,8 +61,7 @@ define(['angular', 'moment', 'lodash'], function (angular, moment, _) {
 						}
 						else{
 							$scope.showselect = false;
-						};						
-						$scope.$apply();						
+						};													
 					});    
 				};
 				

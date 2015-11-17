@@ -37,8 +37,7 @@ define(['angular', 'entity', 'cookies', 'common-storage'], function (angular, En
                         params: {
                             startkey: spec,
                             endkey: spec + '\ufff0',
-                            include_docs: false,
-                            group:true,
+                            include_docs: false,                            
                             limit: parameters.limit
                         }
                     }
@@ -50,8 +49,19 @@ define(['angular', 'entity', 'cookies', 'common-storage'], function (angular, En
                         params: {
                             startkey: spec,
                             endkey: spec + '\ufff0',
-                            include_docs: false,
-                            group:true,
+                            include_docs: false,                            
+                            limit: parameters.limit
+                        }
+                    }
+                },
+				byCitiesAndSpecialities: function(parameters) {
+                    var objParams = parameters.value || "";
+                    return {
+                        view: 'by-city-speciality',
+                        params: {
+                            startkey: [objParams.city, objParams.speciality],
+                            endkey: [objParams.city, objParams.speciality],
+                            include_docs: false,                            
                             limit: parameters.limit
                         }
                     }
